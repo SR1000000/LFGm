@@ -76,34 +76,7 @@ if not WinExist(WINID)
 
 ^Escape::ExitApp
 
-F1::
-	;RepairCheck()
-	;FindClick()
-	tx:=0,ty:=0
-	temp := GPixelSearch(0xF93646,,,,,,,0) ;0x919599 = 1
-	ta := StrSplit(temp,",")
-	tx := ta[1]
-	ty := ta[2]
-	MsgBox % temp
-	MouseMove, tx, ty
-return
-
-F2::
-	;MsgBox % FindClick(A_ScriptDir "\pics\NewFile", " rNoxPlayer mc o20 w5000,50 n0")
-	MsgBox % isObject(GImageSearch("NewFile",,,,,,,0))
-return
-
-F3::
-	;WFindClick("NewFile"," rNoxPlayer mc",0)
-	MsgBox % WGImageSearch("Maps\4_3e\Heli2")
-	;MouseMove, DepOkx, DepOky
-return
-
-F4::
-	MouseGetPos, tx, ty
-	tc := AeroGetPixel(tx,ty)
-	FileAppend, %tx% %ty% %tc%`n, MousePosFile.txt
-return
+#Include testings.ahk	;test-hotkeys
 
 tohex(num)
 {
@@ -134,17 +107,16 @@ Divin:
 return
 
 Divin2:
-	Dx := 725
-	Dy := 500
+	DD := [725, 500]
 	if(AeroGetPixel(745,448,2) = 0xFFFFFF)
 	{
-		RCtrlClick(Dx,Dy,25)
+		RCtrlClick(DD,25)
 		NumClicks += 1
 		GuiControl,, StatB, Divinity Engaged, Clicks: %NumClicks%
 		RandSleep(250,330)
 		if(AeroGetPixel(100,139) != 0xE1DDBB)
 		{
-			RCtrlClick(Dx,Dy,25)
+			RCtrlClick(DD,25)
 			NumClicks += 1
 			GuiControl,, StatB, Divinity Engaged, Clicks: %NumClicks%
 		}
@@ -169,12 +141,12 @@ return
 MBJoin2:
 	if(AeroGetPixel(724,217,2) = 0x226687)
 	{
-		RCtrlClick(745,215,35,14)
+		RCtrlClick([745,215],35,14)
 		NumClicks += 1
 		RandSleep(430,790)
 		if(AeroGetPixel(724,217,2) = 0x226687)
 		{
-			RCtrlClick(400,382,50,13)
+			RCtrlClick([400,382],50,13)
 			NumClicks += 1
 		}
 		GuiControl,, StatB, MBJoin Engaged, Clicks: %NumClicks%
@@ -184,7 +156,7 @@ MBJoin2:
 	}
 	else if(AeroGetPixel(445,538,2) = 0x04EEFF)
 	{
-		RCtrlClick(700,500,60)
+		RCtrlClick([700,500],60)
 		NumClicks += 1
 		GuiControl,, StatB, MBJoin Engaged, Clicks: %NumClicks%
 		if MBJToggle 
@@ -206,7 +178,6 @@ return
 
 ExpeditionCheck()
 {
-	global
 	local loopcount := 1, Found := 0
 	
 	;until two continuous seconds of homepixel true
@@ -220,9 +191,9 @@ ExpeditionCheck()
 		{
 			Sleep 100
 			GuiControl,, StatA, Clicking away Expeditions
-			WaitForPixelClick(Expedx,Expedy,[Expedc],ecc,600,450,150)
+			WaitForPixelClick(Exped,ecc,[600,450],150)
 			GuiControl,, StatA, Clicking Expeditions OK Button
-			WaitForPixelClick(ExpedOKx,ExpedOKy,[ExpedOKc],ecc,ExpedOKx,ExpedOKy,35,15)
+			WaitForPixelClick(ExpedOK,ecc,ExpedOK,35,15)
 			loopcount := 1
 		}
 	}
@@ -238,33 +209,33 @@ RepairCheck()
 	GuiControl,, StatA, RepairCheck running %ClickCount%
 	;if AeroGetPixel(RepairEx,RepairEy,1) = RepairEc
 	;{
-		RCtrlClick(RepairBx,RepairBy,40,15)
-		WaitForPixelClick(RepairSl1x,RepairSl1y,[RepairSl1c],10,RepairSl1x,RepairSl1y,15,24)
+		RCtrlClick(RepairB,40,15)
+		WaitForPixelClick(RepairSl1,10,RepairSl1,15,24)
 
 		GuiControl,, StatA, Clicking Slot1 %ClickCount%
-		WaitForPixelClick(31,229,[0xFFBB00],10,Slot1x,Slot1y,38)
+		WaitForPixelClick([31,229,0xFFBB00],10,Slot1,38)
 
 		GuiControl,, StatA, Clicking RepairOK %ClickCount%
 		Sleep 400
-		RCtrlClick(RepairOKx,RepairOKy,44,36)
+		RCtrlClick(RepairOK,44,36)
 
 		GuiControl,, StatA, Clicking RepairQR %ClickCount%
-		Sleep 400
-		RCtrlClick(RepairQRx,RepairQRy,13)
+		Sleep 600
+		RCtrlClick(RepairQR,13)
 
 		GuiControl,, StatA, Clicking RepairOKOK %ClickCount%
-		Sleep 300
-		RCtrlClick(RepairOKOKx,RepairOKOKy,36,14)
+		Sleep 500
+		RCtrlClick(RepairOKOK,36,14)
 
 		GuiControl,, StatA, Clicking RepairCP %ClickCount%
-		Sleep 400
-		RCtrlClick(RepairCpx,RepairCpy,36,14)
+		Sleep 600
+		RCtrlClick(RepairCp,36,14)
 
 		GuiControl,, StatA, Clicking RetHome %ClickCount%
-		Sleep 500
+		;Sleep 500
 		;RCtrlClick(RepairCpOkx,RepairCpOky,5,5) ;inaccurate rx ry
 		;Sleep 200
-		WaitForPixelClick(RetHomex,RetHomey,[RetHomec],10,RetHomex,RetHomey,RetHomerx,RetHomery)
+		WaitForPixelClick(RetHome,10,RetHome,RetHomerx,RetHomery)
 
 	;}
 	GuiControl,, StatA, RepairCheck Complete %ClickCount%
