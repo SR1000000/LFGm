@@ -6,6 +6,8 @@ CtrlClick(xy)
 
 	;global Class
 
+	global WinWidth
+	global WinHeight
 	global ClickDelay
 
 	global ClickCount
@@ -15,6 +17,13 @@ CtrlClick(xy)
 	SetControlDelay 0
 
 	;if Class = 0
+
+	if (xy[1]<0 or xy[1]>WinWidth or xy[2]<30 or xy[2]>WinHeight)
+	{
+		GuiControl,, StatA, % "CClick tried to click OOB! " xy[1] " " xy[2] " " ClickCount
+		MSgBox Error Exit
+		Exit
+	}
 
 	ControlClick, % "x" xy[1] " y" xy[2]
 , ahk_id %uid%,,,,NA Pos
@@ -36,6 +45,8 @@ RCtrlClick(xy, r, r2 := 0)
 
 	;global Class
 
+	global WinWidth
+	global WinHeight
 	global ClickDelay
 
 	global ClickCount
@@ -47,11 +58,17 @@ RCtrlClick(xy, r, r2 := 0)
 
 	x := xy[1], y := xy[2]	;need temp vars for Rand byrefs to work
 
-	if r2 
+	if (r2) 
 		RandRect(x,y,r,r2)
 	else 
 		RandCircle(x,y,r)
 
+	if (x<0 or x>WinWidth or y<30 or y>WinHeight)
+	{
+		GuiControl,, StatA, RCClick tried to click out of bounds! %x% %y% %ClickCount%
+		MSgBox Error Exit %WinWidth% %WinHeight%
+		Exit
+	}
 	;if Class = 0
 
 	ControlClick, x%x% y%y%
@@ -64,7 +81,7 @@ RCtrlClick(xy, r, r2 := 0)
 	return
 
 }
-
+/*
 RFindClick(x,y, r := 5, xoff :=0, yoff := 0)
 {
 	local tx := 0, ty := 0, temp, ta
@@ -76,7 +93,7 @@ RFindClick(x,y, r := 5, xoff :=0, yoff := 0)
 	;ta := StrSplit(temp,",")
 	
 	GuiControl,, StatA, %x% %tx% %ty% %temp%
-	if temp != 0
+	if (temp != 0)
 		SoundPlay, %A_WinDir%\Media\ding.wav
 	return temp
 }
@@ -108,3 +125,4 @@ WFindClick(x,y, SearchNumber := 40)
 	;FindClick(A_ScriptDir "\pics\" x, y "Center x" RandX " y"  RandY " o" SearchNumber)
 	return Found
 }
+*/

@@ -82,17 +82,19 @@ PixelGetColorS(x,y,z := 0)
 }
 */
 
-;check xy,what color you want,click(optional) here until color
-;pc is array of colors to check for, return index of value found
-;parameter ecc > 5 if PixelColor MUST be found
-;average one check per 750ms
-ClickUntilPixelColor(xyc, ecc := 0, clxy := 0, rx := 5, ry := 0)
+;check xyc, click(optional) clxy until color
+;xyc is array of x,y,colors.. to check for, return index-2 of value found
+;Negative WaitFor hard stops if pixel not found, positive WaitFor ignores
+;average one check/click per 750ms
+ClickUntilPixelColor(xyc, WaitFor := -30, clxy := 0, rx := 5, ry := 0)
 {
 	global uid
 	global ECPC
 	global ClickCount
 	i := 0,	tpc := 0, timeout := 30
-	clxy := clxy ? clxy : [-1,-1]
+	clxy := clxy ? clxy : [-1,-1]	;parameters can't default to arrays - workaround
+	timeout := Round(Abs(WaitFor) / 0.75)
+
 	loop
 	{
 		RandSleep(50,100)
@@ -104,21 +106,21 @@ ClickUntilPixelColor(xyc, ecc := 0, clxy := 0, rx := 5, ry := 0)
 				;Sleep 500
 				return k-2
 			}
-			if (tpc = ECPC)
-				ecc += 1
-			if (clxy[1] != -1 and clxy[2] != -1)
-			{
-				GuiControl,, StatA, PixelColor still not found - Clicking %ClickCount%
-				if ry
-					RCtrlClick(clxy,rx,ry)
-				else
-					RCtrlClick(clxy,rx)
-			}
+		}
+		if (tpc = ECPC)
+			ecc += 1
+		if (clxy[1] != -1 and clxy[2] != -1)
+		{
+			GuiControl,, StatA, % "PixelColor not found, Clicking, " xyc[1] " " xyc[2] " " ClickCount
+			if ry
+				RCtrlClick(clxy,rx,ry)
+			else
+				RCtrlClick(clxy,rx)
 		}
 		RandSleep(450,500)
 		i += 1
 	} Until i > timeout
-	if ecc > 5
+	if (WaitFor<0)
 	{
 		tpc := DEC2HEX2(xyc[3])
 		GuiControl,, StatA, % "ErrorCat CUPC " xyc[1] " " xyc[2] " " tpc
@@ -130,15 +132,17 @@ ClickUntilPixelColor(xyc, ecc := 0, clxy := 0, rx := 5, ry := 0)
 
 ;check until pixel is color, then (optional)click
 ;xyc is array of x,y,colors.. to check for, return index-2 of value found
-;parameter ecc > 5 if PixelColor MUST be found
+;Negative WaitFor hard stops if pixel not found, positive WaitFor ignores
 ;exactly two checks per second
-WaitForPixelClick(xyc, ecc := 0, clxy := 0, rx := 5, ry := 0)
+WaitForPixelClick(xyc, WaitFor := -30, clxy := 0, rx := 5, ry := 0)
 {
 	global uid
 	global ECPC
 	global ClickCount
-	i := 0,	tpc := 0, timeout := 60
+	i := 0,	tpc := 0, timeout := 60	;30 seconds
 	clxy := clxy ? clxy : [-1,-1]
+	timeout := Round(Abs(WaitFor) * 2)
+
 	loop
 	{
 		tpc := AeroGetPixel(xyc[1],xyc[2],1)
@@ -155,7 +159,7 @@ WaitForPixelClick(xyc, ecc := 0, clxy := 0, rx := 5, ry := 0)
 					else
 						RCtrlClick(clxy,rx)
 				}
-				GuiControl,, StatA, PixelFound %ClickCount%
+				GuiControl,, StatA, % "PixelFound " xyc[1] " " xyc[2] " " ClickCount
 				return k-2
 			}
 		}
@@ -164,7 +168,7 @@ WaitForPixelClick(xyc, ecc := 0, clxy := 0, rx := 5, ry := 0)
 		Sleep 400
 		i += 1
 	} Until i > timeout
-	if ecc > 5
+	if (WaitFor<0)
 	{
 		tpc := DEC2HEX2(xyc[3])
 		GuiControl,, StatA, % "ErrorCat WFPC " xyc[1] " " xyc[2] " " tpc

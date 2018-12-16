@@ -1,25 +1,18 @@
 ﻿
 F1::
-	;RepairCheck()
-	;FindClick()
-	tx:=0,ty:=0
-	temp := GPixelSearch(0xF93646,,,,,,,0) ;0x919599 = 1
-	ta := StrSplit(temp,",")
-	tx := ta[1]
-	ty := ta[2]
-	MsgBox % temp
-	MouseMove, tx, ty
+	FindClick()
 return
 
 F2::
-	;MsgBox % FindClick(A_ScriptDir "\pics\NewFile", " rNoxPlayer mc o20 w5000,50 n0")
-	MsgBox % isObject(GImageSearch("NewFile",,,,,,,0))
+	MsgBox % GImageSearch("RepairSelect",50,,,,,,0)
+	;IGImageSearch("Maps\4_3e\Enemy4",,,,,,7)
 return
 
 F3::
-	;WFindClick("NewFile"," rNoxPlayer mc",0)
-	MsgBox % WGImageSearch("Maps\4_3e\Heli2")
-	;MouseMove, DepOkx, DepOky
+	;ta := StrSplit(GImageSearch("RepairSelect",40),",")
+	ta := IGImageSearch("Maps\4_3e\Heli2",0)
+	;GuiControl,, StatA, % ta[1] " " ta[2]
+	MouseMove, ta[1], ta[2]
 return
 
 F4::

@@ -13,8 +13,8 @@
 #Include Maps.ahk
 #Include PixelCheck.ahk
 #Include PixelConstants.ahk
-#Include PixelSearch.ahk
 #Include RandomFunctions.ahk
+#Include Search.ahk
 ;#Include Windows.ahk
 
 IniRead, WINID, config.ini, Variables, WINID, 0
@@ -27,6 +27,7 @@ IniRead, TWinY, config.ini, Variables, LastYS, 0
 IniRead, IntervalV1, config.ini, Variables, IntervalV1, 0
 IniRead, IntervalV2, config.ini, Variables, IntervalV2, 0
 IniRead, WorldV, config.ini, Variables, WorldSwitcher 
+IniRead, CorpseDragV, config.ini, Variables, CorpseDragV, 0
 
 Menu, Tray, Icon, %A_ScriptDir%/favicon_ahkcsortie.ico,,1
 CoordMode, Pixel, Relative
@@ -44,12 +45,14 @@ Gui, Add, Text, x130 y10 w40 h20 , Repeat:
 Gui, Add, Edit, x170 y10 w50 h20 Number vRepeat -VScroll, 1
 Gui, Add, Button, x230 y10 w100 h20 gExecuteF vExecute, Execute
 Gui, Add, Progress, x230 y40 w100 h20 cGreen vProgA, 0
-Gui, Add, Text, x10 y40 w60 h20 , Interval1(s):
-Gui, Add, Text, x10 y60 w60 h20 , Interval2(s):
-Gui, Add, Edit, x70 y40 w60 h20 Number vIntervalV1 gIntervalF1 -VScroll, %IntervalV1%
-Gui, Add, Edit, x70 y60 w60 h20 Number vIntervalV2 gIntervalF2 -VScroll, %IntervalV2%
+Gui, Add, Checkbox, x10 y40 vCorpseDragV gCorpseDrag, Corpse dragging
+GuiControl,, CorpseDragV, %CorpseDragV%
+Gui, Add, Text, x10 y60 w60 h20 , Interval1(s):
+Gui, Add, Text, x10 y80 w60 h20 , Interval2(s):
+Gui, Add, Edit, x70 y60 w60 h20 Number vIntervalV1 gIntervalF1 -VScroll, %IntervalV1%
+Gui, Add, Edit, x70 y80 w60 h20 Number vIntervalV2 gIntervalF2 -VScroll, %IntervalV2%
 Gui, Add, Text, x150 y38 w50 h20 vIter, Iter: 0
-Gui, Add, Text, x140 y56 w100 h40 vNotes, % MapNotes(WorldV)
+Gui, Add, Text, x140 y56 w180 h40 vNotes, % MapNotes(WorldV)
 Gui, Add, Edit, x10 y110 w320 h20 vStatA ReadOnly, Inactive
 Gui, Add, Text, x10 y150 w100 h20 , Tales of Erin
 Gui, Add, Button, x10 y170 w100 h30 gDivin, Repeat Divinity
@@ -92,7 +95,7 @@ tohex(num)
 
 Divin:	
 	DivinToggle := !DivinToggle
-	if DivinToggle	;DivinToggle starts at 0, line above makes it true
+	if (DivinToggle)	;DivinToggle starts at 0, line above makes it true
 	{
 		NumClicks := 0
 		GuiControl,, StatB, Divinity Engaged, Clicks: %NumClicks%
@@ -127,7 +130,7 @@ return
 
 MBJoin:
 	MBJToggle := !MBJToggle
-	if MBJToggle
+	if (MBJToggle)
 	{
 		GuiControl,, ProgC, 100
 		SetTimer, MBJoin2, 3000
@@ -151,7 +154,7 @@ MBJoin2:
 		}
 		GuiControl,, StatB, MBJoin Engaged, Clicks: %NumClicks%
 		Random, t, 1500, 5500
-		if MBJToggle 
+		if (MBJToggle) 
 			SetTimer, MBJoin2, %t%
 	}
 	else if(AeroGetPixel(445,538,2) = 0x04EEFF)
@@ -159,10 +162,10 @@ MBJoin2:
 		RCtrlClick([700,500],60)
 		NumClicks += 1
 		GuiControl,, StatB, MBJoin Engaged, Clicks: %NumClicks%
-		if MBJToggle 
+		if (MBJToggle)
 			SetTimer, MBJoin2, 500
 	} else
-		if MBJToggle  
+		if (MBJToggle)  
 			SetTimer, MBJoin2, 5000
 	RandSleep(1,299)
 return
@@ -176,10 +179,12 @@ return
 
 
 
-ExpeditionCheck()
+ExpeditionCheck()	;Expects Home Screen
 {
 	local loopcount := 1, Found := 0
 	
+	WaitForPixelClick(Home,2)
+
 	;until two continuous seconds of homepixel true
 	while loopcount < 2
 	{	
@@ -191,9 +196,9 @@ ExpeditionCheck()
 		{
 			Sleep 100
 			GuiControl,, StatA, Clicking away Expeditions
-			WaitForPixelClick(Exped,ecc,[600,450],150)
+			WaitForPixelClick(Exped,5,Safe,Saferx,Safery)
 			GuiControl,, StatA, Clicking Expeditions OK Button
-			WaitForPixelClick(ExpedOK,ecc,ExpedOK,35,15)
+			WaitForPixelClick(ExpedOK,5,ExpedOK,35,15)
 			loopcount := 1
 		}
 	}
@@ -204,16 +209,18 @@ ExpeditionCheck()
 
 RepairCheck()
 {
-	global
+	local ta
 	ClickCount := 0
 	GuiControl,, StatA, RepairCheck running %ClickCount%
-	;if AeroGetPixel(RepairEx,RepairEy,1) = RepairEc
+	;if (AeroGetPixel(RepairEx[1],RepairEx[2],1) = RepairEx[3])
 	;{
 		RCtrlClick(RepairB,40,15)
-		WaitForPixelClick(RepairSl1,10,RepairSl1,15,24)
+		;WaitForPixelClick(RepairSl1,ecc,RepairSl1,15,24)
+		ta := StrSplit(WGImageSearch("RepairSelect",ecc,50),",")
+		RctrlClick(ta,48)
 
 		GuiControl,, StatA, Clicking Slot1 %ClickCount%
-		WaitForPixelClick([31,229,0xFFBB00],10,Slot1,38)
+		WaitForPixelClick([31,229,0xFFBB00],ecc,Slot0,38)
 
 		GuiControl,, StatA, Clicking RepairOK %ClickCount%
 		Sleep 400
@@ -235,7 +242,7 @@ RepairCheck()
 		;Sleep 500
 		;RCtrlClick(RepairCpOkx,RepairCpOky,5,5) ;inaccurate rx ry
 		;Sleep 200
-		WaitForPixelClick(RetHome,10,RetHome,RetHomerx,RetHomery)
+		WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
 
 	;}
 	GuiControl,, StatA, RepairCheck Complete %ClickCount%
@@ -258,6 +265,11 @@ WorldNotes:
 	GuiControl,, Notes, % MapNotes(WorldV)
 return
 
+CorpseDrag:
+	Gui, submit,nohide
+	GuiControl,, Notes, % MapNotes(WorldV)
+return
+
 ;SSBF in precursor script
 ExecuteF: 
 	ClickCount := 0
@@ -266,17 +278,22 @@ ExecuteF:
 	GuiControl,, ProgA, 100
 	GuiControl, Hide, Execute
 	GuiControlGet, WorldV
+	GuiControlGet, CorpseDragV
 	IniWrite, %WorldV%, config.ini, Variables, WorldSwitcher
+	IniWrite, %CorpseDragV%, config.ini, Variables, CorpseDragV
 	GuiControlGet, Repeat
 	while i < Repeat
 	{
-		ExpeditionCheck()
-		RunMap(WorldV)
 		i++
+		GuiControl,, Iter, % "Iter: " i
+		ExpeditionCheck()
+		;RepairCheck()
+		RunMap(WorldV)
 	}
 	GuiControl,, StatA, Execute finished %ClickCount%
 	GuiControl, Show, Execute
 	GuiControl,, ProgA, 0
+	GuiControl,, Iter, Iter: 0
 return
 
 
@@ -294,8 +311,9 @@ Initialize()
 	MBJToggle := 0
 	Class := 0
 	ClickDelay := 50
-	ecc := 10
+	ecc := -15
 	ClickCount := 0
+	WinGetPos,,,WinWidth,WinHeight,%WINID%
 	init_drag()
 }
 

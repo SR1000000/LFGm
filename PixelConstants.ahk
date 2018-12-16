@@ -1,8 +1,10 @@
 ECPC := 0xFFFFFF
 
-Home := [7, 100, 0x3EC1FD]	;Home
+Safe := [514, 393]
+Saferx := 241
+Safery := 157
 
-FB := [640, 430, 0xFFDD00]	;Finished Battle
+Home := [7, 100, 0x3EC1FD]	;Home
 
 LG := [41, 52, 0xBBBBBB]	;Looted Gun after battle
 
@@ -18,7 +20,7 @@ RepairB := [583, 316]		;Repair Button
 
 RepairSl1 := [94, 292, 0xFFB400] 	;Repair Slot 1
 
-Slot1 := [64, 181]		;Choosing doll to put into repair
+Slot0 := [64, 181]		;Choosing doll to put into repair
 
 RepairOK := [739, 373]
 
@@ -28,9 +30,9 @@ RepairOKOK := [577, 421]
 
 RepairCp := [406, 430]		;Complete Repair button
 
-RetHome := [37, 61, 0xFFBB00]	;Click Return Home Button (top left)
-RetHomerx := 30
-RetHomery := 23
+RetHomeB := [37, 61, 0xFFBB00]	;Click Return Home Button (top left)
+RetHomeBrx := 30
+RetHomeBry := 23
 
 Combat := [580, 433]		;Click goto Combat page
 
@@ -38,9 +40,11 @@ CombatTab := [59, 124, 0xF3AC02]	;Combat tab in Combat page
 
 EmerChk := [682, 100, 0xE63500]		;Check if on Emergency (color of difficulty bar)
 EmerB := [690, 144]		;Emergency button of map choice
+EmerBr := 18
 
 NightChk := [682, 100, 0x114C67]	;Check if on Night (color of difficulty bar)
 NightB := [760, 144]		;Night button of map choice
+NightBr := 18
 
 NormalB := [466, 467, 0xFFB400]
 NormalBrx := 40
@@ -54,9 +58,23 @@ DepOk := [736, 511, 0xFFBB00]	;Deploy Ok button
 DepOkrx := 41
 DepOkry := 14
 
+RedSangvis := [25, 600, 0xF0004D]	;Red Sangvis icon during deployment phase
 
-PlanB := [13, 550, 0x888888]	;Nodes Screen (Planning Button)
-PlanC :=			;Click Planning Button
-PlanCrx :=
-PlanCry :=
+StartOp := [709, 589, 0xFFAD00]	;Start Operation button
+StartOprx := 67
+StartOpry := 34
 
+PlanChk := [13, 550, 0x888888]	;Nodes Screen (Planning Button)
+PlanB := [49, 550, 0xFFBB00]	;Click Planning Button (Color is after clicked)
+PlanBrx := 34
+PlanBry := 10
+
+ExecuteB := [742, 592]			;Execute button after planned
+ExecuteBrx := 34
+ExecuteBry := 19
+
+EndRoundB := [736, 592]			;End Round button
+EndRoundBrx := 39
+EndRoundBry := 19
+
+FinMission := [790, 43, 0xFFBB66]	;Finished Mission
