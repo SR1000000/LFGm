@@ -3,14 +3,7 @@ CtrlClick(xy)
 {
 
 	global uid
-
-	;global Class
-
-	global WinWidth
-	global WinHeight
-	global ClickDelay
-
-	global ClickCount
+, WinWidth, WinHeight, ClickDelay, ClickCount
 
 	Sleep ClickDelay
 
@@ -42,14 +35,7 @@ RCtrlClick(xy, r, r2 := 0)
 {
 
 	global uid
-
-	;global Class
-
-	global WinWidth
-	global WinHeight
-	global ClickDelay
-
-	global ClickCount
+, WinWidth, WinHeight, ClickDelay, ClickCount
 
 	Sleep ClickDelay
 
@@ -63,7 +49,9 @@ RCtrlClick(xy, r, r2 := 0)
 	else 
 		RandCircle(x,y,r)
 
-	if (x<0 or x>WinWidth or y<30 or y>WinHeight)
+	x := x - Mod(x,3) + 1	;my Nox only clicks coordinates in intervals of three 
+	y := y - Mod(y,3) + 1
+	if (x<1 or x>WinWidth or y<30 or y>WinHeight)
 	{
 		GuiControl,, StatA, RCClick tried to click out of bounds! %x% %y% %ClickCount%
 		MSgBox Error Exit %WinWidth% %WinHeight%

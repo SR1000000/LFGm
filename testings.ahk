@@ -1,17 +1,21 @@
 ﻿
 F1::
-	FindClick()
+	;FindClick()
+	;GuiControl,, StatA, %ClickCount%
+	;IGImageSearch("DollList\" Doll2,40)
+	;MsgBox % StrSplit(WGImageSearch("CloseButton",1),",").Length()
 return
 
 F2::
-	MsgBox % GImageSearch("RepairSelect",50,,,,,,0)
-	;IGImageSearch("Maps\4_3e\Enemy4",,,,,,7)
+	;MsgBox % GImageSearch("NewFile",50,,,,,,0)
+	ta := StrSplit(IGImageSearch("CloseButton",,,,,,6),",")
+	MouseMove, ta[1], ta[2]
 return
 
 F3::
 	;ta := StrSplit(GImageSearch("RepairSelect",40),",")
-	ta := IGImageSearch("Maps\4_3e\Heli2",0)
-	;GuiControl,, StatA, % ta[1] " " ta[2]
+	ta := StrSplit(GImageSearch("Maps\1_6\Enemy1",25,,,,,6),",")
+	GuiControl,, StatA, % ta[1] " " ta[2]
 	MouseMove, ta[1], ta[2]
 return
 
@@ -20,3 +24,4 @@ F4::
 	tc := AeroGetPixel(tx,ty)
 	FileAppend, %tx% %ty% %tc%`n, MousePosFile.txt
 return
+

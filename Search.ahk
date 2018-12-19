@@ -2,6 +2,11 @@
 GImageSearch(filepath,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,searchdir:=1,inst:=1)
 {
 	global uid
+	if (filepath == "")
+	{
+		MsgBox GIS received empty filepath! Exit
+		Exit
+	}
 	If !pToken := Gdip_Startup()
 	{
 	   MsgBox, 48, gdiplus error!, Gdiplus failed to start. Please ensure you have gdiplus on your system
@@ -26,22 +31,25 @@ GImageSearch(filepath,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,searchdir:=1,inst
 IGImageSearch(filepath, SearchNumber := 0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,searchdir:=1,inst:=1)	;incremental
 {
 	local ta, Found := ""
-	GuiControl,, StatA, W %filepath% %ClickCount%
+	GuiControl,, StatA, IGIS %filepath% %ClickCount%
+	if (filepath == "")
+	{
+		MsgBox IGIS received empty filepath! Exit
+		Exit
+	}
 	Found := GImageSearch(filepath,SearchNumber,xmin,ymin,xmax,ymax,searchdir,inst)
 	while Found == ""
 	{
 		SearchNumber += 5
 		Found := GImageSearch(filepath,SearchNumber,xmin,ymin,xmax,ymax,searchdir,inst)
 		GuiControl,, StatA, NotFound pixel shade offset [%SearchNumber%]
-		If (SearchNumber >= 200)
+		If (SearchNumber >= 150)
 		{
-			GuiControl,, StatA, WGImageSearch failed %filepath%
+			GuiControl,, StatA, IGImageSearch failed %filepath%
 			Exit
 		}
 	}
-	GuiControl,, StatA, %filepath% Found offset [%SearchNumber%] %Found% ;
-	ta := StrSplit(Found,",")
-	MouseMove, ta[1], ta[2]
+	GuiControl,, StatA, %filepath% Found offset [%SearchNumber%] %Found% 
 	return Found
 }
 
@@ -55,6 +63,12 @@ ClickUntilImage(filepath,WaitFor:=-10,clxy:=0,rx:=5,ry:=0,varia:=0,xmin:=0,ymin:
 	Found := "", timeout := 30, i := 1
 	clxy := clxy ? clxy : [-1,-1]	;parameters can't default to arrays - workaround
 	timeout := Round(Abs(WaitFor) / 0.6)
+
+	if (filepath == "")
+	{
+		MsgBox CUI received empty filepath! Exit
+		Exit
+	}
 
 	loop
 	{
@@ -87,8 +101,12 @@ WGImageSearch(filepath,WaitFor:=-10,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,sea
 {
 	global ClickCount
 	Found := "", temp := "", timeout := 30, i := 1, j := 0
-	
 	timeout := Round(Abs(WaitFor) * 3.3)
+	if (filepath == "")
+	{
+		MsgBox WGIS received empty filepath! Exit
+		Exit
+	}
 
 	loop
 	{
@@ -115,7 +133,8 @@ WGImageSearch(filepath,WaitFor:=-10,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,sea
 			j := 0
 			temp := ""
 		}
-		Sleep 300
+		if(i < timeout)
+			Sleep 300
 		
 		i++
 		
@@ -126,7 +145,21 @@ WGImageSearch(filepath,WaitFor:=-10,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,sea
 		MsgBox Error Exit
 		Exit
 	}
+	GuiControl,, StatA, %filepath% not found, continuing
 	return ""
+}
+
+LookForClickClose(t)
+{
+	Closerx := 36
+	Closery := 15
+	ta := StrSplit(WGImageSearch("CloseButton",t),",")
+	if(ta.Length())
+	{
+		ta[1] += 33
+		ta[2] += 6
+		RCtrlClick(ta,Closerx,Closery)
+	}
 }
 
 GPixelSearch(RGB,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,searchdir:=1,inst:=1)

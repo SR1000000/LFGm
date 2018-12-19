@@ -4,38 +4,27 @@ Safe := [514, 393]
 Saferx := 241
 Safery := 157
 
-Home := [7, 100, 0x3EC1FD]	;Home
+Home := [7, 100, 0x3EC1FD]	;Home (Blue Gems Color)
 
 LG := [41, 52, 0xBBBBBB]	;Looted Gun after battle
 
-FM := [796, 586, 0xFFDB6E]	;Finished Mission
-
 Exped := [172, 283, 0xEAEAEA]	;Expedition returned (Aquisition)
-
 ExpedOK := [469, 415, 0xFFC600]	;ExpeditionRepeat's OK button
 
 RepairEx := [634, 292, 0xFF3344]	;Exclamation mark on repair button
-
 RepairB := [583, 316]		;Repair Button
-
 RepairSl1 := [94, 292, 0xFFB400] 	;Repair Slot 1
-
 Slot0 := [64, 181]		;Choosing doll to put into repair
-
 RepairOK := [739, 373]
-
 RepairQR := [199, 421]		;Checkmark Quick Repair
-
 RepairOKOK := [577, 421]
-
 RepairCp := [406, 430]		;Complete Repair button
 
-RetHomeB := [37, 61, 0xFFBB00]	;Click Return Home Button (top left)
-RetHomeBrx := 30
-RetHomeBry := 23
+RetHome := [46, 61, 0xFFBB00]	;Click Return Home Button (top left)
+RetHomerx := 31
+RetHomery := 23
 
 Combat := [580, 433]		;Click goto Combat page
-
 CombatTab := [59, 124, 0xF3AC02]	;Combat tab in Combat page
 
 EmerChk := [682, 100, 0xE63500]		;Check if on Emergency (color of difficulty bar)
@@ -58,6 +47,18 @@ DepOk := [736, 511, 0xFFBB00]	;Deploy Ok button
 DepOkrx := 41
 DepOkry := 14
 
+FormMagnifier := [157, 529, 0xFFB400]	;WaitFor Yellow magnifying glass below portrait
+NightCEColor := [787, 229, 0x116688]	;Alternative to FormMagnifier, blue shade of Night CE
+YellowLock1 := [142, 223, 0xFFBB00, 0x775700]	;WaitFor Yellow lock icon in tdoll selection
+EchSlot1 := [148, 316]
+EchSlot2 := [262, 316]
+EchSlotrx := 49
+EchSlotry := 101
+EchNum2 := [37, 199, 0xFFB400]	;Select second echelon in Formation Screen
+EchDep3 := [37, 367, 0xFFB400]	;Select third echelon in Deploy Screen
+EchNumrx := 24
+EchNumry := 15
+
 RedSangvis := [25, 600, 0xF0004D]	;Red Sangvis icon during deployment phase
 
 StartOp := [709, 589, 0xFFAD00]	;Start Operation button
@@ -77,4 +78,12 @@ EndRoundB := [736, 592]			;End Round button
 EndRoundBrx := 39
 EndRoundBry := 19
 
+APTensDigit := [637, 589, 0xFEAA06]
+
 FinMission := [790, 43, 0xFFBB66]	;Finished Mission
+FinMisPreWaitMin := 7577
+FinMisPreWaitMax := 9941
+
+FilterB := [739, 211, 0xFFB400]		;Filter Button in TdollList, color = filter on
+FilterBrx := 44
+FilterBry := 24
