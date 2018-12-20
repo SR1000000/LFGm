@@ -6,13 +6,13 @@ Swap(Byref x, Byref y)
 	return
 }
 
-DoThisUntilThat(thisF,thatF,thatParam1,thatParam2 := 0, thisParam1 := 0, thisParam2 := 0)
+DoThisUntilThat(thisF,thatF,thatParam1,thatParam2 := "", thisParam1 := "", thisParam2 := "")
 {
-
 	i := 0, t := ""
+	GuiControl,, StatA, Doing %thisF% %thisParam1% %thisParam2% until %thatF% %thatParam1% %thatParam2%
 	if(!IsFunc(thisF) or !IsFunc(thatF))
 	{
-		MsgBox Error, invalid function names passed to DTUT, %this% %that% %thatParam1%
+		MsgBox Error, invalid function names passed to DTUT, %this% %that%
 		Exit
 	}
 	loop
@@ -30,17 +30,19 @@ DoThisUntilThat(thisF,thatF,thatParam1,thatParam2 := 0, thisParam1 := 0, thisPar
 		else
 			t := %thatF%(thatParam1)
 
-		if(t != "")
+		if(t)
 			break
 		i++
-		if(i > 100)
+		if(i > 200)
 		{
 			MsgBox Error, Stuck in DTUT doing %this%, waiting for %that%. Exit
 			Exit
 		}
 	}
+	GuiControl,, StatA, %thisF% Done Until %thatF%, continuing
 	return
 }
+
 NormalRand(x,y,int=1) 
 { 	;x lower y upper int for integer return
 	;NormalRand(0,10) ;random integer between 0 and 10
@@ -54,10 +56,13 @@ NormalRand(x,y,int=1)
 	Return norm < x ? x : norm > y ? y : norm
 }
 
-RandSleep(a,b) 
+RandSleep(a,b := 0) 
 {
+	if(!b)
+		b := a
 	Random, var, a, b
 	Sleep %var%
+	return
 }
 
 

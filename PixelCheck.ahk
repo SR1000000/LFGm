@@ -32,6 +32,7 @@ AeroGetPixel(x, y, z := 0)	;returns converted bgr -> rgb
 {
 	global uid
 	i := 0
+	j := 0
 	lHEX := 0
 	Loop
 	{
@@ -47,10 +48,26 @@ AeroGetPixel(x, y, z := 0)	;returns converted bgr -> rgb
 		}
 		DllCall("user32.dll\ReleaseDC", "Ptr", uid, "Ptr", hDC)
 		DllCall("gdi32.dll\DeleteDC", "Ptr", hDC)
+		j++
+		if(j > 300)
+		{
+			MsgBox Stuck in AeroGetPixel %x% %y%
+			Exit
+		}
 		Sleep 100
 	}until i > z
 
 	return Format("0x{:06X}", ((lHEX & 0xff0000) >> 16) | (lHEX & 0xff00) | ((lHEX & 0xff) << 16))
+}
+
+;two functions repackaging AeroGetPixel to work with DoThisUntilThat
+PixelIs(xyc)
+{
+	return (AeroGetPixel(xyc[1],xyc[2],2) = xyc[3])
+}
+PixelNot(xyc)
+{
+	return !(AeroGetPixel(xyc[1],xyc[2],2) = xyc[3])
 }
 
 /* unused
@@ -94,11 +111,12 @@ ClickUntilPixelColor(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 	i := 0,	tpc := 0, timeout := 30
 	clxy := clxy ? clxy : [-1,-1]	;parameters can't default to arrays - workaround
 	timeout := Round(Abs(WaitFor) / 0.75)
-	
+	GuiControl,, StatA, CUPC running
 	loop
 	{
 		RandSleep(50,100)
 		tpc := AeroGetPixel(xyc[1],xyc[2],2)
+		GuiControl,, StatA, CUPC running %i% 1
 		For k,v in xyc
 		{
 			if (k>2 and tpc = xyc[k])
@@ -107,7 +125,7 @@ ClickUntilPixelColor(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 				return k-2
 			}
 		}
-		if (tpc = ECPC)
+		if (tpc = ECPC) 
 			ecc += 1
 		if (clxy[1] != -1 and clxy[2] != -1)
 		{
@@ -118,7 +136,7 @@ ClickUntilPixelColor(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 				RCtrlClick(clxy,rx)
 		}
 		RandSleep(450,500)
-		i += 1
+		i++
 	} Until i > timeout
 	if (WaitFor<0)
 	{
@@ -178,6 +196,7 @@ WaitForPixelClick(xyc, WaitFor := -30, clxy := 0, rx := 5, ry := 0)
 	return ""
 }
 
+/*
 ;Check until pixel is not color, then click(optional)
 ;Negative WaitFor hard stops if pixel not found, positive WaitFor ignores
 ;exactly one check per 300ms
@@ -220,3 +239,4 @@ UntilPixelNotClick(xyc, WaitFor := -30, clxy := 0, rx := 5, ry := 0)
 	}
 	return 0
 }
+*/

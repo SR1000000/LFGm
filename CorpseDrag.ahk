@@ -5,9 +5,9 @@ TDListFilter(Doll := "")
 	global ecc, FilterB,FilterBrx,FilterBry, 5Star, 4Star, AssaultRifle, SingleRifle
 
 	RCtrlClick(FilterB,FilterBrx,FilterBry)	;Click Filter BUtton
-	if (Doll == "")
+	if (!Doll)
 	{
-		Sleep 300
+		Sleep 400
 		RCtrlClick([415,454],74,14)	;Click Reset
 		Sleep 300	;Lag after filter change
 	}
@@ -44,47 +44,51 @@ SwitchDPS()
 
 	WaitForPixelClick(NightCEColor,ecc,EchSlot1,EchSlotrx,EchSlotry)	;WaitFor screen to load (yellow magnifying glass)
 										;Click Slot 1 when screen loads
+	;Strike 1, may replace with ClickUntil
 	WaitForPixelClick(YellowLock1,ecc)
 	;If (AeroGetPixel(FilterB[1],FilterB[2]) != FilterB[3])	;If Filter button is white, put filter on
 		TDListFilter(Doll2)
 	
+	WaitForPixelClick(YellowLock1,ecc)
 	ta := StrSplit(IGImageSearch("DollList\" Doll2,40),",")
 	ta[1] += 30
-	ta[2] += -70
+	ta[2] += -69
 	;Sleep 300
-	ClickUntilPixelColor(NightCEColor,,ta,20,70)
+	ClickUntilPixelColor(NightCEColor,,ta,15,69)
 	Sleep 300
 
 	ClickUntilPixelColor(EchNum2,,EchNum2,EchNumrx,EchNumry)	;Select Echelon 2
 
 	WaitForPixelClick(NightCEColor,ecc,EchSlot2,EchSlotrx,EchSlotry)	;Click Slot 2
 	WaitForPixelClick(YellowLock1,ecc)
+	
 	TDListFilter()
 	WaitForPixelClick(YellowLock1,ecc)
 	TDListFilter(Doll1)
 	
-	Sleep 300
+	WaitForPixelClick(YellowLock1,ecc)
 	ta := StrSplit(IGImageSearch("DollList\" Doll1,40),",")
 	ta[1] += 30
-	ta[2] += -70
+	ta[2] += -69
 	;Sleep 200
-	ClickUntilPixelColor(NightCEColor,,ta,20,70)
+	ClickUntilPixelColor(NightCEColor,,ta,15,69)
 	Sleep 500
-	RCtrlClick(RetHome,RetHomerx,RetHomery)
+	ClickUntilImage("LoadScreen",,RetHome,RetHomerx,RetHomery)
 	WaitForPixelClick(RedSangvis,ecc)
 	return
 }
 
 ;Expects Deploy Echelons Screen
-ResupplyDPS()
+ResupplyDPS(heliXY,heliR := 10)
 {
+	global EchF
 	ResupplyB := [739, 457, 0x343332]
 	ResupplyBrx := 54
 	ResupplyBry := 12
 	;ResuppClose := [403, 430, 0xFFFFFF]
 	;ResuppCloserx := 36
 	;ResuppClosery := 15
-
+	ClickUntilPixelColor(EchF,, heliXY, heliR)	;Takes two clicks
 	WaitForPixelClick(ResupplyB,ecc,ResupplyB,ResupplyBrx,ResupplyBry)
 	LookForClickClose(0.7)
 	return

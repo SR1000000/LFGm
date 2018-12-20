@@ -2,7 +2,7 @@
 GImageSearch(filepath,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,searchdir:=1,inst:=1)
 {
 	global uid
-	if (filepath == "")
+	if (!filepath)
 	{
 		MsgBox GIS received empty filepath! Exit
 		Exit
@@ -32,13 +32,13 @@ IGImageSearch(filepath, SearchNumber := 0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,search
 {
 	local ta, Found := ""
 	GuiControl,, StatA, IGIS %filepath% %ClickCount%
-	if (filepath == "")
+	if (!filepath)
 	{
 		MsgBox IGIS received empty filepath! Exit
 		Exit
 	}
 	Found := GImageSearch(filepath,SearchNumber,xmin,ymin,xmax,ymax,searchdir,inst)
-	while Found == ""
+	while !Found
 	{
 		SearchNumber += 5
 		Found := GImageSearch(filepath,SearchNumber,xmin,ymin,xmax,ymax,searchdir,inst)
@@ -57,14 +57,14 @@ IGImageSearch(filepath, SearchNumber := 0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,search
 ;Click until Image found 
 ;Negative WaitFor hard stops if image not found, positive WaitFor ignores
 ;Average one click per 600ms
-ClickUntilImage(filepath,WaitFor:=-10,clxy:=0,rx:=5,ry:=0,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,searchdir:=1,inst:=1)
+ClickUntilImage(filepath,WaitFor:=-7,clxy:=0,rx:=5,ry:=0,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,searchdir:=1,inst:=1)
 {
 	global ClickCount
 	Found := "", timeout := 30, i := 1
 	clxy := clxy ? clxy : [-1,-1]	;parameters can't default to arrays - workaround
 	timeout := Round(Abs(WaitFor) / 0.6)
 
-	if (filepath == "")
+	if (!filepath)
 	{
 		MsgBox CUI received empty filepath! Exit
 		Exit
@@ -102,7 +102,7 @@ WGImageSearch(filepath,WaitFor:=-10,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,sea
 	global ClickCount
 	Found := "", temp := "", timeout := 30, i := 1, j := 0
 	timeout := Round(Abs(WaitFor) * 3.3)
-	if (filepath == "")
+	if (!filepath)
 	{
 		MsgBox WGIS received empty filepath! Exit
 		Exit

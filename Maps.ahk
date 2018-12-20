@@ -6,7 +6,7 @@ MapNotes(map)
 	{
 		if (CorpseDragV)
 		{
-			if(Carry43e = "")
+			if(!Carry43e)
 			{
 				MsgBox Error! Empty Carry43e!
 				Exit
@@ -25,7 +25,7 @@ MapNotes(map)
 	{
 		if (CorpseDragV)
 		{
-			if(Carry02 = "")
+			if(!Carry02)
 			{
 				MsgBox Error! Empty Carry02!
 				Exit
@@ -35,27 +35,27 @@ MapNotes(map)
 			tc := ta[2]
 			if (SwapC)
 				Swap(tb,tc)
-			return % "1=" tb "`n2=RealEchelon (" tc " pos2)`n" tc " needs full supply"
+			return % "1=" tb "`n2=RealEchelon (" tc " pos2)`n389 Empty`n" tc " needs full supply"
 		}
 		else
 			return "1=Dummy HG`n2=Real Echelon`n"
 	}
 	else if (map == "3-2N Solo")
-		return "32n`n32s"
+		return "1=Solo AR"
 	else if (map == "3-2N")
 		return "32n`n32"
 	else if (map == "5-2N")
 		return "52n`n52"
 	else if (map == "1-6")
-		return "1=Ignord`n1=Ignored`n3=RealEchelon`n"
+		return "1=Ignored`n1=Ignored`n3=RealEchelon`n"
 	else if (map == "2-6")
-		return "32n`n32"
+		return "1=Ignored`n1=Ignored`n3=RealEchelon`n"
 	else if (map == "3-6")
-		return "32n`n32"
+		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n"
 	else if (map == "4-6")
-		return "32n`n32"
+		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n"
 	else if (map == "5-6")
-		return "32n`n32"
+		return "1=Dummy HG`n1=Ignored`n3=RealEchelon`n"
 	else if (map == "6-6")
 		return "32n`n32"
 	else 
@@ -70,7 +70,7 @@ MapInit(map)
 	{
 		if (mapDrag)
 		{
-			if(Carry43e = "")
+			if(!Carry43e)
 			{
 				MsgBox Error! Empty Carry43e!
 				Exit
@@ -88,7 +88,7 @@ MapInit(map)
 	{
 		if (mapDrag)
 		{
-			if(Carry02 = "")
+			if(!Carry02)
 			{
 				MsgBox Error! Empty Carry02!
 				Exit
@@ -109,6 +109,18 @@ MapInit(map)
 	else 
 		return "vWorld`nMap Not Found"
 	return
+}
+
+MidBattleCheck()
+{	
+	global CombatPause,ecc,Safe,Saferx,Safery
+	if(PixelIs(CombatPause))
+	{
+		DoThisUntilThat("RandSleep","PixelNot",CombatPause,,500)
+		Sleep 2000
+		ClickUntilImage("LoadScreen",ecc,Safe,Saferx,Safery)
+	}
+	Sleep 500
 }
 
 RunMap(map)
@@ -135,13 +147,13 @@ RunMap(map)
 	else if (map == "1-6")
 		1_6()
 	else if (map == "2-6")
-		Sleep 100
+		2_6()
 	else if (map == "3-6")
-		Sleep 100
+		3_6()
 	else if (map == "4-6")
-		Sleep 100
+		4_6()
 	else if (map == "5-6")
-		Sleep 100
+		5_6()
 	else if (map == "6-6")
 		Sleep 100
 	else 
@@ -181,6 +193,8 @@ ClickSubChapter(x)
 	GuiControl,, StatA, Clicking NormalBattle button %ClickCount%
 	WaitForPixelClick(NormalB, ecc, NormalB, NormalBrx, NormalBry)
 
+	;If TDollList full, need enhance
+
 	GuiControl,, StatA, Wait for active nodes screen %ClickCount%
 	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 
@@ -209,7 +223,7 @@ ClickSubChapter(x)
 	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
 	WaitForPixelClick(RedSangvis, ecc, StartOp, StartOprx, StartOpry)	;click start operations
-	RandSleep(3000,3300)
+	RandSleep(3000,3500)
 
 	if (mapDrag)
 	{
@@ -220,8 +234,8 @@ ClickSubChapter(x)
 		heli1 := StrSplit(WGImageSearch("Maps\4_3e\Heli1",,20,,,,,5),",")
 		heli1[1] += 36
 		heli1[2] += 9
-		ClickUntilPixelColor(EchF,, heli1, 45)
-		ResupplyDPS()
+		
+		ResupplyDPS(heli1, 45)
 
 		Sleep 600
 		ControlSend, , c, %CSTitle%
@@ -238,10 +252,7 @@ ClickSubChapter(x)
 	RCtrlClick(heli2,21)
 
 	if (!mapDrag)
-	{	
-		ClickUntilPixelColor(EchF,, heli2, 21)
-		ResupplyDPS()
-	}
+		ResupplyDPS(heli2, 21)
 
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)	;Click Planning
 
@@ -278,8 +289,8 @@ ClickSubChapter(x)
 	RandSleep(400,600)
 	RCtrlClick(EndRoundB,EndRoundBrx,EndRoundBry)
 
-	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
 	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
+	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
 	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
 	WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
 		
@@ -288,7 +299,7 @@ ClickSubChapter(x)
 
 0_2()
 {
-	local tstr, heli2, nme1, nme2, nme3, nme4, nme5
+	local heli1:=[229,331], heli2, 
 	
 	FocusChapter(0)
 
@@ -301,7 +312,7 @@ ClickSubChapter(x)
 	GuiControl,, StatA, Wait for active nodes screen %ClickCount%
 	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 
-	ClickUntilPixelColor(EchF,, [229,331], 45) ;Click Helipad until deploy screen
+	ClickUntilPixelColor(EchF,, heli1, 45) ;Click Helipad until deploy screen
 	
 	;if (mapDrag)
 
@@ -314,7 +325,7 @@ ClickSubChapter(x)
 
 1_6()
 {
-	local node1, node2, node3, node4, node5, node6, node7, node8
+	local heli1:=[292, 331], node1, node2, node3, node4, node5, node6, node7, node8
 	FocusChapter(1)
 
 	GuiControl,, StatA, Clicking Sub Chapter %ClickCount%
@@ -325,14 +336,14 @@ ClickSubChapter(x)
 
 	GuiControl,, StatA, Wait for active nodes screen %ClickCount%
 	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
-	ClickUntilPixelColor(EchF,, [292, 331], 36)	;Click heli1
+	ClickUntilPixelColor(DepNightC,, heli1, 36)	;Click heli1
 	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
 	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 	WaitForPixelClick(RedSangvis, ecc, StartOp, StartOprx, StartOpry)	;click start operations
 	RandSleep(3000,3300)
 
-	ClickUntilPixelColor(EchF,, [292, 331], 36)	;Click heli1
-	ResupplyDPS()
+	;Click heli1
+	ResupplyDPS(heli1, 36)
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
 
 	RandSleep(300,450)
@@ -344,8 +355,6 @@ ClickSubChapter(x)
 	node2[2] += -9
 
 	node1 := [node2[1]+120, node2[2]-183]
-	node3 := [node2[1]+165, node2[2]+186]
-	node4 := [node2[1]+450, node2[2]+9]
 	node5 := [node2[1]+231, node2[2]-3]
 	node6 := [node2[1]+408, node2[2]-183]
 	node7 := [node2[1]+594, node2[2]-96]
@@ -365,12 +374,211 @@ ClickSubChapter(x)
 	RandSleep(400,600)
 	RCtrlClick(EndRoundB,EndRoundBrx,EndRoundBry)
 
+	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)	;Bugged, not waiting enough
+	Sleep 3000
+	
+	node2 := StrSplit(WGImageSearch("Maps\1_6\Enemy1",,25,,,,,6),",")
+	node2[1] += 3
+	node2[2] += -9
+	node3 := [node2[1]+165, node2[2]+186]
+	node4 := [node2[1]+450, node2[2]+9]
+
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
+	RandSleep(300,450)
+	RCtrlClick(node2,21)
+	RandSleep(300,450)
+	RCtrlClick(node3,21)
+	RandSleep(300,450)
+	RCtrlClick(node4,21)
+	RandSleep(400,600)
+	RCtrlClick(ExecuteB,ExecuteBrx,ExecuteBry)
+
+	GuiControl,, StatA, Long Wait after Execute %ClickCount%
+	Sleep 10000
+	WGImageSearch("PlanButton",-120)
+
+	RandSleep(400,600)
+	RCtrlClick(EndRoundB,EndRoundBrx,EndRoundBry)
+
+	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
+	Sleep 3000
 	return
 }
 
 
 2_6()
 {
+	local heli1 := [355, 331], node1 := [313, 118], node2 := [556, 319]
+	, node3 := [742, 259], node4 := [760,94]
+	FocusChapter(2)
 
+	GuiControl,, StatA, Clicking Sub Chapter %ClickCount%
+	ClickSubChapter(6)
+
+	GuiControl,, StatA, Clicking NormalBattle button %ClickCount%
+	WaitForPixelClick(NormalB, ecc, NormalB, NormalBrx, NormalBry)
+
+	GuiControl,, StatA, Wait for active nodes screen %ClickCount%
+	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
+	ClickUntilPixelColor(DepNightC,, heli1, 36)	;Click heli1
+	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
+	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	WaitForPixelClick(RedSangvis, ecc, StartOp, StartOprx, StartOpry)	;click start operations
+	RandSleep(3000,3300)
+
+	;Click heli1
+	ResupplyDPS(heli1, 36)
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
+
+	RandSleep(300,450)
+	RCtrlClick(node1,21)
+	RandSleep(300,450)
+	RCtrlClick(node2,21)
+	RandSleep(400,600)
+	RCtrlClick(ExecuteB,ExecuteBrx,ExecuteBry)
+	GuiControl,, StatA, Long Wait after Execute %ClickCount%
+	Sleep 10000
+	WGImageSearch("PlanButton",-120)
+
+	RandSleep(400,600)
+	RCtrlClick(EndRoundB,EndRoundBrx,EndRoundBry)
+
+	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
+	Sleep 5000
+
+	node2 := [403, 331]
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
+
+	RandSleep(300,450)
+	RCtrlClick(node2,21)
+	RandSleep(300,450)
+	RCtrlClick(node3,21)
+	RandSleep(300,450)
+	RCtrlClick(node4,21)
+	RandSleep(400,600)
+	RCtrlClick(ExecuteB,ExecuteBrx,ExecuteBry)
+
+	return
+}
+
+3_6()
+{
+	local heli1 := [514,322], heli2 := [79, 478], node1, node2, node3, node4
+	
+	FocusChapter(3)
+
+	GuiControl,, StatA, Clicking Sub Chapter %ClickCount%
+	ClickSubChapter(6)
+
+	GuiControl,, StatA, Clicking NormalBattle button %ClickCount%
+	WaitForPixelClick(NormalB, ecc, NormalB, NormalBrx, NormalBry)
+
+	GuiControl,, StatA, Wait for active nodes screen %ClickCount%
+	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
+
+	ClickUntilPixelColor(DepNightC,, heli1, 45) ;Click Helipad until deploy screen
+	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+
+	ClickUntilPixelColor(DepNightC,, heli2, 21) ;Click Helipad until deploy screen
+	ClickUntilPixelColor(EchDep2,, EchDep2, EchNumrx, EchNumry)
+	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+
+	WaitForPixelClick(RedSangvis, ecc, StartOp, StartOprx, StartOpry)	;click start operations
+	RandSleep(3000,3500)
+	
+	ResupplyDPS(heli2, 21)
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
+
+	RandSleep(900,1100)
+	ControlSend, , b, %CSTitle%
+	LookForClickClose(0.7)
+
+	node1 := StrSplit(WGImageSearch("Maps\3_6\Enemy1",,10,190,40,300,420,2),",")
+	node1[1] += 6
+	node1[2] += -27
+	RCtrlClick(node1,21)
+
+	RandSleep(900,1100)
+	ControlSend, , d, %CSTitle%
+	LookForClickClose(0.7)
+
+	node2 := StrSplit(WGImageSearch("Maps\3_6\Enemy1",,10,,,,,1),",")
+	node2[1] += 3
+	node2[2] += 18
+	node3 := [node2[1]-78, node2[2]+174]
+	RCtrlClick(node2,12)
+	RandSleep(300,450)
+	RCtrlClick(node3,12)
+
+	RandSleep(900,1100)
+	ControlSend, , b, %CSTitle%
+	LookForClickClose(0.7)
+	
+	node4 := StrSplit(WGImageSearch("Maps\3_6\Boss",,5,,,,,1),",")
+	node4[1] += -42
+	node4[2] += 27
+	RCtrlClick(node4,45)
+	return
+}
+
+4_6()
+{
+	local heli1 := [505, 331], heli2, node1, node2, node3, node4
+	
+	FocusChapter(4)
+
+	GuiControl,, StatA, Clicking Sub Chapter %ClickCount%
+	ClickSubChapter(6)
+
+	GuiControl,, StatA, Clicking NormalBattle button %ClickCount%
+	WaitForPixelClick(NormalB, ecc, NormalB, NormalBrx, NormalBry)
+
+	GuiControl,, StatA, Wait for active nodes screen %ClickCount%
+	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
+
+	ClickUntilPixelColor(DepNightC,, heli1, 45) ;Click Helipad until deploy screen
+	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+
+	RandSleep(900,1100)
+	ControlSend, , a, %CSTitle%
+	LookForClickClose(0.7)
+	RandSleep(900,1100)
+	ControlSend, , a, %CSTitle%
+	LookForClickClose(0.7)
+	
+	heli2 := StrSplit(WGImageSearch("Maps\4_6\Heli2",,0,,,,,1),",")
+	heli2[1] += 0	;white x makes two different possible hits
+	heli2[2] += 24	;safer click
+	node1 := [heli2[1]-312, heli2[2]]
+	;node2 := [heli2[1]-537, heli2[2]+6]
+	RCtrlClick(heli2,12)	;Deploy Second Helipad
+
+	ClickUntilPixelColor(DepNightC,, heli2, 21) ;Click Helipad until deploy screen
+	ClickUntilPixelColor(EchDep2,, EchDep2, EchNumrx, EchNumry)
+	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+
+	WaitForPixelClick(RedSangvis, ecc, StartOp, StartOprx, StartOpry)	;click start operations
+	RandSleep(3000,3500)
+	
+	ResupplyDPS(heli2, 12)	;leaves heli2 clicked
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
+	
+	RandSleep(300,450)
+	RCtrlClick(node1,12)	;Click node1
+
+	RandSleep(900,1100)
+	ControlSend, , d, %CSTitle%
+	LookForClickClose(0.7)
+
+	node2 := StrSplit(WGImageSearch("Maps\4_6\Enemy1",,10,,,,,2),",")
+	node2[1] += 6
+	node2[2] += -27
+	RCtrlClick(node3,21)
+
+	return
+}
+
+5_6()
+{
 	return
 }

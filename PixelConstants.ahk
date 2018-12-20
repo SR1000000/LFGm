@@ -39,7 +39,10 @@ NormalB := [466, 467, 0xFFB400]
 NormalBrx := 40
 NormalBry := 14
 
+DollLimitChk := [352, 400, 0xFFEE00]	;DO NOT CLICK, only check
+
 EchF := [154, 490, 0xFC7F01]	;red Echelon Formation button before deployment
+DepNightC := [799, 184, 0x003344]	;Alt color check, night CE color on deploy screen
 EchFrx := 42
 EchFry := 9
 
@@ -52,10 +55,11 @@ NightCEColor := [787, 229, 0x116688]	;Alternative to FormMagnifier, blue shade o
 YellowLock1 := [142, 223, 0xFFBB00, 0x775700]	;WaitFor Yellow lock icon in tdoll selection
 EchSlot1 := [148, 316]
 EchSlot2 := [262, 316]
-EchSlotrx := 49
-EchSlotry := 101
+EchSlotrx := 48
+EchSlotry := 102
 EchNum2 := [37, 199, 0xFFB400]	;Select second echelon in Formation Screen
 EchDep3 := [37, 367, 0xFFB400]	;Select third echelon in Deploy Screen
+EchDep2 := [37, 337, 0xFFB400]	;Select third echelon after first already deployed
 EchNumrx := 24
 EchNumry := 15
 
@@ -78,11 +82,13 @@ EndRoundB := [736, 592]			;End Round button
 EndRoundBrx := 39
 EndRoundBry := 19
 
-APTensDigit := [637, 589, 0xFEAA06]
+APTensDigit := [637, 589, 0xFEAA06]	;Action Points
+
+CombatPause := [412, 37, 0xFFBB00]	;Pause button at top of midCombat
 
 FinMission := [790, 43, 0xFFBB66]	;Finished Mission
-FinMisPreWaitMin := 7577
-FinMisPreWaitMax := 9941
+FinMisPreWaitMin := 2577
+FinMisPreWaitMax := 4941
 
 FilterB := [739, 211, 0xFFB400]		;Filter Button in TdollList, color = filter on
 FilterBrx := 44

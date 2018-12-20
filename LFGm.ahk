@@ -16,7 +16,6 @@
 #Include PixelConstants.ahk
 #Include RandomFunctions.ahk
 #Include Search.ahk
-;#Include Windows.ahk
 
 IniRead, WINID, config.ini, Variables, WINID, 0
 
@@ -190,7 +189,7 @@ ExpeditionCheck()	;Expects Home Screen
 	local loopcount := 0, Found := 0
 	
 	GuiControl,, StatA, Waiting for Home %ClickCount%
-	WaitForPixelClick(Home,5)
+	;WaitForPixelClick(Home,5)
 	
 	;two continuous seconds of Home pixel true
 	while loopcount < 2
@@ -203,9 +202,9 @@ ExpeditionCheck()	;Expects Home Screen
 		{
 			;Sleep 200
 			GuiControl,, StatA, Clicking away Expeditions
-			WaitForPixelClick(Exped,5,Safe,Saferx,Safery)
+			WaitForPixelClick(Exped,3,Safe,Saferx,Safery)
 			GuiControl,, StatA, Clicking Expeditions OK Button
-			WaitForPixelClick(ExpedOK,5,ExpedOK,35,15)
+			WaitForPixelClick(ExpedOK,3,ExpedOK,35,15)
 			loopcount := 0
 		}
 	}
@@ -218,8 +217,8 @@ RepairCheck()
 {
 	local ta
 	GuiControl,, StatA, RepairCheck running %ClickCount%
-	;if (AeroGetPixel(RepairEx[1],RepairEx[2],1) = RepairEx[3])
-	;{
+	if (AeroGetPixel(RepairEx[1],RepairEx[2],1) = RepairEx[3])
+	{
 		if (NoRepair)
 		{
 			GuiControl,, StatA, NoRepair = 1 so Exit %ClickCount%
@@ -253,10 +252,9 @@ RepairCheck()
 		;RCtrlClick(RepairCpOkx,RepairCpOky,5,5) ;inaccurate rx ry
 		;Sleep 200
 		WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
-
-	;}
+		ExpeditionCheck()
+	}
 	GuiControl,, StatA, RepairCheck Complete %ClickCount%
-	ExpeditionCheck()
 	return
 }
 
@@ -306,7 +304,7 @@ ExecuteF:
 		RepeatCount++
 		GuiControl,, Iter, % "Iter: " RepeatCount
 		ExpeditionCheck()
-		;RepairCheck()
+		RepairCheck()
 		RunMap(mapPick)
 		Swap(Doll1,Doll2)
 	}
@@ -325,7 +323,7 @@ CleanExit()
 }
 
 Test:
-	RepairCheck()
+	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
 return
 
 Pause::Pause
