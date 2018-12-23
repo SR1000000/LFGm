@@ -21,7 +21,7 @@ TDListFilter(Doll := "")
 		else
 			MsgBox %Doll%'s starlevel not found
 		
-		Sleep 500
+		Sleep 1000
 		if Doll in %AssaultRifle%
 			ClickUntilPixelColor([388,331,0xFFB400],,[388,331],39,18) ;Click ARr until yellow
 		else if Doll in %SingleRifle%
@@ -33,6 +33,27 @@ TDListFilter(Doll := "")
 		RCtrlClick([589,457],71,12)	;Click done
 	}
 	return
+}
+
+SameStarType(a,b)
+{
+	global 5Star, 4Star, AssaultRifle, SingleRifle
+
+	if(InStr(5Star,a) and InStr(5Star,b))
+	{
+		if(InStr(AssaultRifle,a) and InStr(AssaultRifle,b))
+			return 1
+		else if(InStr(SingleRifle,a) and InStr(SingleRifle,b))
+			return 1
+	}
+	else if(InStr(4Star,a) and InStr(4Star,b))
+	{
+		if(InStr(AssaultRifle,a) and InStr(AssaultRifle,b))
+			return 1
+		else if(InStr(SingleRifle,a) and InStr(SingleRifle,b))
+			return 1
+	}
+	return 0
 }
 
 ;Expected to be on choose deploy echelon screen
@@ -60,12 +81,14 @@ SwitchDPS()
 	ClickUntilPixelColor(EchNum2,,EchNum2,EchNumrx,EchNumry)	;Select Echelon 2
 
 	WaitForPixelClick(NightCEColor,ecc,EchSlot2,EchSlotrx,EchSlotry)	;Click Slot 2
-	WaitForPixelClick(YellowLock1,ecc)
-	
-	TDListFilter()
-	WaitForPixelClick(YellowLock1,ecc)
-	TDListFilter(Doll1)
-	
+
+	if(!SameStarType(Doll1,Doll2))
+	{
+		WaitForPixelClick(YellowLock1,ecc)
+		TDListFilter()
+		WaitForPixelClick(YellowLock1,ecc)
+		TDListFilter(Doll1)
+	}
 	WaitForPixelClick(YellowLock1,ecc)
 	ta := StrSplit(IGImageSearch("DollList\" Doll1,40),",")
 	ta[1] += 30

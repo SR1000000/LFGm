@@ -1,15 +1,17 @@
 ECPC := 0xFFFFFF
 
-Safe := [514, 393]
-Saferx := 241
-Safery := 157
+Safe := [613, 553]
+Saferx := 186
+Safery := 72
 
 Home := [7, 100, 0x3EC1FD]	;Home (Blue Gems Color)
 
 LG := [41, 52, 0xBBBBBB]	;Looted Gun after battle
 
 Exped := [172, 283, 0xEAEAEA]	;Expedition returned (Aquisition)
+ExpedChk := [790, 40, 0x969E2D]	;Alt Expedition check (Green cross top right)
 ExpedOK := [469, 415, 0xFFC600]	;ExpeditionRepeat's OK button
+ExpedOkChk := [790, 40, 0x4B4F16]	;Alt Ok check (shaded Green cross top right)
 
 RepairEx := [634, 292, 0xFF3344]	;Exclamation mark on repair button
 RepairB := [583, 316]		;Repair Button

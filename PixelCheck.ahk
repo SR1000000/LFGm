@@ -67,7 +67,7 @@ PixelIs(xyc)
 }
 PixelNot(xyc)
 {
-	return !(AeroGetPixel(xyc[1],xyc[2],2) = xyc[3])
+	return !(AeroGetPixel(xyc[1],xyc[2]) = xyc[3])
 }
 
 /* unused
@@ -114,8 +114,9 @@ ClickUntilPixelColor(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 	GuiControl,, StatA, CUPC running
 	loop
 	{
-		RandSleep(50,100)
-		tpc := AeroGetPixel(xyc[1],xyc[2],2)
+		RandSleep(250,300)
+		tpc := AeroGetPixel(xyc[1],xyc[2])	;Can bug out if xyc never stops (ex: circling yellow lines around helipad)
+							;Attempted Fix: instant getpixel
 		GuiControl,, StatA, CUPC running %i% 1
 		For k,v in xyc
 		{

@@ -184,27 +184,36 @@ return
 
 
 
-ExpeditionCheck()	;Expects Home Screen
+ExpeditionCheck(pc)	;pc is expected expedition-less pixel color
 {
-	local loopcount := 0, Found := 0
+	global Exped, ExpedOK, Safe, Saferx, Safery, Home
+	loopcount := 0, Found := 0
+	if(!pc.length())
+	{
+		MsgBox Empty or NonArray pc passed to ExpeditionCheck, Exiting
+		Exit
+	}
 	
-	GuiControl,, StatA, Waiting for Home %ClickCount%
-	;WaitForPixelClick(Home,5)
+	;GuiControl,, StatA, Waiting for Home %ClickCount%
+	WaitForPixelClick(pc,3)
 	
-	;two continuous seconds of Home pixel true
+	;two continuous seconds of pc pixel true
 	while loopcount < 2
 	{	
 		Sleep 800
 		GuiControl,, StatA, ExpeditionCheck running %ClickCount%
-		if (AeroGetPixel(Home[1],Home[2],2) = Home[3])
+		if (AeroGetPixel(pc[1],pc[2],2) = pc[3])
+		{
+			GuiControl,, StatA, ExpeditionCheck pixel found once %ClickCount%
 			loopcount++
+		}
 		else
 		{
 			;Sleep 200
 			GuiControl,, StatA, Clicking away Expeditions
-			WaitForPixelClick(Exped,3,Safe,Saferx,Safery)
+			WaitForPixelClick(Exped,2,Safe,Saferx,Safery)
 			GuiControl,, StatA, Clicking Expeditions OK Button
-			WaitForPixelClick(ExpedOK,3,ExpedOK,35,15)
+			WaitForPixelClick(ExpedOK,2,ExpedOK,35,15)
 			loopcount := 0
 		}
 	}
@@ -222,6 +231,7 @@ RepairCheck()
 		if (NoRepair)
 		{
 			GuiControl,, StatA, NoRepair = 1 so Exit %ClickCount%
+			MsgBox NoRepair = 1 so Exit
 			CleanExit()
 		}
 
@@ -252,7 +262,7 @@ RepairCheck()
 		;RCtrlClick(RepairCpOkx,RepairCpOky,5,5) ;inaccurate rx ry
 		;Sleep 200
 		WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
-		ExpeditionCheck()
+		ExpeditionCheck(Home)
 	}
 	GuiControl,, StatA, RepairCheck Complete %ClickCount%
 	return
@@ -303,7 +313,7 @@ ExecuteF:
 	{
 		RepeatCount++
 		GuiControl,, Iter, % "Iter: " RepeatCount
-		ExpeditionCheck()
+		ExpeditionCheck(Home)
 		RepairCheck()
 		RunMap(mapPick)
 		Swap(Doll1,Doll2)
@@ -343,9 +353,9 @@ Initialize()
 	Doll2 := ""
 	MapDrag = 0
 	5Star := "Type97,OTS14,HK416,G41,Type95,G11,FAL,WA2000"
-	4Star := "AR15,M4A1,SOP2,TAR21"
+	4Star := "AR15,M4A1,SOP2,TAR21,SVD"
 	AssaultRifle := "Type97,OTS14,HK416,G41,Type95,G11,FAL,AR15,M4A1,SOP2,TAR21"
-	SingleRifle := "WA2000"
+	SingleRifle := "WA2000,SVD"
 	init_drag()
 }
 
