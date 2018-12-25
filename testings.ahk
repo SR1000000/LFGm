@@ -8,13 +8,13 @@ return
 
 F2::
 	;MsgBox % GImageSearch("NewFile",50,,,,,,0)
-	ta := StrSplit(IGImageSearch("Maps\1_6\Heli2",,,,,,3),",")
+	ta := StrSplit(IGImageSearch("Maps\4_3e\ChkZoomed",,,,,,3),",")
 	MouseMove, ta[1], ta[2]
 return
 
 F3::
-	;ta := StrSplit(GImageSearch("RepairSelect",40),",")
-	ta := StrSplit(WGImageSearch("Maps\4_6\Enemy1",,5,540,,,304,3),",")
+	;MsgBox % !WGImageSearch("Maps\4_3e\ChkZoomed",,0,,,,,3)
+	ta := StrSplit(WGImageSearch("Maps\4_3e\ChkZoomed1",,5,,,,,1),",")
 	MouseMove, ta[1], ta[2]
 return
 

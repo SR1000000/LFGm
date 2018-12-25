@@ -48,9 +48,10 @@ RCtrlClick(xy, r, r2 := 0)
 		RandRect(x,y,r,r2)
 	else 
 		RandCircle(x,y,r)
-
+/*
 	x := x - Mod(x,3) + 1	;my Nox only clicks coordinates in intervals of three 
 	y := y - Mod(y,3) + 1
+*/
 	if (x<1 or x>WinWidth or y<30 or y>WinHeight)
 	{
 		GuiControl,, StatA, RCClick tried to click out of bounds! %x% %y% %ClickCount%

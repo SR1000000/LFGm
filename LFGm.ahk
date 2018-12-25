@@ -12,6 +12,7 @@
 #Include Gdip_All.ahk
 #Include Gdip_ImageSearch.ahk
 #Include Maps.ahk
+#Include MapsNF.ahk
 #Include PixelCheck.ahk
 #Include PixelConstants.ahk
 #Include RandomFunctions.ahk
@@ -28,6 +29,7 @@ IniRead, IntervalV1, config.ini, Variables, IntervalV1, 0
 IniRead, IntervalV2, config.ini, Variables, IntervalV2, 0
 IniRead, WorldV, config.ini, Variables, WorldSwitcher 
 IniRead, CorpseDragV, config.ini, Variables, CorpseDragV, 0
+IniRead, Repeat, config.ini, Variables, Repeat, 1
 IniRead, Carry43e, config.ini, Variables, Carry43e, ""
 IniRead, Carry02, config.ini, Variables, Carry02, ""
 
@@ -45,7 +47,7 @@ Gui, Add, DropDownList, x60 y6 w60 h20 r5 Choose3 gWorldNotes vWorldV, 4-3E|0-2|
 GuiControl, ChooseString, WorldV, %WorldV%
 Gui, Add, Text, x130 y10 w40 h20 , Repeat:
 Gui, Add, Edit, x170 y8 w50 h20 Number vRepeat -VScroll, 1
-Gui, Add, UpDown,, 1
+Gui, Add, UpDown,, %Repeat%
 Gui, Add, Button, x230 y8 w100 h20 gExecuteF vExecute, Execute
 Gui, Add, Progress, x230 y30 w100 h20 cGreen vProgA, 0
 Gui, Add, Checkbox, x10 y30 vCorpseDragV gCorpseDrag, Corpse dragging
@@ -57,14 +59,15 @@ Gui, Add, Edit, x70 y70 w60 h20 Number vIntervalV1 gIntervalF1 -VScroll, %Interv
 Gui, Add, Edit, x70 y90 w60 h20 Number vIntervalV2 gIntervalF2 -VScroll, %IntervalV2%
 Gui, Add, Checkbox, x110 y30 vSwapC gSwapCF, Swap Carry
 Gui, Add, Text, x190 y30 w50 h20 vIter, Iter: 0
-Gui, Add, Text, x140 y50 w180 h60 vNotes, % MapNotes(WorldV)
-Gui, Add, Edit, x10 y130 w320 h20 vStatA ReadOnly, Inactive
+Gui, Add, Text, x140 y50 w180 h90 vNotes, % MapNotes(WorldV)
+Gui, Add, Edit, x10 y140 w320 h20 vStatA ReadOnly, Inactive
 Gui, Add, Text, x10 y170 w100 h20 , Tales of Erin
 Gui, Add, Button, x10 y190 w100 h30 gDivin, Repeat Divinity
 Gui, Add, Progress, x110 y190 w40 h30 cGreen vProgB, 0
 Gui, Add, Button, x150 y190 w100 h30 gMBJoin, MB Join
 Gui, Add, Progress, x250 y190 w40 h30 cGreen vProgC, 0
-Gui, Add, Button, x290 y190 w40 h30 gTest, Test
+Gui, Add, Button, x290 y160 w40 h30 gTest, Test
+Gui, Add, Button, x290 y190 w40 h30 gTest2, Test2
 Gui, Add, Edit, x10 y230 w320 h20 vStatB ReadOnly, Inactive
 ; Generated using SmartGUI Creator 4.0
 Menu, Main, Add, Pause, Pause2
@@ -226,7 +229,7 @@ RepairCheck()
 {
 	local ta
 	GuiControl,, StatA, RepairCheck running %ClickCount%
-	if (AeroGetPixel(RepairEx[1],RepairEx[2],1) = RepairEx[3])
+	if (AeroGetPixel(RepairEx[1],RepairEx[2]) = RepairEx[3])
 	{
 		if (NoRepair)
 		{
@@ -245,22 +248,19 @@ RepairCheck()
 		GuiControl,, StatA, Clicking Slot1 %ClickCount%
 		WaitForPixelClick([31,229,0xFFBB00],ecc,Slot0,38)
 
-		Sleep 400
+		Sleep 600
 		RCtrlClick(RepairOK,44,36)
 
-		Sleep 600
+		Sleep 800
 		RCtrlClick(RepairQR,13)
 
-		Sleep 500
+		Sleep 700
 		RCtrlClick(RepairOKOK,36,14)
 
-		Sleep 600
+		Sleep 800
 		RCtrlClick(RepairCp,36,14)
 
 		GuiControl,, StatA, Clicking RetHome %ClickCount%
-		;Sleep 500
-		;RCtrlClick(RepairCpOkx,RepairCpOky,5,5) ;inaccurate rx ry
-		;Sleep 200
 		WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
 		ExpeditionCheck(Home)
 	}
@@ -304,7 +304,8 @@ ExecuteF:
 	GuiControlGet, mapDrag,, CorpseDragV	;local
 	IniWrite, %mapPick%, config.ini, Variables, WorldSwitcher	
 	IniWrite, %mapDrag%, config.ini, Variables, CorpseDragV		
-	GuiControlGet, Repeat	;local
+	GuiControlGet, Repeat	;local	
+	IniWrite, %Repeat%, config.ini, Variables, Repeat
 	GuiControlGet, NoRepair	;local
 	GuiControlGet, SwapC
 	MapInit(mapPick)	;local
@@ -333,6 +334,10 @@ CleanExit()
 }
 
 Test:
+	RandVisitReturn()
+return
+
+Test2:
 	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
 return
 

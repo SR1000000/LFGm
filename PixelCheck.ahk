@@ -102,10 +102,9 @@ PixelGetColorS(x,y,z := 0)
 ;check xyc, click(optional) clxy until color
 ;xyc is array of x,y,colors.. to check for, return index-2 of value found
 ;Negative WaitFor hard stops if pixel not found, positive WaitFor ignores
-;average one check/click per 750ms
+;average one check/click per 500ms
 ClickUntilPixelColor(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 {
-	;global uid
 	global ECPC
 	global ClickCount
 	i := 0,	tpc := 0, timeout := 30
@@ -114,7 +113,7 @@ ClickUntilPixelColor(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 	GuiControl,, StatA, CUPC running
 	loop
 	{
-		RandSleep(250,300)
+		RandSleep(200,250)
 		tpc := AeroGetPixel(xyc[1],xyc[2])	;Can bug out if xyc never stops (ex: circling yellow lines around helipad)
 							;Attempted Fix: instant getpixel
 		GuiControl,, StatA, CUPC running %i% 1
@@ -122,7 +121,7 @@ ClickUntilPixelColor(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 		{
 			if (k>2 and tpc = xyc[k])
 			{
-				GuiControl,, StatA, % "PixelColor found, returning, " xyc[1] " " xyc[2] " " ClickCount " " i
+				GuiControl,, StatA, % "CUPC PixelColor found, returning, " xyc[1] " " xyc[2] " " ClickCount " " i
 				return k-2
 			}
 		}
@@ -130,19 +129,59 @@ ClickUntilPixelColor(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 			ecc += 1
 		if (clxy[1] != -1 and clxy[2] != -1)
 		{
-			GuiControl,, StatA, % "PixelColor not found, Clicking, " xyc[1] " " xyc[2] " " ClickCount " " i
+			GuiControl,, StatA, % "CUPC PixelColor not found, Clicking, " xyc[1] " " xyc[2] " " ClickCount " " i
 			if (ry)
 				RCtrlClick(clxy,rx,ry)
 			else
 				RCtrlClick(clxy,rx)
 		}
-		RandSleep(450,500)
+		RandSleep(200,300)
 		i++
 	} Until i > timeout
 	if (WaitFor<0)
 	{
-		;tpc := DEC2HEX2(xyc[3])
 		GuiControl,, StatA, % "ErrorCat CUPC " xyc[1] " " xyc[2] " " tohex(xyc[3])
+		MsgBox Error Exit
+		Exit
+	}
+	return ""
+}
+;check xyc, click(optional) clxy until xyc not color
+;Negative WaitFor hard stops if pixel not found, positive WaitFor ignores
+;average one check/click per 500ms
+ClickUntilPixelNot(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
+{
+	global ECPC
+	global ClickCount
+	i := 0,	tpc := 0, timeout := 30
+	clxy := clxy ? clxy : [-1,-1]	;parameters can't default to arrays - workaround
+	timeout := Round(Abs(WaitFor) / 0.75)
+	GuiControl,, StatA, CUPN running
+	loop
+	{
+		tpc := AeroGetPixel(xyc[1],xyc[2])
+		GuiControl,, StatA, CUPN running %i% 1
+		if (tpc != xyc[3])
+		{
+			GuiControl,, StatA, % "CUPN Pixel not color anymore, continuing " xyc[1] " " xyc[2] " " ClickCount " " i
+			return
+		}
+		if (tpc = ECPC) 
+			ecc += 1
+		if (clxy[1] != -1 and clxy[2] != -1)
+		{
+			GuiControl,, StatA, % "CUPN Clicking, " xyc[1] " " xyc[2] " " ClickCount " " i
+			if (ry)
+				RCtrlClick(clxy,rx,ry)
+			else
+				RCtrlClick(clxy,rx)
+		}
+		RandSleep(443,561)
+		i++
+	} Until i > timeout
+	if (WaitFor<0)
+	{
+		GuiControl,, StatA, % "ErrorCat CUPN " xyc[1] " " xyc[2] " " tohex(xyc[3])
 		MsgBox Error Exit
 		Exit
 	}
@@ -178,7 +217,7 @@ WaitForPixelClick(xyc, WaitFor := -30, clxy := 0, rx := 5, ry := 0)
 					else
 						RCtrlClick(clxy,rx)
 				}
-				GuiControl,, StatA, % "PixelFound " xyc[1] " " xyc[2] " " ClickCount
+				GuiControl,, StatA, % "WFPC PixelFound " xyc[1] " " xyc[2] " " ClickCount
 				return k-2
 			}
 		}

@@ -22,11 +22,15 @@ RepairQR := [199, 421]		;Checkmark Quick Repair
 RepairOKOK := [577, 421]
 RepairCp := [406, 430]		;Complete Repair button
 
+FactoryB := [720, 287]
+DormB := [718, 225]
+FormB := [721, 345]
+
 RetHome := [46, 61, 0xFFBB00]	;Click Return Home Button (top left)
 RetHomerx := 31
 RetHomery := 23
 
-Combat := [580, 433]		;Click goto Combat page
+Combat := [583, 436, 0x2B2727]	;Click goto Combat page
 CombatTab := [59, 124, 0xF3AC02]	;Combat tab in Combat page
 
 EmerChk := [682, 100, 0xE63500]		;Check if on Emergency (color of difficulty bar)

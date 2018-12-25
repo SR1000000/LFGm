@@ -85,3 +85,62 @@ RandRect(ByRef pointx, ByRef pointy, xlength, ylength)
 	;pointx := OutX
 	;pointy := OutY
 }
+
+RandVisitReturn()
+{
+	global ecc, Home, RepairB, FactoryB, DormB, FormB, RetHome, RetHomerx, RetHomery
+	static hardNum
+	j := Abs(NormalRand(-2,2)) + 1
+	i := 1
+	if(PixelNot(Home))
+	{
+		MsgBox RandVisitReturn expected Home, not found
+		Exit
+	}
+	loop
+	{
+		if(j>1)
+			Random, n, 1, 4
+		else
+			Random, n, 1, 15
+		if(n==1)	
+		{
+			hardNum := 0
+			RCtrlClick(RepairB,40,15)
+			ta := StrSplit(WGImageSearch("RepairSelect",ecc,50),",")
+			RctrlClick(ta,48)
+			RandSleep(1311,4932)
+			RCtrlClick(RetHome,RetHomerx,RetHomery)
+			RandSleep(500,1000)
+			WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
+		} else if(n==2)
+		{
+			hardNum := 0
+			RCtrlClick(FactoryB,40,15)
+			RandSleep(1311,4932)
+			WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
+		} else if(n==3)
+		{
+			hardNum := 0
+			RCtrlClick(DormB,40,15)
+			Sleep 2000
+			RandSleep(1311,4932)
+			RCtrlClick([44,59],29,15)
+		} else if(n==4)
+		{
+			hardNum := 0
+			RCtrlClick(FormB,40,15)
+			RandSleep(1311,4932)
+			WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
+		} else
+		{
+			hardNum++
+			if(hardNum > 4)
+				i--
+		}
+		WaitForPixelClick(Home,ecc)
+		i++
+	} until i > j
+	ExpeditionCheck(Home)
+	return
+}
