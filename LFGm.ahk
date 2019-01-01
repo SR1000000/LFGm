@@ -320,6 +320,7 @@ ExecuteF:
 		Swap(Doll1,Doll2)
 	}
 	GuiControl,, StatA, Execute finished %ClickCount%
+	MsgBox Execute Finished
 	CleanExit()
 return	
 
@@ -334,11 +335,11 @@ CleanExit()
 }
 
 Test:
-	RandVisitReturn()
+	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
 return
 
 Test2:
-	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
+	RandVisitReturn()
 return
 
 Pause::Pause

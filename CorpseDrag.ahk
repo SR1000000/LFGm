@@ -108,7 +108,8 @@ ResupplyDPS(heliXY,heliR := 10)
 	ResupplyBrx := 54
 	ResupplyBry := 12
 	ClickUntilPixelColor(EchF,, heliXY, heliR)	;Takes two clicks
-	WaitForPixelClick(ResupplyB,ecc,ResupplyB,ResupplyBrx,ResupplyBry)
+	WaitForPixelClick(ResupplyB,ecc)
+	ClickUntilPixelNot(ResupplyB,,ResupplyB,ResupplyBrx,ResupplyBry)
 	LookForClickClose(0.7)
 	return
 }

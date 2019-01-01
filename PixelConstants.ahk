@@ -68,6 +68,10 @@ EchDep3 := [37, 367, 0xFFB400]	;Select third echelon in Deploy Screen
 EchDep2 := [37, 337, 0xFFB400]	;Select third echelon after first already deployed
 EchNumrx := 24
 EchNumry := 15
+EchSup := [36, 399]		;Select support echelon after one deployed
+EchSupClk := [244, 229, 0x6D6D22]	;Echelon supports loaded/Echelon Click button
+EchSupClkrx := 120
+EchSupClkry := 33
 
 RedSangvis := [25, 600, 0xF0004D]	;Red Sangvis icon during deployment phase
 

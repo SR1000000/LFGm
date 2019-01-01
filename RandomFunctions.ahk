@@ -88,8 +88,11 @@ RandRect(ByRef pointx, ByRef pointy, xlength, ylength)
 
 RandVisitReturn()
 {
-	global ecc, Home, RepairB, FactoryB, DormB, FormB, RetHome, RetHomerx, RetHomery
+	global ecc, Home, DormB, RetHome, RetHomerx, RetHomery
 	static hardNum
+	QuestB := [368, 602], RankB := [626, 604], FriendsB := [714, 604]
+	RankChk := [190, 520, 0x339922], FriendsB2 := [60, 188, 0xF5A200]
+	Brx := 33, BRy := 11
 	j := Abs(NormalRand(-2,2)) + 1
 	i := 1
 	if(PixelNot(Home))
@@ -104,34 +107,31 @@ RandVisitReturn()
 		else
 			Random, n, 1, 15
 		if(n==1)	
-		{
+		{	;Quest button
 			hardNum := 0
-			RCtrlClick(RepairB,40,15)
-			ta := StrSplit(WGImageSearch("RepairSelect",ecc,50),",")
-			RctrlClick(ta,48)
-			RandSleep(1311,4932)
-			RCtrlClick(RetHome,RetHomerx,RetHomery)
-			RandSleep(500,1000)
+			RCtrlClick(QuestB,Brx,Bry)
+			RandSleep(3311,6932)
 			WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
 		} else if(n==2)
-		{
+		{	;Friends List, Add Friend
 			hardNum := 0
-			RCtrlClick(FactoryB,40,15)
+			RCtrlClick(FriendsB,Brx,Bry)
+			ClickUntilPixelColor(FriendsB2,,FriendsB2,45,18)
 			RandSleep(1311,4932)
 			WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
 		} else if(n==3)
-		{
+		{	;Dorm
 			hardNum := 0
 			RCtrlClick(DormB,40,15)
 			Sleep 2000
 			RandSleep(1311,4932)
 			RCtrlClick([44,59],29,15)
 		} else if(n==4)
-		{
+		{	;Rank 
 			hardNum := 0
-			RCtrlClick(FormB,40,15)
+			RCtrlClick(RankB,Brx,Bry)
 			RandSleep(1311,4932)
-			WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
+			WaitForPixelClick(RankChk,ecc,RetHome,RetHomerx,RetHomery)
 		} else
 		{
 			hardNum++

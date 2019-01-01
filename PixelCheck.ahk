@@ -103,7 +103,7 @@ PixelGetColorS(x,y,z := 0)
 ;xyc is array of x,y,colors.. to check for, return index-2 of value found
 ;Negative WaitFor hard stops if pixel not found, positive WaitFor ignores
 ;average one check/click per 500ms
-ClickUntilPixelColor(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
+ClickUntilPixelColor(xyc, WaitFor := -3, clxy := 0, rx := 5, ry := 0)
 {
 	global ECPC
 	global ClickCount

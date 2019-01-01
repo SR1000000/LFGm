@@ -1,22 +1,28 @@
 
-1_6()	;Each endround recenters map?
-{
-	local heli1 := [292, 331], node1 := [517, 328], node2 := [397, 511]
-	, node3, node4, node5, node6, node7, node8, node9, refnode
+1_6()	;Boss moves, need prezoomout
+{	
+	local helir := 21, noder:= 12, heli1 := [172, 241], node1 := [304, 239]
+		, node2 := [236, 347]
+		, node3, node4, node5, node6, node7, node8, node9, refnode
 
 	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
-	ClickUntilPixelColor(DepNightC,, heli1, 36)	;Click heli1
+	while (WGImageSearch("Maps\1_6\ChkZoomed",1,0,,,,,3))
+	{
+		MsgBox 1-6 Map not zoomed out
+		
+	}
+	ClickUntilPixelColor(DepNightC,, heli1, helir)	;Click heli1
 	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
 	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 	WaitForPixelClick(RedSangvis, ecc, StartOp, StartOprx, StartOpry)	;click start operations
-	RandSleep(3000,3300)
+	RandSleep(2000,2300)
 
-	ResupplyDPS(heli1, 36)
+	ResupplyDPS(heli1, helir)
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
 	RandSleep(300,450)
-	RCtrlClick(node1,21)
+	RCtrlClick(node1,noder)
 	RandSleep(300,450)
-	RCtrlClick(node2,21)
+	RCtrlClick(node2,noder)
 	RandSleep(400,600)
 	RCtrlClick(ExecuteB,ExecuteBrx,ExecuteBry)
 
@@ -27,23 +33,20 @@
 	RandSleep(400,600)
 	RCtrlClick(EndRoundB,EndRoundBrx,EndRoundBry)
 	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
-	Sleep 3000
+	Sleep 4000
 
-	node2 := [400, 331], node3 := [565, 520] ;node4 := [688, 334]
+	node2 := [234, 329], node3 := [330, 441], node4 := [498, 337]	;Boss moved up
 
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
 	RandSleep(300,450)
-	RCtrlClick(node2,21)
+	RCtrlClick(node2,noder)
 	RandSleep(300,450)
-	RCtrlClick(node3,21)
-	
-	RandSleep(900,1100)
-	ControlSend, , c, %CSTitle%
-	LookForClickClose(0.7)
+	RCtrlClick(node3,noder)
 
-	node4 := StrSplit(WGImageSearch("Maps\1_6\HeliBlank",,5,,,,,1),",")
-	node4 := [node4[1]+6, node4[2]+3]
-	RCtrlClick(node4,21)
+	;node4 := StrSplit(WGImageSearch("Maps\1_6\Enemy2",,5,480,350,,,3),",")
+	;node4 := [node4[1]-298, node4[2]-146]
+	RandSleep(300,450)
+	RCtrlClick(node4,noder)
 	RandSleep(400,600)
 	RCtrlClick(ExecuteB,ExecuteBrx,ExecuteBry)
 
@@ -54,53 +57,43 @@
 	RandSleep(400,600)
 	RCtrlClick(EndRoundB,EndRoundBrx,EndRoundBry)
 	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
-	Sleep 3000
+	Sleep 2000
 
-;
-	MsgBox Need drag or not?
-	Exit
-	RandSleep(900,1100)
-	ControlSend, , f, %CSTitle%
-	LookForClickClose(0.7)
-
-	node4 := [403, 331], node5 := [184, 322], node6 := [358, 139], node7 := [547, 226]
-	ResupplyDps(node4,21)
+	;need refnode
+	MsgBox need refnode for when boss didn't move up
+	node4 := [498, 329], node5 := [370, 323], node6 := [472, 217], node7 := [582, 269] ;Boss moved down
+	ResupplyDps(node4,noder)
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
 	RandSleep(300,450)
-	RCtrlClick(node5,21)
+	RCtrlClick(node5,noder)
 	RandSleep(300,450)
-	RCtrlClick(node6,21)
+	RCtrlClick(node6,noder)
 	RandSleep(300,450)
-	RCtrlClick(node7,21)
+	RCtrlClick(node7,noder)
 	RandSleep(400,600)
 	RCtrlClick(ExecuteB,ExecuteBrx,ExecuteBry)
 
 	GuiControl,, StatA, Long Wait after Execute %ClickCount%
-	Sleep 10000
+	Sleep 5000
 	WGImageSearch("PlanButton",-120)
 
 	RandSleep(400,600)
 	RCtrlClick(EndRoundB,EndRoundBrx,EndRoundBry)
 	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
 	Sleep 3000
-;
-	MsgBox node7 node9 might be incorrect
-	node7 := [430, 331]
-	node8 := [406, 532]
+
+	;Boss was down, moved up
+	node7 := [584, 291], node8 := [570, 411], node9 := [502, 487]
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
 	RandSleep(300,450)
-	RCtrlClick(node7,21)
+	RCtrlClick(node7,noder)
 	RandSleep(300,450)
-	RCtrlClick(node8,21)
+	RCtrlClick(node8,noder)
 
-	RandSleep(900,1100)
-	ControlSend, , b, %CSTitle%
-	LookForClickClose(0.7)
-;
-	MsgBox good reference node after drag b? keep eye on history
-	refnode := StrSplit(WGImageSearch("Maps\1_6\Enemy2",,5,403,283,,,3),",")
-	node9 := [refnode[1]-165, refnode[2]-180]
-	RCtrlClick(node9,45)
+	;refnode := StrSplit(WGImageSearch("Maps\1_6\Enemy2",,5,403,283,,,3),",")
+	;node9 := [refnode[1]-165, refnode[2]-180]
+	RandSleep(300,450)
+	RCtrlClick(node9,helir)
 	RandSleep(400,600)
 	RCtrlClick(ExecuteB,ExecuteBrx,ExecuteBry)
 
@@ -118,6 +111,62 @@
 	return
 }
 
+2_6()	;No Zoomout needed
+{	
+	local heli1 := [355, 331], node1 := [313, 118], node2 := [556, 319]
+	, node3 := [742, 259], node4 := [760,94]
+
+	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
+	ClickUntilPixelColor(DepNightC,, heli1, 36)	;Click heli1
+	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
+	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	WaitForPixelClick(RedSangvis, ecc, StartOp, StartOprx, StartOpry)	;click start operations
+	RandSleep(2000,2300)
+
+	;Click heli1
+	ResupplyDPS(heli1, 36)
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
+
+	RandSleep(300,450)
+	RCtrlClick(node1,21)
+	RandSleep(300,450)
+	RCtrlClick(node2,21)
+	RandSleep(400,600)
+	RCtrlClick(ExecuteB,ExecuteBrx,ExecuteBry)
+	GuiControl,, StatA, Long Wait after Execute %ClickCount%
+	Sleep 10000
+	WGImageSearch("PlanButton",-120)
+	RandSleep(400,600)
+	RCtrlClick(EndRoundB,EndRoundBrx,EndRoundBry)
+
+	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
+	Sleep 3000
+
+	node2 := [403, 331]
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
+
+	RandSleep(300,450)
+	RCtrlClick(node2,21)
+	RandSleep(300,450)
+	RCtrlClick(node3,21)
+	RandSleep(300,450)
+	RCtrlClick(node4,21)
+	RandSleep(400,600)
+	RCtrlClick(ExecuteB,ExecuteBrx,ExecuteBry)
+	
+	GuiControl,, StatA, Long Wait after Execute %ClickCount%
+	Sleep 10000
+	WGImageSearch("PlanButton",-120)
+	
+	RandSleep(400,600)
+	RCtrlClick(EndRoundB,EndRoundBrx,EndRoundBry)
+
+	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
+	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
+	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
+	WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
+	return
+}
 
 3_6()
 {
@@ -128,13 +177,15 @@
 	ClickUntilPixelColor(DepNightC,, heli1, 45) ;Click Helipad until deploy screen
 	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
-	Sleep 200
+	Sleep 400
 	ClickUntilPixelColor(DepNightC,, heli2, 21) ;Click Helipad until deploy screen
+;Issue: Skipping heli2 click
+;Attempted fix: longer pause before clickcheck
 	ClickUntilPixelColor(EchDep2,, EchDep2, EchNumrx, EchNumry)
 	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
 	WaitForPixelClick(RedSangvis, ecc, StartOp, StartOprx, StartOpry)	;click start operations
-	RandSleep(3000,3500)
+	RandSleep(2000,2500)
 	
 	ResupplyDPS(heli2, 21)
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
@@ -143,26 +194,13 @@
 	ControlSend, , g, %CSTitle%
 	LookForClickClose(0.7)
 
-	node1 := StrSplit(WGImageSearch("Maps\3_6\Enemy1",,10,390,379,639,,2),",")
-	node1[1] += 6
-	node1[2] += -27
-	node2 := [node1[1]-234, node1[2]-57]
+	node2 := StrSplit(WGImageSearch("Maps\3_6\Enemy1",,5,,,420,480,2),",")
+	node2[1] += 6
+	node2[2] += -26
+	node1 := [node2[1]+234, node2[2]+56]
 	RCtrlClick(node1,21)
 	RandSleep(300,450)
 	RCtrlClick(node2,21)
-/*
-	RandSleep(900,1100)
-	ControlSend, , d, %CSTitle%
-	LookForClickClose(0.7)
-
-	node2 := StrSplit(WGImageSearch("Maps\3_6\Enemy1",,10,,,,,1),",")
-	node2[1] += 3
-	node2[2] += 18
-	node3 := [node2[1]-78, node2[2]+174]
-	RCtrlClick(node2,12)
-	RandSleep(300,450)
-	RCtrlClick(node3,12)
-*/	
 
 	RandSleep(900,1100)
 	ControlSend, , b, %CSTitle%
@@ -220,7 +258,7 @@
 	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
 	WaitForPixelClick(RedSangvis, ecc, StartOp, StartOprx, StartOpry)	;click start operations
-	RandSleep(3000,3500)
+	RandSleep(2000,2500)
 	
 	ResupplyDPS(heli2, 12)	;leaves heli2 clicked
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
@@ -283,7 +321,7 @@
 	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
 	WaitForPixelClick(RedSangvis, ecc, StartOp, StartOprx, StartOpry)	;click start operations
-	RandSleep(3000,3500)
+	RandSleep(2000,2500)
 	
 	ResupplyDPS(heli2, 21)	;leaves heli2 clicked
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
@@ -325,16 +363,75 @@
 	return
 }
 
-6_6()
+6_6()	;Need preZoomout
 {
-	local heli1 := [514, 409], heli2, node1, node2, node2chk, node3, node4
+	local heli1 := [96, 163], heli2 := [712, 145], helir := 18, noder := 9
+		, node1 := [192, 227], node2 := [282, 267], node3 := [390, 243]
+		, node4,node5,node6
 
 	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
-	ClickUntilPixelColor(DepNightC,, heli1, 45) ;Click Helipad until deploy screen
+	while (WGImageSearch("Maps\6_6\ChkZoomed",1,0,,,,,3))
+	{
+		MsgBox 1-6 Map not zoomed out
+		
+	}
+	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
 	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
 	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 	WaitForPixelClick(RedSangvis, ecc, StartOp, StartOprx, StartOpry)	;click start operations
-	RandSleep(3000,3300)
+	RandSleep(2000,2300)
+	
+	ResupplyDPS(heli1, helir)
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
 
+	RandSleep(300,450)
+	RCtrlClick(node1,noder)
+	RandSleep(300,450)
+	RCtrlClick(node2,noder)
+	RandSleep(300,450)
+	RCtrlClick(node3,noder)
+	RandSleep(400,600)
+	RCtrlClick(ExecuteB,ExecuteBrx,ExecuteBry)
+	GuiControl,, StatA, Long Wait after Execute %ClickCount%
+	Sleep 10000
+	WGImageSearch("PlanButton",-120)
+	RandSleep(400,600)
 
+	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
+	Sleep 200
+	RCtrlClick(EchSup,EchNumrx,EchNumry)
+	WaitForPixelClick(EchSupClk, ecc)
+	ClickUntilPixelNot(EchSupClk,,EchSupClk,EchSupClkrx,EchSupClkry)
+	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	FriendStandby(heli1,helir)
+	RandSleep(400,600)
+	RCtrlClick(EndRoundB,EndRoundBrx,EndRoundBry)
+
+	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
+	RandSleep(2000,2500)
+
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
+	node4 := [344, 365], node5 := [466, 387], node6 := [486, 287]
+	RandSleep(300,450)
+	RCtrlClick(node3,noder)
+	RandSleep(300,450)
+	RCtrlClick(node4,noder)
+	RandSleep(300,450)
+	RCtrlClick(node5,noder)
+	RandSleep(300,450)
+	RCtrlClick(node6,helir)
+	RandSleep(400,600)
+	RCtrlClick(ExecuteB,ExecuteBrx,ExecuteBry)
+	
+	GuiControl,, StatA, Long Wait after Execute %ClickCount%
+	Sleep 20000
+	WGImageSearch("PlanButton",-120)
+	
+	RandSleep(400,600)
+	RCtrlClick(EndRoundB,EndRoundBrx,EndRoundBry)
+
+	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
+	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
+	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
+	WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
 }
