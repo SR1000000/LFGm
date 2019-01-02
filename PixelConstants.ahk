@@ -91,6 +91,8 @@ ExecuteBry := 19
 EndRoundB := [736, 592]			;End Round button
 EndRoundBrx := 39
 EndRoundBry := 19
+EndRoundWmin := 942
+EndRoundWmax := 1529
 
 APTensDigit := [637, 589, 0xFEAA06]	;Action Points
 
@@ -98,7 +100,7 @@ CombatPause := [412, 37, 0xFFBB00]	;Pause button at top of midCombat
 
 FinMission := [790, 43, 0xFFBB66]	;Finished Mission
 FinMisPreWaitMin := 2577
-FinMisPreWaitMax := 4941
+FinMisPreWaitMax := 3241
 
 FilterB := [739, 211, 0xFFB400]		;Filter Button in TdollList, color = filter on
 FilterBrx := 44

@@ -3,8 +3,10 @@
 TDListFilter(Doll := "")
 {
 	global ecc, FilterB,FilterBrx,FilterBry, 5Star, 4Star, AssaultRifle, SingleRifle
+		, YellowLock1
+	DoneB := [589, 457, 0xFFA300]
 
-	RCtrlClick(FilterB,FilterBrx,FilterBry)	;Click Filter BUtton
+	WaitForPixelClick(YellowLock1,ecc,FilterB,FilterBrx,FilterBry)	;Click Filter BUtton
 	if (!Doll)
 	{
 		Sleep 400
@@ -30,7 +32,7 @@ TDListFilter(Doll := "")
 			MsgBox %Doll%'s type not found
 		
 		Sleep 300	;Lag after filter change
-		RCtrlClick([589,457],71,12)	;Click done
+		ClickUntilPixelNot(DoneB,,DoneB,71,12)	;Click done
 	}
 	return
 }
@@ -63,12 +65,10 @@ SwitchDPS()
 	local ta := []
 	WaitForPixelClick(EchF,ecc,EchF,EchFrx,EchFry)	;Click Red Echelon Formation button
 
-	WaitForPixelClick(NightCEColor,ecc,EchSlot1,EchSlotrx,EchSlotry)	;WaitFor screen to load (yellow magnifying glass)
-										;Click Slot 1 when screen loads
-	;Strike 1, may replace with ClickUntil
-	WaitForPixelClick(YellowLock1,ecc)
-	;If (AeroGetPixel(FilterB[1],FilterB[2]) != FilterB[3])	;If Filter button is white, put filter on
-		TDListFilter(Doll2)
+	WaitForPixelClick(NightCEColor,ecc)		;WaitFor screen to load (teal nightCE)
+	ClickUntilPixelNot(NightCEColor,,EchSlot1,EchSlotrx,EchSlotry)	;Click Slot 1 when screen loads
+										
+	TDListFilter(Doll2)
 	
 	WaitForPixelClick(YellowLock1,ecc)
 	ta := StrSplit(IGImageSearch("DollList\" Doll2,40),",")
@@ -80,13 +80,12 @@ SwitchDPS()
 
 	ClickUntilPixelColor(EchNum2,,EchNum2,EchNumrx,EchNumry)	;Select Echelon 2
 
-	WaitForPixelClick(NightCEColor,ecc,EchSlot2,EchSlotrx,EchSlotry)	;Click Slot 2
+	WaitForPixelClick(NightCEColor,ecc)
+	ClickUntilPixelNot(NightCEColor,,EchSlot2,EchSlotrx,EchSlotry)	;Click Slot 2
 
 	if(!SameStarType(Doll1,Doll2))
 	{
-		WaitForPixelClick(YellowLock1,ecc)
 		TDListFilter()
-		WaitForPixelClick(YellowLock1,ecc)
 		TDListFilter(Doll1)
 	}
 	WaitForPixelClick(YellowLock1,ecc)

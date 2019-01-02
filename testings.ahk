@@ -1,21 +1,21 @@
 ﻿
 F1::
-	;FindClick()
+	FindClick()
 	;IGImageSearch("DollList\" Doll2,40)
 	;MsgBox %  ti.length() "," ts.length() "," ta.length()
 	;MouseMove, DepNightC[1], DepNightC[2]
-	FriendStandby([96, 163],18)
 return
 
 F2::
 	;MsgBox % GImageSearch("NewFile",50,,,,,,0)
-	ta := StrSplit(IGImageSearch("Maps\4_3e\ChkZoomed",,,,,,3),",")
+	;ta := StrSplit(IGImageSearch("Maps\4_3e\ChkZoomed",,,,,,3),",")
+	ta := [589, 457]
 	MouseMove, ta[1], ta[2]
 return
 
 F3::
 	;MsgBox % !WGImageSearch("Maps\4_3e\ChkZoomed",,0,,,,,3)
-	ta := StrSplit(WGImageSearch("Maps\6_6\ChkZoomed",1,0,,,,,3),",")
+	ta := StrSplit(WGImageSearch("Maps\1_6\BlueRef",1,0,,,,,1),",")
 	MouseMove, ta[1], ta[2]
 return
 

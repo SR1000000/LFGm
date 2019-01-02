@@ -9,7 +9,7 @@ Swap(Byref x, Byref y)
 DoThisUntilThat(thisF,thatF,thatParam1,thatParam2 := "", thisParam1 := "", thisParam2 := "")
 {
 	i := 0, t := ""
-	GuiControl,, StatA, Doing %thisF% %thisParam1% %thisParam2% until %thatF% %thatParam1% %thatParam2%
+	
 	if(!IsFunc(thisF) or !IsFunc(thatF))
 	{
 		MsgBox Error, invalid function names passed to DTUT, %this% %that%
@@ -17,6 +17,7 @@ DoThisUntilThat(thisF,thatF,thatParam1,thatParam2 := "", thisParam1 := "", thisP
 	}
 	loop
 	{
+		GuiControl,, StatA, Doing %thisF% %thisParam1% %thisParam2% until %thatF% %thatParam1% %thatParam2%
 		if(thisParam1)
 			if(thisParam2)
 				%thisF%(thisParam1,thisParam2)	

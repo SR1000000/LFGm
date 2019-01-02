@@ -102,7 +102,7 @@ PixelGetColorS(x,y,z := 0)
 ;check xyc, click(optional) clxy until color
 ;xyc is array of x,y,colors.. to check for, return index-2 of value found
 ;Negative WaitFor hard stops if pixel not found, positive WaitFor ignores
-;average one check/click per 500ms
+;average one check/click per 600ms
 ClickUntilPixelColor(xyc, WaitFor := -3, clxy := 0, rx := 5, ry := 0)
 {
 	global ECPC
@@ -135,7 +135,7 @@ ClickUntilPixelColor(xyc, WaitFor := -3, clxy := 0, rx := 5, ry := 0)
 			else
 				RCtrlClick(clxy,rx)
 		}
-		RandSleep(200,300)
+		RandSleep(300,400)
 		i++
 	} Until i > timeout
 	if (WaitFor<0)
@@ -148,7 +148,7 @@ ClickUntilPixelColor(xyc, WaitFor := -3, clxy := 0, rx := 5, ry := 0)
 }
 ;check xyc, click(optional) clxy until xyc not color
 ;Negative WaitFor hard stops if pixel not found, positive WaitFor ignores
-;average one check/click per 500ms
+;average one check/click per 600ms
 ClickUntilPixelNot(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 {
 	global ECPC
@@ -176,7 +176,7 @@ ClickUntilPixelNot(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 			else
 				RCtrlClick(clxy,rx)
 		}
-		RandSleep(443,561)
+		RandSleep(543,661)
 		i++
 	} Until i > timeout
 	if (WaitFor<0)
