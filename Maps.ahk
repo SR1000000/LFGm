@@ -47,7 +47,7 @@ MapNotes(map)
 	else if (map == "5-6")
 		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n"
 	else if (map == "6-6")
-		return "1=Ignored`n1=Ignored`n3=RealEchelon(RFHG)`n"
+		return "1=Ignored`n1=Ignored`n3=RealEchelon(1WA2k)`n"
 	else 
 		return "vWorld`nMap Not Found"
 }
@@ -107,7 +107,7 @@ MidBattleCheck()
 	if(PixelIs(CombatPause))
 	{
 		DoThisUntilThat("RandSleep","PixelNot",CombatPause,,500)
-		Sleep 2000
+		RandSleep(2529,3064)
 		ClickUntilImage("LoadScreen",,Safe,Saferx,Safery)
 	}
 	Sleep 500
@@ -152,42 +152,42 @@ RunMap(map)
 	{	
 		FocusChapter(1)
 		ClickSubChapter(6)
-		WaitForPixelClick(NormalB, ecc, NormalB, NormalBrx, NormalBry)
+		ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 		1_6()
 	}
 	else if (map == "2-6")
 	{	
 		FocusChapter(2)
 		ClickSubChapter(6)
-		WaitForPixelClick(NormalB, ecc, NormalB, NormalBrx, NormalBry)
+		ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 		2_6()
 	}
 	else if (map == "3-6")
 	{	
 		FocusChapter(3)
 		ClickSubChapter(6)
-		WaitForPixelClick(NormalB, ecc, NormalB, NormalBrx, NormalBry)
+		ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 		3_6()
 	}
 	else if (map == "4-6")
 	{	
 		FocusChapter(4)
 		ClickSubChapter(6)
-		WaitForPixelClick(NormalB, ecc, NormalB, NormalBrx, NormalBry)
+		ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 		4_6()
 	}
 	else if (map == "5-6")
 	{
 		FocusChapter(5)
 		ClickSubChapter(6)
-		WaitForPixelClick(NormalB, ecc, NormalB, NormalBrx, NormalBry)
+		ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 		5_6()
 	}
 	else if (map == "6-6")
 	{
 		FocusChapter(6)
 		ClickSubChapter(6)
-		WaitForPixelClick(NormalB, ecc, NormalB, NormalBrx, NormalBry)
+		ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 		6_6()
 	}
 	else 
@@ -213,10 +213,10 @@ ClickSubChapter(x)
 	global NormalB
 	WaitForPixelClick([283, 193, 0xFFFFFF], ecc) ;WaitFor the white Sangvis icons to appear
 	ty := 128 + (75*x)
-	while(PixelNot(NormalB))
+	while(!PixelIs(NormalB))
 	{
 		RCtrlClick([476, ty], 135, 24)
-		RandSleep(982,1190)
+		RandSleep(882,990)
 	}
 }
 
@@ -249,22 +249,17 @@ ClickSubChapter(x)
 	if (mapDrag)
 	{
 		SwitchDPS()
+		;Strike1: Stuck on close screen
 		ClickUntilPixelColor(EchF,, heli1, 27)
 	}
 
-	;Strike1: Unregistered click on DepOK
-	;Attempted Fix: WFPC into CUPN
-	WaitForPixelClick(DepOk, ecc)
 	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
-	RandSleep(300,450)
+	;RandSleep(200,300)
 	ClickUntilPixelColor(EchF,, heli2, 18)	;Deploy Second Helipad
-	WaitForPixelClick(DepOk, ecc)
 	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
-	;Strike 1: skipped clicking Start Op button (unregistered click?)
-	;Attempted Solution: separate CUPC
-	WaitForPixelClick(RedSangvis, ecc)
+	;WaitForPixelClick(RedSangvis, ecc)
 	ClickUntilPixelColor(PlanChk,, StartOp, StartOprx, StartOpry)	;click start operations
 	Sleep 2000
 
@@ -276,10 +271,10 @@ ClickSubChapter(x)
 	else
 	{
 		RandSleep(300,450)
-		RCtrlClick(heli2, 15)	;should replace with cupc
+		RCtrlClick(heli2, 15)	;should replace with cupc with refnode
 	}
 
-	RandSleep(200,400)
+	RandSleep(400,600)
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)	;Click Planning
 
 	RCtrlClick(nme1,12)
@@ -294,11 +289,11 @@ ClickSubChapter(x)
 
 ;	Strike1: skipped clicking nme4
 ;	Attempted fix: changed to CUPC with nme4chk
-	RandSleep(300,450)
+	;RandSleep(300,450)
 	ClickUntilPixelColor(nme4chk,,nme4,18)
 
 	RandSleep(400,600)
-	RCtrlClick(ExecuteB,ExecuteBrx,ExecuteBry)
+	ClickUntilPixelNot(PlanB,,ExecuteB,ExecuteBrx,ExecuteBry)
 
 	GuiControl,, StatA, Long Wait after Execute %ClickCount%
 	Sleep 70000
@@ -307,8 +302,6 @@ ClickSubChapter(x)
 	WGImageSearch("PlanButton",-120)
 
 	RandSleep(5000,15000)	;testing large random wait
-	;Strike 1: Click on EndRound button not registering
-	;Attempted fix: change rcc to cupn
 	ClickUntilPixelNot(APTensDigit,,EndRoundB,EndRoundBrx,EndRoundBry)
 	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
 	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)

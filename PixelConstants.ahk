@@ -91,8 +91,8 @@ ExecuteBry := 19
 EndRoundB := [736, 592]			;End Round button
 EndRoundBrx := 39
 EndRoundBry := 19
-EndRoundWmin := 942
-EndRoundWmax := 1529
+EndRoundWmin := 3942
+EndRoundWmax := 7529
 
 APTensDigit := [637, 589, 0xFEAA06]	;Action Points
 

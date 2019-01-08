@@ -4,18 +4,19 @@ TDListFilter(Doll := "")
 {
 	global ecc, FilterB,FilterBrx,FilterBry, 5Star, 4Star, AssaultRifle, SingleRifle
 		, YellowLock1
-	DoneB := [589, 457, 0xFFA300]
+	DoneB := [589, 457, 0xFFA300], ResetB := [415, 454, 0xDEDEDE]
 
-	WaitForPixelClick(YellowLock1,ecc,FilterB,FilterBrx,FilterBry)	;Click Filter BUtton
+	WaitForPixelClick(YellowLock1,ecc)
+	ClickUntilPixelColor(DoneB,,FilterB,FilterBrx,FilterBry)	;Click Filter BUtton
 	if (!Doll)
 	{
-		Sleep 400
-		RCtrlClick([415,454],74,14)	;Click Reset
-		Sleep 300	;Lag after filter change
+		RandSleep(200,300)
+		ClickUntilPixelNot(ResetB,,ResetB,74,14)	;Click Reset
+		RandSleep(200,400)	;Lag after filter change
 	}
 	else 
 	{
-		Sleep 300
+		;Sleep 300
 		if Doll in %5Star%
 			ClickUntilPixelColor([385,145,0xFFB400],,[385,145],44,18) ;Click 5Star until yellow
 		else if Doll in %4Star%
@@ -23,7 +24,7 @@ TDListFilter(Doll := "")
 		else
 			MsgBox %Doll%'s starlevel not found
 		
-		Sleep 1000
+		Sleep 1300
 		if Doll in %AssaultRifle%
 			ClickUntilPixelColor([388,331,0xFFB400],,[388,331],39,18) ;Click ARr until yellow
 		else if Doll in %SingleRifle%
@@ -31,7 +32,7 @@ TDListFilter(Doll := "")
 		else
 			MsgBox %Doll%'s type not found
 		
-		Sleep 300	;Lag after filter change
+		RandSleep(200,400)	;Lag after filter change
 		ClickUntilPixelNot(DoneB,,DoneB,71,12)	;Click done
 	}
 	return
@@ -63,7 +64,8 @@ SameStarType(a,b)
 SwitchDPS()
 {
 	local ta := []
-	WaitForPixelClick(EchF,ecc,EchF,EchFrx,EchFry)	;Click Red Echelon Formation button
+	WaitForPixelClick(EchF,ecc)
+	ClickUntilPixelNot(EchF,,EchF,EchFrx,EchFry)	;Click Red Echelon Formation button
 
 	WaitForPixelClick(NightCEColor,ecc)		;WaitFor screen to load (teal nightCE)
 	ClickUntilPixelNot(NightCEColor,,EchSlot1,EchSlotrx,EchSlotry)	;Click Slot 1 when screen loads
@@ -96,7 +98,7 @@ SwitchDPS()
 	ClickUntilPixelColor(NightCEColor,,ta,15,69)
 	Sleep 500
 	ClickUntilImage("LoadScreen",,RetHome,RetHomerx,RetHomery)
-	WaitForPixelClick(RedSangvis,ecc)
+	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 	return
 }
 

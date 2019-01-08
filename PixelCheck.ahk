@@ -103,7 +103,7 @@ PixelGetColorS(x,y,z := 0)
 ;xyc is array of x,y,colors.. to check for, return index-2 of value found
 ;Negative WaitFor hard stops if pixel not found, positive WaitFor ignores
 ;average one check/click per 600ms
-ClickUntilPixelColor(xyc, WaitFor := -3, clxy := 0, rx := 5, ry := 0)
+ClickUntilPixelColor(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 {
 	global ECPC
 	global ClickCount
@@ -113,7 +113,7 @@ ClickUntilPixelColor(xyc, WaitFor := -3, clxy := 0, rx := 5, ry := 0)
 	GuiControl,, StatA, CUPC running
 	loop
 	{
-		RandSleep(200,250)
+		;RandSleep(200,250)
 		tpc := AeroGetPixel(xyc[1],xyc[2])	;Can bug out if xyc never stops (ex: circling yellow lines around helipad)
 							;Attempted Fix: instant getpixel
 		GuiControl,, StatA, CUPC running %i% 1
@@ -135,12 +135,12 @@ ClickUntilPixelColor(xyc, WaitFor := -3, clxy := 0, rx := 5, ry := 0)
 			else
 				RCtrlClick(clxy,rx)
 		}
-		RandSleep(300,400)
+		RandSleep(543,661)
 		i++
 	} Until i > timeout
 	if (WaitFor<0)
 	{
-		GuiControl,, StatA, % "ErrorCat CUPC " xyc[1] " " xyc[2] " " tohex(xyc[3])
+		GuiControl,, StatA, % "ErrorCat CUPC " xyc[1] ", " xyc[2] " " tohex(xyc[3]) " " clxy[1] ", " clxy[2]
 		MsgBox Error Exit
 		Exit
 	}
@@ -170,7 +170,7 @@ ClickUntilPixelNot(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 			ecc += 1
 		if (clxy[1] != -1 and clxy[2] != -1)
 		{
-			GuiControl,, StatA, % "CUPN Clicking, " xyc[1] " " xyc[2] " " ClickCount " " i
+			GuiControl,, StatA, % "CUPN Clicking, " clxy[1] " " clxy[2] " " ClickCount " " i
 			if (ry)
 				RCtrlClick(clxy,rx,ry)
 			else
@@ -181,7 +181,7 @@ ClickUntilPixelNot(xyc, WaitFor := -5, clxy := 0, rx := 5, ry := 0)
 	} Until i > timeout
 	if (WaitFor<0)
 	{
-		GuiControl,, StatA, % "ErrorCat CUPN " xyc[1] " " xyc[2] " " tohex(xyc[3])
+		GuiControl,, StatA, % "ErrorCat CUPN " xyc[1] ", " xyc[2] " " tohex(xyc[3]) " " clxy[1] ", " clxy[2]
 		MsgBox Error Exit
 		Exit
 	}
@@ -229,7 +229,7 @@ WaitForPixelClick(xyc, WaitFor := -30, clxy := 0, rx := 5, ry := 0)
 	if (WaitFor<0)
 	{
 		tpc := DEC2HEX2(xyc[3])
-		GuiControl,, StatA, % "ErrorCat WFPC " xyc[1] " " xyc[2] " " tohex(xyc[3])
+		GuiControl,, StatA, % "ErrorCat WFPC " xyc[1] ", " xyc[2] " " tohex(xyc[3]) " " clxy[1] ", " clxy[2]
 		MsgBox Error Exit
 		Exit
 	}

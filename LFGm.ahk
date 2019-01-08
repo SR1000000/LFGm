@@ -339,7 +339,7 @@ Test:
 return
 
 Test2:
-	RandVisitReturn()
+	LookForClickClose(0.7)
 return
 
 Pause::Pause

@@ -49,12 +49,12 @@ IGImageSearch(filepath, SearchNumber := 0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,search
 			Exit
 		}
 	}
-	GuiControl,, StatA, %filepath% Found offset [%SearchNumber%] %Found% 
+	GuiControl,, StatA, IGIS %filepath% Found offset [%SearchNumber%] %Found% 
 	return Found
 }
 
 
-;Click until Image found 
+;Click until Image found, ensure unique image
 ;Negative WaitFor hard stops if image not found, positive WaitFor ignores
 ;Average one click per 600ms
 ClickUntilImage(filepath,WaitFor:=-7,clxy:=0,rx:=5,ry:=0,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,searchdir:=1,inst:=1)
@@ -75,19 +75,20 @@ ClickUntilImage(filepath,WaitFor:=-7,clxy:=0,rx:=5,ry:=0,varia:=0,xmin:=0,ymin:=
 		Found := GImageSearch(filepath,varia,xmin,ymin,xmax,ymax,searchdir,inst)
 		if (Found != "")
 		{
-			GuiControl,, StatA, %filepath% found, %Found%
+			GuiControl,, StatA, CUI %filepath% found, %Found%
 			return Found	
 		} else
 		{
-			GuiControl,, StatA, %filepath% still not found, clicking
+			GuiControl,, StatA, CUI %filepath% still not found, clicking
 			RCtrlClick(clxy,rx,ry)
 		}
-		RandSleep(400,800)
+		RandSleep(500,700)
 		i++
 	} until i > timeout
 	if (WaitFor<0)
 	{
-		GuiControl,, StatA, ClUnIm %filepath% not found, Exiting
+		tx := clxy[1], ty := clxy[2]
+		GuiControl,, StatA, CUI  %filepath% not found while clicking %tx% %ty%, Exiting
 		MsgBox Error Exit
 		Exit
 	}
@@ -116,20 +117,21 @@ WGImageSearch(filepath,WaitFor:=-10,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,sea
 			if (Found == temp)
 			{
 				j++
-				if j >= 2
+				if (j >= 2)
 				{
-					GuiControl,, StatA, %filepath% found twice, %Found%
+					GuiControl,, StatA, WGIS %filepath% found twice, %Found%
 					return temp
 				}
 			} else
 			{
-				GuiControl,, StatA, %filepath% found once, %Found% %temp% %j%
+				GuiControl,, StatA, WGIS %filepath% found once, %Found% %temp% %j%
 				temp := Found
 				j := 1
+				i--
 			}
 		} else
 		{
-			GuiControl,, StatA, %filepath% still not found, waiting %Found%
+			GuiControl,, StatA, WGIS %filepath% still not found, waiting %Found%
 			j := 0
 			temp := ""
 		}
@@ -141,24 +143,27 @@ WGImageSearch(filepath,WaitFor:=-10,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,sea
 	} until i > timeout
 	if (WaitFor<0)
 	{
-		GuiControl,, StatA, WFGIS %filepath% not found, Exiting
+		GuiControl,, StatA, WGIS %filepath% not found, Exiting
 		MsgBox Error Exit
 		Exit
 	}
-	GuiControl,, StatA, %filepath% not found, continuing
+	GuiControl,, StatA, WGIS %filepath% not found, continuing
 	return ""
 }
 
+;Recursive to keep finding and clicking Close
 LookForClickClose(t)
 {
 	Closerx := 36
 	Closery := 15
+	Sleep 200
 	ta := StrSplit(WGImageSearch("CloseButton",t),",")
 	if(ta.Length())
 	{
 		ta[1] += 33
 		ta[2] += 6
 		RCtrlClick(ta,Closerx,Closery)
+		LookForClickClose(t)
 	}
 }
 
