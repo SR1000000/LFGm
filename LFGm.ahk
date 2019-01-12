@@ -43,7 +43,7 @@ Initialize()
 Gui, 1: New
 Gui, 1: Default
 Gui, Add, Text, x10 y10 w50 h20 , Routine:
-Gui, Add, DropDownList, x60 y6 w60 h20 r5 Choose3 gWorldNotes vWorldV, 4-3E|0-2|3-2N Solo|3-2N|5-2N|1-6|2-6|3-6|4-6|5-6|6-6
+Gui, Add, DropDownList, x60 y6 w60 h20 r5 Choose3 gWorldNotes vWorldV, 4-3E|0-2|3-2N Solo|3-2N|3-6F|4-6F|5-6F|1-6|2-6|3-6|4-6|5-6|6-6
 GuiControl, ChooseString, WorldV, %WorldV%
 Gui, Add, Text, x130 y10 w40 h20 , Repeat:
 Gui, Add, Edit, x170 y8 w50 h20 Number vRepeat -VScroll, 1
@@ -238,27 +238,30 @@ RepairCheck()
 			CleanExit()
 		}
 
-		RCtrlClick(RepairB,40,15)
+		ClickUntilPixelNot(RepairEx,,RepairB,40,15)
 
 		GuiControl,, StatA, Clicking Open Repair Slot %ClickCount%
 		;WaitForPixelClick(RepairSl1,ecc,RepairSl1,15,24)
 		ta := StrSplit(WGImageSearch("RepairSelect",ecc,50),",")
-		RctrlClick(ta,48)
+		ta[3] := AeroGetPixel(ta[1],ta[2])
+		ClickUntilPixelNot(ta,,ta,48)
 
 		GuiControl,, StatA, Clicking Slot1 %ClickCount%
-		WaitForPixelClick([31,229,0xFFBB00],ecc,Slot0,38)
+		WaitForPixelClick([31,229,0xFFBB00],ecc)
+		ClickUntilPixelColor(Slot0Chk,,Slot0,38)
 
-		Sleep 600
-		RCtrlClick(RepairOK,44,36)
+		Sleep 200
+		ClickUntilPixelNot(RepairOK,,RepairOK,44,36)
 
-		Sleep 800
-		RCtrlClick(RepairQR,13)
+		Sleep 300
+		ClickUntilPixelNot(RepairQR,,RepairQR,13)
 
-		Sleep 700
-		RCtrlClick(RepairOKOK,36,14)
+		Sleep 200
+		ClickUntilPixelNot(RepairOKOK,,RepairOKOK,36,14)
 
-		Sleep 800
-		RCtrlClick(RepairCp,36,14)
+		Sleep 300
+		;RCtrlClick(RepairCp,36,14)
+		LookForClickClose(1)
 
 		GuiControl,, StatA, Clicking RetHome %ClickCount%
 		WaitForPixelClick(RetHome,ecc,RetHome,RetHomerx,RetHomery)
@@ -297,6 +300,7 @@ return
 ExecuteF: 
 	ClickCount := 0
 	RepeatCount := 0	;local
+	Timed := A_TickCount
 
 	GuiControl,, ProgA, 100
 	GuiControl, Hide, Execute
@@ -310,8 +314,11 @@ ExecuteF:
 	GuiControlGet, SwapC
 	MapInit(mapPick)	;local
 	;MsgBox % "Reminder: Corpse Dragging is turned " (mapDrag ? "ON" : "OFF")
+
 	while RepeatCount < Repeat
 	{
+		FileDelete, TroubleLog.txt
+		FileAppend, Start Troubleshooting Log`n, TroubleLog.txt
 		RepeatCount++
 		GuiControl,, Iter, % "Iter: " RepeatCount
 		ExpeditionCheck(Home)
@@ -319,7 +326,10 @@ ExecuteF:
 		RunMap(mapPick)
 		Swap(Doll1,Doll2)
 	}
-	GuiControl,, StatA, Execute finished %ClickCount%
+	Timed := (A_TickCount - Timed)/1000
+	Timedm := Floor(Timed/60)
+	Timeds := Round(Mod(Timed,60))
+	GuiControl,, StatA, Execute finished. Clicked:%ClickCount% Timed:%Timedm%m%Timeds%s
 	MsgBox Execute Finished
 	CleanExit()
 return	
@@ -339,7 +349,7 @@ Test:
 return
 
 Test2:
-	LookForClickClose(0.7)
+	RepairCheck()
 return
 
 Pause::Pause

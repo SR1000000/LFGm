@@ -34,20 +34,24 @@ MapNotes(map)
 		return "1=Solo AR"
 	else if (map == "3-2N")
 		return "2n`n32"
-	else if (map == "5-2N")
-		return "MG Carry`n52"
+	else if (map == "3-6F")
+		return "1=Dummy HG`n1=Ignored`n3=3HG`n55Max`n"
+	else if (map == "4-6F")
+		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n70Max`n"
+	else if (map == "5-6F")
+		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n85Max`n"
 	else if (map == "1-6")
-		return "1=Ignored`n1=Ignored`n3=Grizzly`n"
+		return "1=Ignored`n1=Ignored`n3=Grizzly`n25Max`n"
 	else if (map == "2-6")
-		return "1=Ignored`n1=Ignored`n3=GrizzlyWelrod`n"
+		return "1=Ignored`n1=Ignored`n3=GrizzlyWelrod`n35Max`n"
 	else if (map == "3-6")
-		return "1=Dummy HG`n1=Ignored`n3=5HG`n"
+		return "1=Dummy HG`n1=Ignored`n3=3HG`n55Max`n"
 	else if (map == "4-6")
-		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n"
+		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n70Max`n"
 	else if (map == "5-6")
-		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n"
+		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n85Max`n"
 	else if (map == "6-6")
-		return "1=Ignored`n1=Ignored`n3=RealEchelon(1WA2k)`n"
+		return "1=Ignored`n1=Ignored`n3=RealEchelon(1WA2k)`n95Max`n"
 	else 
 		return "vWorld`nMap Not Found"
 }
@@ -94,8 +98,6 @@ MapInit(map)
 		return "32n`n32s"
 	else if (map == "3-2N")
 		return "32n`n32"
-	else if (map == "5-2N")
-		return "52n`n52"
 	else 
 		return "vWorld`nMap Not Found"
 	return
@@ -137,7 +139,11 @@ RunMap(map)
 	ClickUntilPixelColor(CombatTab,, CombatTab, 43, 16)
 	GuiControl,, StatA, RunMap %map% %ClickCount%
 	if (map == "4-3E")
+	{
+		FocusChapter(4,1)
+		ClickSubChapter(3)
 		4_3E()
+	}
 	else if (map == "5-2E")
 		Sleep 100
 	else if (map == "0-2")
@@ -152,42 +158,54 @@ RunMap(map)
 	{	
 		FocusChapter(1)
 		ClickSubChapter(6)
-		ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 		1_6()
 	}
 	else if (map == "2-6")
 	{	
 		FocusChapter(2)
 		ClickSubChapter(6)
-		ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 		2_6()
 	}
 	else if (map == "3-6")
 	{	
 		FocusChapter(3)
 		ClickSubChapter(6)
-		ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 		3_6()
+	}
+	else if (map == "3-6F")
+	{	
+		FocusChapter(3)
+		ClickSubChapter(6)
+		3_6(1)
 	}
 	else if (map == "4-6")
 	{	
 		FocusChapter(4)
 		ClickSubChapter(6)
-		ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 		4_6()
+	}
+	else if (map == "4-6F")
+	{	
+		FocusChapter(4,1)
+		ClickSubChapter(4)
+		4_6(1)
 	}
 	else if (map == "5-6")
 	{
 		FocusChapter(5)
 		ClickSubChapter(6)
-		ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 		5_6()
+	}
+	else if (map == "5-6F")
+	{
+		FocusChapter(5)
+		ClickSubChapter(6)
+		5_6(1)
 	}
 	else if (map == "6-6")
 	{
 		FocusChapter(6)
 		ClickSubChapter(6)
-		ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 		6_6()
 	}
 	else 
@@ -198,19 +216,23 @@ RunMap(map)
 	return
 }
 
-FocusChapter(x)
+FocusChapter(x,e := 0, n := 0)
 {
-	global ecc
+	global ecc, EmerChk, EmerB, EmerBr
 	ty := 124+(63*x)
 	GuiControl,, StatA, Waiting for Chapter PC %ClickCount%
 	;Sleep 200
 	ClickUntilPixelColor([157, ty, 0xFFB400],, [157, ty], 23)
+	if(e)
+		ClickUntilPixelColor(EmerChk,, EmerB, EmerBr)
+	if(n)	
+		ClickUntilPixelColor(EmerChk,, EmerB, EmerBr)
 	return
 }
 
 ClickSubChapter(x)
 {
-	global NormalB
+	global NormalB, NormalBrx, NormalBry, AutoBB
 	WaitForPixelClick([283, 193, 0xFFFFFF], ecc) ;WaitFor the white Sangvis icons to appear
 	ty := 128 + (75*x)
 	while(!PixelIs(NormalB))
@@ -218,6 +240,7 @@ ClickSubChapter(x)
 		RCtrlClick([476, ty], 135, 24)
 		RandSleep(882,990)
 	}
+	ClickUntilPixelNot(AutoBB,, NormalB, NormalBrx, NormalBry)
 }
 
 4_3E()
@@ -226,10 +249,6 @@ ClickSubChapter(x)
 		, nme2 := [703, 229], nme3 := [646, 130], nme4 := [652, 178], tstr
 		, nme1chk, nme4chk := [677, 174, 0xFFBB00]
 	
-	FocusChapter(4)
-	ClickUntilPixelColor(EmerChk,, EmerB, EmerBr)
-	ClickSubChapter(3)
-	ClickUntilPixelNot(NormalB,, NormalB, NormalBrx, NormalBry)
 
 	;If TDollList full, need enhance
 
@@ -253,11 +272,11 @@ ClickSubChapter(x)
 		ClickUntilPixelColor(EchF,, heli1, 27)
 	}
 
-	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 	;RandSleep(200,300)
 	ClickUntilPixelColor(EchF,, heli2, 18)	;Deploy Second Helipad
-	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
 	;WaitForPixelClick(RedSangvis, ecc)
 	ClickUntilPixelColor(PlanChk,, StartOp, StartOprx, StartOpry)	;click start operations
@@ -316,24 +335,6 @@ ClickSubChapter(x)
 {
 	local heli1:=[229,331], heli2, 
 	
-	FocusChapter(0)
-
-	GuiControl,, StatA, Clicking Sub Chapter %ClickCount%
-	ClickSubChapter(2)
-
-	GuiControl,, StatA, Clicking NormalBattle button %ClickCount%
-	WaitForPixelClick(NormalB, ecc, NormalB, NormalBrx, NormalBry)
-
-	GuiControl,, StatA, Wait for active nodes screen %ClickCount%
-	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
-
-	ClickUntilPixelColor(DepNight,, heli1, 45) ;Click Helipad until deploy screen
-	
-	;if (mapDrag)
-
-	WaitForPixelClick(DepOk, ecc, DepOk, DepOkrx, DepOkry)	;Deploy Ok
-
-	RandSleep(900,1100)
 
 	return
 }

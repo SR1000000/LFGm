@@ -14,12 +14,13 @@ ExpedOK := [469, 415, 0xFFC600]	;ExpeditionRepeat's OK button
 ExpedOkChk := [790, 40, 0x4B4F16]	;Alt Ok check (shaded Green cross top right)
 
 RepairEx := [634, 292, 0xFF3344]	;Exclamation mark on repair button
-RepairB := [583, 316]		;Repair Button
+RepairB := [583, 316, 0x7D7C7C]		;Repair Button
 RepairSl1 := [94, 292, 0xFFB400] 	;Repair Slot 1
 Slot0 := [64, 181]		;Choosing doll to put into repair
-RepairOK := [739, 373]
-RepairQR := [199, 421]		;Checkmark Quick Repair
-RepairOKOK := [577, 421]
+Slot0Chk := [114, 193, 0xE7E7E7]
+RepairOK := [739, 373, 0xFFBB00]
+RepairQR := [199, 421, 0xFFFFFF]	;Checkmark Quick Repair
+RepairOKOK := [577, 421, 0x564A29]
 RepairCp := [406, 430]		;Complete Repair button
 
 FactoryB := [720, 287]
@@ -44,6 +45,7 @@ NightBr := 18
 NormalB := [466, 467, 0xFFB400]
 NormalBrx := 40
 NormalBry := 14
+AutoBB := [333, 467, 0x8FC41F]
 
 DollLimitChk := [352, 400, 0xFFEE00]	;DO NOT CLICK, only check
 

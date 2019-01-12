@@ -1,5 +1,5 @@
 
-1_6(farm := 0)	;Boss moves, need prezoomout
+1_6()	;Boss moves, need prezoomout
 {	
 	local helir := 21, noder:= 12, heli1 := [172, 241], node1 := [304, 239]
 		, node2 := [236, 347]
@@ -14,7 +14,7 @@
 	ClickUntilPixelColor(DepNightC,, heli1, helir)	;Click heli1
 	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
 	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 	WaitForPixelClick(RedSangvis, ecc)
 	ClickUntilPixelColor(PlanChk,, StartOp, StartOprx, StartOpry)	;click start operations
 	RandSleep(2000,2300)
@@ -105,22 +105,22 @@
 	
 	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
 	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
-	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
+	ClickUntilImage("LoadScreen",,Safe,Saferx,Safery)
 	WaitForPixelClick(RetHome,ecc)
 	ClickUntilPixelNot(RetHome,,RetHome,RetHomerx,RetHomery)
 	return
 }
 
-2_6(farm := 0)	;No Zoomout needed
+2_6()	;No Zoomout needed
 {	
 	local heli1 := [355, 331], node1 := [313, 118], node2 := [556, 319]
-	, node3 := [742, 259], node4 := [760,94]
+	, node3 := [742, 259], node4 := [760,94], lastChk
 
 	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 	ClickUntilPixelColor(DepNightC,, heli1, 36)	;Click heli1
 	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
 	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 	WaitForPixelClick(RedSangvis, ecc)
 	ClickUntilPixelColor(PlanChk,, StartOp, StartOprx, StartOpry)	;click start operations
 	RandSleep(2000,2300)
@@ -165,7 +165,7 @@
 
 	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
 	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
-	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
+	ClickUntilImage("LoadScreen",,Safe,Saferx,Safery)
 	WaitForPixelClick(RetHome,ecc)
 	ClickUntilPixelNot(RetHome,,RetHome,RetHomerx,RetHomery)
 	return
@@ -173,7 +173,7 @@
 
 3_6(farm := 0)
 {
-	local heli1 := [514,322], heli2 := [79, 478], node1, node2, node3, node4, node4Chk
+	local heli1 := [514,322], heli2 := [79, 478], node1, node2, node3, node4, lastChk
 		, helir := 45, noder := 21
 
 	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
@@ -186,13 +186,13 @@
 
 	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
 	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
 	Sleep 400
 	ClickUntilPixelColor(DepNightC,, heli2, noder) ;Click Helipad until deploy screen
 	ClickUntilPixelColor(EchDep2,, EchDep2, EchNumrx, EchNumry)
 	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
 	WaitForPixelClick(RedSangvis, ecc)
 	ClickUntilPixelColor(PlanChk,, StartOp, StartOprx, StartOpry)	;click start operations
@@ -235,7 +235,7 @@
 	}
 	RCtrlClick(node3,noder)
 	RandSleep(300,450)
-;	if(PixelNot(node4Chk))
+;	if(PixelNot(lastChk))
 	RCtrlClick(node4,helir)
 	RandSleep(400,600)
 	ClickUntilPixelNot(PlanB,,ExecuteB,ExecuteBrx,ExecuteBry)
@@ -248,7 +248,7 @@
 
 	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
 	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
-	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
+	ClickUntilImage("LoadScreen",,Safe,Saferx,Safery)
 	WaitForPixelClick(RetHome,ecc)
 	ClickUntilPixelNot(RetHome,,RetHome,RetHomerx,RetHomery)
 
@@ -257,7 +257,8 @@
 
 4_6(farm := 0)
 {	
-	local heli1 := [505, 331], heli2, node1, node2, node3, node4, helir := 21, noder := 12
+	local heli1 := [505, 331], heli2, node1, node2, node3, node4, lastChk
+		, helir := 21, noder := 12
 
 	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 	if(farm)
@@ -268,14 +269,13 @@
 	} 
 	ClickUntilPixelColor(DepNightC,, heli1, helir+noder) ;Click Helipad until deploy screen
 	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
-	;Strike 1: DepOK not clicked, how?
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
-	RandSleep(900,1100)
-	ControlSend, , a, %CSTitle%
-	LookForClickClose(0.7)
 	if(!farm)
 	{
+		RandSleep(900,1100)
+		ControlSend, , a, %CSTitle%
+		LookForClickClose(0.7)
 		RandSleep(500,700)
 		ControlSend, , i, %CSTitle%
 		LookForClickClose(0.7)
@@ -286,13 +286,16 @@
 		node2 := [heli2[1]-537, heli2[2]+6]
 	} else
 	{
+		RandSleep(900,1100)
+		ControlSend, , z, %CSTitle%
+		LookForClickClose(0.7)
 		heli2 := [693, 129], node1 := [541, 129], node2 := [433, 131], node3 := [297, 139]
 			, node4 := [133, 135]
 	}
 	ClickUntilPixelColor(DepNightC,, heli2, helir) ;Click Helipad until deploy screen
 	ClickUntilPixelColor(EchDep2,, EchDep2, EchNumrx, EchNumry)
 	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
 	WaitForPixelClick(RedSangvis, ecc)
 	ClickUntilPixelColor(PlanChk,, StartOp, StartOprx, StartOpry)	;click start operations
@@ -315,15 +318,18 @@
 		node2[2] += -18
 		node3 := [node2[1]-285, node2[2]+15]
 		node4 := [node2[1]-606, node2[2]+9]
+		lastChk := []
 	} else
 	{
+		lastChk := [141, 153, 0xFFBB00]
 		RandSleep(300,450)
 	}
 	RCtrlClick(node2,noder)
 	RandSleep(300,450)
+;Strike1: failed click on node3
 	RCtrlClick(node3,noder)
-	RandSleep(300,450)
-	RCtrlClick(node4,helir)
+	RandSleep(200,350)
+	ClickUntilPixelColor(lastchk,,node4,helir)
 	RandSleep(400,600)
 	ClickUntilPixelNot(PlanB,,ExecuteB,ExecuteBrx,ExecuteBry)
 	GuiControl,, StatA, Long Wait after Execute %ClickCount%
@@ -334,7 +340,7 @@
 	ClickUntilPixelNot(APTensDigit,,EndRoundB,EndRoundBrx,EndRoundBry)
 	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
 	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
-	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
+	ClickUntilImage("LoadScreen",,Safe,Saferx,Safery)
 	WaitForPixelClick(RetHome,ecc)
 	ClickUntilPixelNot(RetHome,,RetHome,RetHomerx,RetHomery)
 
@@ -343,19 +349,19 @@
 
 5_6(farm := 0)
 {
-	local heli1 := [514, 409], heli2, node1, node2, node2chk, node3, node4
+	local heli1 := [514, 409], heli2, node1, node2, node2chk, node3, node4, lastchk, node3chk
 		, helir := 45, noder := 21
 
 	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 	if(farm)
 	{
-		heli1 := [653, 516], helir := 18, noder := 9
+		heli1 := [653, 516], helir := 18, noder := 9, lastchk := [165, 184, 0xFFBB00]
 		while (WGImageSearch("Maps\5_6\ChkZoomed",1,5,,,,,3))
 			MsgBox 5-6 Map not zoomed out
 	}
 	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
 	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
 	if(!farm)
 	{
@@ -376,12 +382,12 @@
 		ControlSend, , z, %CSTitle%
 		LookForClickClose(0.7)
 		heli2 := [673, 142], node1 := [537, 128], node2 := [431, 164], node3 := [301, 144]
-			, node4 := [163, 164]
+			, node3chk := [300, 165, 0xFFBB00], node4 := [163, 164]
 	}
 	ClickUntilPixelColor(DepNightC,, heli2, noder) ;Click Helipad2 until deploy screen
 	ClickUntilPixelColor(EchDep2,, EchDep2, EchNumrx, EchNumry)
 	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
 	WaitForPixelClick(RedSangvis, ecc)
 	ClickUntilPixelColor(PlanChk,, StartOp, StartOprx, StartOpry)	;click start operations
@@ -405,19 +411,21 @@
 		node4[2] += 27
 		node3 := [node4[1]+268, node4[2]-36]
 		node2 := [node4[1]+519, node4[2]]
+		lastchk := []
+		MsgBox, need lastchk
 		if(PixelNot(node2chk))	;swipe may have clicked node
 			RCtrlClick(node2,noder)	;Click node
 	} else
 	{
+		node3chk := [301, 164, 0xFFBB00]
 		RandSleep(300,450)
 		RCtrlClick(node2,noder)
 	}
 	
 	RandSleep(300,450)
-;Strike 1: noclick on node3, fix: node3 offsets above were off?
-	RCtrlClick(node3,noder)	;Click node
-	RandSleep(300,450)
-	RCtrlClick(node4,helir)	;Click node
+	ClickUntilPixelColor(node3chk,,node3,noder)	;Click node
+	RandSleep(200,350)
+	ClickUntilPixelColor(lastchk,,node4,helir)
 	RandSleep(400,600)
 	ClickUntilPixelNot(PlanB,,ExecuteB,ExecuteBrx,ExecuteBry)
 	GuiControl,, StatA, Long Wait after Execute %ClickCount%
@@ -429,14 +437,14 @@
 
 	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
 	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
-	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
+	ClickUntilImage("LoadScreen",,Safe,Saferx,Safery)
 	WaitForPixelClick(RetHome,ecc)
 	ClickUntilPixelNot(RetHome,,RetHome,RetHomerx,RetHomery)
 
 	return
 }
 
-6_6(farm := 0)	;Need preZoomout
+6_6()	;Need preZoomout
 {
 	local heli1 := [96, 163], heli2 := [712, 145], helir := 18, noder := 9
 		, node1 := [237, 165], node2 := [349, 167], node3 := [431, 169]
@@ -451,7 +459,7 @@
 	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
 	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
 	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 	WaitForPixelClick(RedSangvis, ecc)
 	ClickUntilPixelColor(PlanChk,, StartOp, StartOprx, StartOpry)	;click start operations
 	RandSleep(2000,2300)
@@ -513,7 +521,7 @@
 
 	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
 	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
-	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
+	ClickUntilImage("LoadScreen",,Safe,Saferx,Safery)
 	WaitForPixelClick(RetHome,ecc)
 	ClickUntilPixelNot(RetHome,,RetHome,RetHomerx,RetHomery)
 }
