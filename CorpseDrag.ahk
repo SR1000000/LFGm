@@ -104,13 +104,13 @@ SwitchDPS()
 
 ResupplyDPS(heliXY,heliR := 10)
 {
-	global EchF, RedSangvis
+	global ecc, EchF, DepNightC
 	ResupplyB := [739, 457, 0x343332]
 	ResupplyBrx := 54
 	ResupplyBry := 12
 	ClickUntilPixelColor(EchF,, heliXY, heliR)	;Takes two clicks
 	WaitForPixelClick(ResupplyB,ecc)
-	ClickUntilPixelColor(RedSangvis,,ResupplyB,ResupplyBrx,ResupplyBry)
+	ClickUntilPixelNot(DepNightC,,ResupplyB,ResupplyBrx,ResupplyBry)
 	LookForClickClose(0.7)
 	return
 }

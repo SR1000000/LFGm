@@ -9,13 +9,13 @@ return
 F2::
 	;MsgBox % GImageSearch("NewFile",50,,,,,,0)
 	;ta := StrSplit(IGImageSearch("ChkZoomed",,,,,,3),",")
-	ta := [301, 144]
+	ta := EchSup
 	MouseMove, ta[1], ta[2]
 return
 
 F3::
 	;MsgBox % !WGImageSearch("Maps\4_3e\ChkZoomed",,0,,,,,3)
-	ta :=StrSplit(WGImageSearch("RepairSelect",ecc,50),",")
+	ta :=StrSplit(WGImageSearch("Maps\0_2\ChkZoomed",1,0,,,,,3),",")
 	MouseMove, ta[1], ta[2]
 return
 

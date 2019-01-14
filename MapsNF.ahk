@@ -5,7 +5,6 @@
 		, node2 := [236, 347]
 		, node3, node4, node5, node6, node7, node8, node9, refnode
 
-	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 	while (WGImageSearch("Maps\1_6\ChkZoomed",1,0,,,,,3))
 	{
 		MsgBox 1-6 Map not zoomed out
@@ -116,7 +115,6 @@
 	local heli1 := [355, 331], node1 := [313, 118], node2 := [556, 319]
 	, node3 := [742, 259], node4 := [760,94], lastChk
 
-	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 	ClickUntilPixelColor(DepNightC,, heli1, 36)	;Click heli1
 	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
 	WaitForPixelClick(DepOk, ecc)
@@ -176,7 +174,6 @@
 	local heli1 := [514,322], heli2 := [79, 478], node1, node2, node3, node4, lastChk
 		, helir := 45, noder := 21
 
-	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 	if(farm)
 	{
 		heli1 := [663, 171], heli2 := [449, 247], helir := 18, noder := 9
@@ -260,7 +257,6 @@
 	local heli1 := [505, 331], heli2, node1, node2, node3, node4, lastChk
 		, helir := 21, noder := 12
 
-	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 	if(farm)
 	{
 		heli1 := [659, 475], helir := 18, noder := 9
@@ -352,7 +348,6 @@
 	local heli1 := [514, 409], heli2, node1, node2, node2chk, node3, node4, lastchk, node3chk
 		, helir := 45, noder := 21
 
-	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 	if(farm)
 	{
 		heli1 := [653, 516], helir := 18, noder := 9, lastchk := [165, 184, 0xFFBB00]
@@ -422,9 +417,9 @@
 		RCtrlClick(node2,noder)
 	}
 	
-	RandSleep(300,450)
+	RandSleep(100,250)
 	ClickUntilPixelColor(node3chk,,node3,noder)	;Click node
-	RandSleep(200,350)
+	;RandSleep(100,250)
 	ClickUntilPixelColor(lastchk,,node4,helir)
 	RandSleep(400,600)
 	ClickUntilPixelNot(PlanB,,ExecuteB,ExecuteBrx,ExecuteBry)
@@ -447,13 +442,13 @@
 6_6()	;Need preZoomout
 {
 	local heli1 := [96, 163], heli2 := [712, 145], helir := 18, noder := 9
-		, node1 := [237, 165], node2 := [349, 167], node3 := [431, 169]
-		, node4,node5,node6,node7
+		;, node1 := [237, 165], node2 := [349, 167], node3 := [431, 169]
+		, node1 := [301, 164], node2 := [192, 226], node3 := [282, 266]
+		, node4:= [389, 243],node5,node6,node7
 
-	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
 	while (WGImageSearch("Maps\6_6\ChkZoomed",1,0,,,,,3))
 	{
-		MsgBox 1-6 Map not zoomed out
+		MsgBox 6-6 Map not zoomed out
 		
 	}
 	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
@@ -467,40 +462,42 @@
 	ResupplyDPS(heli1, helir)
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
 
-	RandSleep(300,450)
-	RCtrlClick(node1,noder)
+	;RandSleep(300,450)
+	;RCtrlClick(node1,noder)
 	RandSleep(300,450)
 	RCtrlClick(node2,noder)
 	RandSleep(300,450)
 	RCtrlClick(node3,noder)
+	RandSleep(300,450)
+	RCtrlClick(node4,noder)
 	RandSleep(400,600)
 	ClickUntilPixelNot(PlanB,,ExecuteB,ExecuteBrx,ExecuteBry)
 	GuiControl,, StatA, Long Wait after Execute %ClickCount%
 	Sleep 10000
 	WGImageSearch("PlanButton",-120)
 
-/*
+
 	RandSleep(400,600)
 	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
-	Sleep 200
-	RCtrlClick(EchSup,EchNumrx,EchNumry)
+	;Sleep 200
+	ClickUntilPixelNot(EchSup,,EchSup,EchNumrx,EchNumry)
 	WaitForPixelClick(EchSupClk, ecc)
 	ClickUntilPixelNot(EchSupClk,,EchSupClk,EchSupClkrx,EchSupClkry)
 	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepOK,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 	RandSleep(987,1353)
 	FriendStandby(heli1,helir)
-*/
-	RandSleep(EndRoundWmin,EndRoundWmax)
+
+	RandSleep(2000,4000)
 	ClickUntilPixelNot(APTensDigit,,EndRoundB,EndRoundBrx,EndRoundBry)
 
 	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
-	RandSleep(2000,2500)
+	RandSleep(2500,3500)
 
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
 	node4:= [389, 243], node5 := [344, 365], node6 := [466, 387], node7 := [486, 287]
-	RandSleep(300,450)
-	RCtrlClick(node3,noder)
+	;RandSleep(300,450)
+	;RCtrlClick(node3,noder)
 	RandSleep(300,450)
 	RCtrlClick(node4,noder)
 	RandSleep(300,450)

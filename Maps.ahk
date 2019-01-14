@@ -11,10 +11,10 @@ MapNotes(map)
 			tc := ta[2]
 			if (SwapC)
 				Swap(tb,tc)
-			return % "1=" tb "`n2=RealEchelon (" tc " pos2)`nForward Echelons`n1." tb " needs full supply`nZoomed Out Map"
+			return % "1=" tb "`n2=RealEchelon (" tc " pos2)`nForward Echelons`n1." tb " needs full supply`n"
 		}
 		else
-			return "1=Dummy HG`n2=Real Echelon`nForward Echelons`nZoomed Out Map"
+			return "1=Dummy HG`n2=Real Echelon`nForward Echelons`n"
 	}
 	else if (map == "0-2")
 	{
@@ -109,7 +109,7 @@ MidBattleCheck()
 	if(PixelIs(CombatPause))
 	{
 		DoThisUntilThat("RandSleep","PixelNot",CombatPause,,500)
-		RandSleep(2529,3064)
+		RandSleep(4029,4564)
 		ClickUntilImage("LoadScreen",,Safe,Saferx,Safery)
 	}
 	Sleep 500
@@ -147,7 +147,11 @@ RunMap(map)
 	else if (map == "5-2E")
 		Sleep 100
 	else if (map == "0-2")
+	{
+		FocusChapter(0)
+		ClickSubChapter(2)
 		0_2()
+	}
 	else if (map == "3-2N Solo")
 		Sleep 100
 	else if (map == "3-2N")
@@ -232,7 +236,7 @@ FocusChapter(x,e := 0, n := 0)
 
 ClickSubChapter(x)
 {
-	global NormalB, NormalBrx, NormalBry, AutoBB
+	global NormalB, NormalBrx, NormalBry, AutoBB, RedSangvis
 	WaitForPixelClick([283, 193, 0xFFFFFF], ecc) ;WaitFor the white Sangvis icons to appear
 	ty := 128 + (75*x)
 	while(!PixelIs(NormalB))
@@ -241,6 +245,12 @@ ClickSubChapter(x)
 		RandSleep(882,990)
 	}
 	ClickUntilPixelNot(AutoBB,, NormalB, NormalBrx, NormalBry)
+	
+	if(!WaitForPixelClick(RedSangvis, 8)) ;Wait for active nodes screen (red sangvis icon)
+	{
+		MsgBox TDollList full, go enhance.  Exiting.
+		CleanExit()
+	}
 }
 
 4_3E()
@@ -248,15 +258,6 @@ ClickSubChapter(x)
 	local heli1 := [139, 346], heli2 := [676, 424], nme1 := [669, 328]
 		, nme2 := [703, 229], nme3 := [646, 130], nme4 := [652, 178], tstr
 		, nme1chk, nme4chk := [677, 174, 0xFFBB00]
-	
-
-	;If TDollList full, need enhance
-
-	if(!WaitForPixelClick(RedSangvis, 9)) ;Wait for active nodes screen (red sangvis icon)
-	{
-		MsgBox TDollList full, go enhance.  Exiting.
-		CleanExit()
-	}
 
 	while (WGImageSearch("Maps\4_3e\ChkZoomed",1,0,,,,,3))
 	{
@@ -306,9 +307,6 @@ ClickSubChapter(x)
 	ControlSend,, a, %CSTitle%
 	LookForClickClose(0.7)
 
-;	Strike1: skipped clicking nme4
-;	Attempted fix: changed to CUPC with nme4chk
-	;RandSleep(300,450)
 	ClickUntilPixelColor(nme4chk,,nme4,18)
 
 	RandSleep(400,600)
@@ -333,9 +331,89 @@ ClickSubChapter(x)
 
 0_2()
 {
-	local heli1:=[229,331], heli2, 
-	
+	local heli1 := [164, 324], heli2 := [412, 330], node1 := [314, 270], node2 := [336, 138]
+		, node3 := [420, 254], node4 := [328, 194], node5 := [508, 192]
+		, node6 := [624, 214], lastChk, helir := 27, noder := 12
 
+	while (WGImageSearch("Maps\0_2\ChkZoomed",1,0,,,,,3))
+	{
+		MsgBox 0-2 Map not zoomed out
+		
+	}
+	ClickUntilPixelColor(EchF,, heli1, noder) ;Click Helipad until deploy screen
+	
+	if (mapDrag)
+	{
+		SwitchDPS()
+		ClickUntilPixelColor(EchF,, heli1, noder)
+	}
+
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
+	;RandSleep(200,300)
+	ClickUntilPixelColor(EchF,, heli2, helir)	;Deploy Second Helipad
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+
+	;WaitForPixelClick(RedSangvis, ecc)
+	ClickUntilPixelColor(PlanChk,, StartOp, StartOprx, StartOpry)	;click start operations
+	Sleep 2000
+
+	if (mapDrag)
+	{
+		ResupplyDPS(heli1, noder)
+		RandSleep(300,450)
+		RCtrlClick(heli2, helir)	;should replace with cupc with refnode
+	} else
+		ResupplyDPS(heli2, helir)
+
+	RandSleep(400,600)
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)	;Click Planning
+
+	RCtrlClick(node1,noder)
+	RandSleep(300,450)
+	RCtrlClick(node2,noder)
+	RandSleep(400,600)
+	ClickUntilPixelNot(PlanB,,ExecuteB,ExecuteBrx,ExecuteBry)
+
+	GuiControl,, StatA, Long Wait after Execute %ClickCount%
+	Sleep 10000
+	WGImageSearch("PlanButton",-120)
+
+	RandSleep(EndRoundWmin,EndRoundWmax)
+	ClickUntilPixelNot(APTensDigit,,EndRoundB,EndRoundBrx,EndRoundBry)
+	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
+	Sleep 2000
+
+	RandSleep(400,600)
+	ControlSend,, a, %CSTitle%
+	LookForClickClose(0.7)
+
+	RCtrlClick(node2,noder)
+	RandSleep(300,450)
+	RCtrlClick(node3,noder)
+	RandSleep(300,450)
+	RCtrlClick(node4,noder)
+	RandSleep(300,450)
+	RCtrlClick(node5,noder)
+	ClickUntilPixelColor(lastChk,,node6,helir)
+
+	RandSleep(400,600)
+	ClickUntilPixelNot(PlanB,,ExecuteB,ExecuteBrx,ExecuteBry)
+
+	GuiControl,, StatA, Long Wait after Execute %ClickCount%
+	Sleep 70000
+	if(mapDrag)
+		Sleep 20000
+	WGImageSearch("PlanButton",-120)
+
+	RandSleep(5000,15000)	;testing large random wait
+	ClickUntilPixelNot(APTensDigit,,EndRoundB,EndRoundBrx,EndRoundBry)
+	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
+	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
+	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
+	WaitForPixelClick(RetHome,ecc)
+	ClickUntilPixelNot(RetHome,,RetHome,RetHomerx,RetHomery)
+	
 	return
 }
 
