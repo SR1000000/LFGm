@@ -157,6 +157,8 @@ LookForClickClose(t)
 	Closerx := 36
 	Closery := 15
 	Sleep 200
+	if(t<=0)
+		MsgBox, Error: LFCC recieved param not > 0
 	ta := StrSplit(WGImageSearch("CloseButton",t),",")
 	if(ta.Length())
 	{

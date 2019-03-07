@@ -8,7 +8,7 @@ Home := [7, 100, 0x3EC1FD]	;Home (Blue Gems Color)
 
 LG := [41, 52, 0xBBBBBB]	;Looted Gun after battle
 
-Exped := [172, 283, 0xEAEAEA]	;Expedition returned (Aquisition)
+Exped := [172, 283, 0xEAEAEA, 0xEBEBEB]	;Expedition returned (Aquisition)
 ExpedChk := [790, 40, 0x969E2D]	;Alt Expedition check (Green cross top right)
 ExpedOK := [469, 415, 0xFFC600]	;ExpeditionRepeat's OK button
 ExpedOkChk := [790, 40, 0x4B4F16]	;Alt Ok check (shaded Green cross top right)
@@ -45,6 +45,7 @@ NightBr := 18
 NormalB := [466, 467, 0xFFB400]
 NormalBrx := 40
 NormalBry := 14
+NormalBChk := [401, 285, 0x5D5D5D]
 AutoBB := [333, 467, 0x8FC41F]
 
 DollLimitChk := [352, 400, 0xFFEE00]	;DO NOT CLICK, only check
@@ -59,18 +60,19 @@ DepOkrx := 41
 DepOkry := 14
 
 FormMagnifier := [157, 529, 0xFFB400]	;WaitFor Yellow magnifying glass below portrait
-NightCEColor := [787, 229, 0x116688]	;Alternative to FormMagnifier, blue shade of Night CE
-YellowLock1 := [142, 223, 0xFFBB00, 0x775700]	;WaitFor Yellow lock icon in tdoll selection
+NightCEColor := [776, 204, 0x003344] ;[787, 229, 0x116688]	;Alternative to FormMagnifier, blue shade of Night CE
+YellowLock1 := [142, 228, 0xFFBB00, 0x775700]	;WaitFor Yellow lock icon in tdoll selection
 EchSlot1 := [148, 316]
 EchSlot2 := [262, 316]
 EchSlotrx := 48
 EchSlotry := 102
 EchNum2 := [37, 199, 0xFFB400]	;Select second echelon in Formation Screen
+EchDep2 := [37, 273, 0xFFB400]	;Select second echelon in Deploy Screen
 EchDep3 := [37, 367, 0xFFB400]	;Select third echelon in Deploy Screen
-EchDep2 := [37, 337, 0xFFB400]	;Select third echelon after first already deployed
+EchDep3b := [37, 305, 0xFFB400]	;Select third echelon after first already deployed
 EchNumrx := 24
 EchNumry := 15
-EchSup := [36, 399, 0xFFFFFF]		;Select support echelon after one deployed
+EchSup := [36, 430, 0xFFFFFF]		;Select support echelon after one deployed
 EchSupClk := [244, 229, 0x6D6D22]	;Echelon supports loaded/Echelon Click button
 EchSupClkrx := 120
 EchSupClkry := 33
@@ -96,7 +98,7 @@ EndRoundBry := 19
 EndRoundWmin := 3942
 EndRoundWmax := 7529
 
-APTensDigit := [637, 589, 0xFEAA06]	;Action Points
+APTensDigit := [641, 589, 0xFEAA06]	;Action Points
 
 CombatPause := [412, 37, 0xFFBB00]	;Pause button at top of midCombat
 

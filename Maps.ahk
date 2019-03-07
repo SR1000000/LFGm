@@ -1,6 +1,6 @@
 MapNotes(map)
 {
-	global CorpseDragV, SwapC, Carry43e, Carry02
+	global CorpseDragV, SwapC, Carry43e, Carry02, Carry32n
 
 	if (map == "4-3E")
 	{
@@ -25,7 +25,7 @@ MapNotes(map)
 			tc := ta[2]
 			if (SwapC)
 				Swap(tb,tc)
-			return % "1=" tb "`n2=RealEchelon (" tc " pos2)`n389 Empty`n1." tc " needs full supply"
+			return % "1=" tb "`n2=RealEchelon (" tc " pos2)`n389 Empty, 6MT`n1." tb " needs full supply"
 		}
 		else
 			return "1=Dummy HG`n2=Real Echelon`n"
@@ -33,73 +33,80 @@ MapNotes(map)
 	else if (map == "3-2N Solo")
 		return "1=Solo AR"
 	else if (map == "3-2N")
-		return "2n`n32"
+	{
+		if (CorpseDragV)
+		{
+			ta := StrSplit(Carry32n,",")
+			tb := ta[1]
+			tc := ta[2]
+			if (SwapC)
+				Swap(tb,tc)
+			return % "1=" tb "`n2=RealEchelon (" tc " pos2)`n389 Empty`n1." tc " needs full supply"
+		}
+		else
+			return "1=Dummy HG`n2=Real Echelon`n"
+	}
 	else if (map == "3-6F")
-		return "1=Dummy HG`n1=Ignored`n3=3HG`n55Max`n"
+		return "1=Dummy HG`n2=Ignored`n3=3HG`n55Max`n"
 	else if (map == "4-6F")
-		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n70Max`n"
+		return "1=Dummy HG`n2=Ignored`n3=RealEchelon(1WA2k)`n70Max`n"
 	else if (map == "5-6F")
-		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n85Max`n"
+		return "1=Dummy HG`n2=Ignored`n3=RealEchelon(1WA2k)`n85Max`n"
 	else if (map == "1-6")
-		return "1=Ignored`n1=Ignored`n3=Grizzly`n25Max`n"
+		return "1=Ignored`n2=Ignored`n3=Grizzly`n25Max`n"
 	else if (map == "2-6")
-		return "1=Ignored`n1=Ignored`n3=GrizzlyWelrod`n35Max`n"
+		return "1=Ignored`n2=Ignored`n3=GrizzlyWelrod`n35Max`n"
 	else if (map == "3-6")
-		return "1=Dummy HG`n1=Ignored`n3=3HG`n55Max`n"
+		return "1=Dummy HG`n2=Ignored`n3=3HG`n55Max`n"
+	else if (map == "123-6")
+		return "1=Dummy HG`n2=Ignored`n3=3HG`n55Max`n"
 	else if (map == "4-6")
-		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n70Max`n"
+		return "1=Dummy HG`n2=Ignored`n3=G11Exodia`n70Max`n"
 	else if (map == "5-6")
-		return "1=Dummy HG`n1=Ignored`n3=RealEchelon(1WA2k)`n85Max`n"
+		return "1=Dummy HG`n2=Ignored`n3=G11Exodia`n85Max`n"
 	else if (map == "6-6")
-		return "1=Ignored`n1=Ignored`n3=RealEchelon(1WA2k)`n95Max`n"
-	else 
+		return "1=Ignored`n2=Ignored`n3=G11Exodia`n95Max`n"
+	else if (map == "456-6")
+		return "1=Dummy HG`n2=Ignored`n3=G11Exodia`n85Max`n"
+	else if (map == "6-4E")
+		return "1=Dummy HG`n2=ARSMG`n3=BossKillers`nHalfway only, not Full Auto`nDO NOT REPEAT"
+	else if (map == "Ev1-2")
+		return "1=G11 Exodia+Thompson`nBe on Arctic Warfare Page`nOnly Run Once"
+	else
 		return "vWorld`nMap Not Found"
 }
 
 MapInit(map)
 {
-	global mapDrag, SwapC, Carry43e, Carry02, Doll1, Doll2
+	global mapDrag, SwapC, Carry43e, Carry02, Carry32n, Doll1, Doll2
+	Carry := ""
 	
 	if (map == "4-3E")
-	{
-		if (mapDrag)
-		{
-			if(!Carry43e)
-			{
-				MsgBox Error, Empty Carry43e, Exiting
-				Exit
-			}
-			ta := StrSplit(Carry43e,",")
-			Doll1 := ta[1]
-			Doll2 := ta[2]
-			if (SwapC)
-				Swap(Doll1,Doll2)
-		}
-	}
+		Carry := Carry43e
 	else if (map == "5-2E")
 		return "52e`n52"
 	else if (map == "0-2")
-	{
-		if (mapDrag)
-		{
-			if(!Carry02)
-			{
-				MsgBox Error, Empty Carry02, Exiting
-				Exit
-			}
-			ta := StrSplit(Carry02,",")
-			Doll1 := ta[1]
-			Doll2 := ta[2]
-			if (SwapC)
-				Swap(Doll1,Doll2)
-		}
-	}
+		Carry := Carry02
 	else if (map == "3-2N Solo")
 		return "32n`n32s"
 	else if (map == "3-2N")
-		return "32n`n32"
+		Carry := Carry32n
 	else 
 		return "vWorld`nMap Not Found"
+	
+	if (mapDrag)
+	{
+		if(!Carry)
+		{
+			MsgBox Error, Empty Carry43e, Exiting
+			Exit
+		}
+		ta := StrSplit(Carry,",")
+		Doll1 := ta[1]
+		Doll2 := ta[2]
+		if (SwapC)
+			Swap(Doll1,Doll2)
+	}
 	return
 }
 
@@ -113,6 +120,7 @@ MidBattleCheck()
 		ClickUntilImage("LoadScreen",,Safe,Saferx,Safery)
 	}
 	Sleep 500
+	return
 }
 
 FriendStandby(xy,r)
@@ -134,7 +142,8 @@ RunMap(map)
 	global
 	ClickUntilPixelNot(Combat,,Combat,51,29)
 	GuiControl,, StatA, Waiting for CombatTab PC %ClickCount%
-	WaitForPixelClick([283, 193, 0xFFFFFF], ecc) ;WaitFor the white Sangvis icons to appear
+	WaitForPixelClick(RetHome, ecc)
+	;WaitForPixelClick([283, 193, 0xFFFFFF], ecc) ;WaitFor the white Sangvis icons to appear
 	GuiControl,, StatA, Waiting for CombatTab PC to Correct Color %ClickCount%
 	ClickUntilPixelColor(CombatTab,, CombatTab, 43, 16)
 	GuiControl,, StatA, RunMap %map% %ClickCount%
@@ -152,11 +161,9 @@ RunMap(map)
 		ClickSubChapter(2)
 		0_2()
 	}
-	else if (map == "3-2N Solo")
-		Sleep 100
+	else if (map == "Ev1-2")
+		EV1_2()
 	else if (map == "3-2N")
-		Sleep 100
-	else if (map == "5-2N")
 		Sleep 100
 	else if (map == "1-6")
 	{	
@@ -172,6 +179,20 @@ RunMap(map)
 	}
 	else if (map == "3-6")
 	{	
+		FocusChapter(3)
+		ClickSubChapter(6)
+		3_6()
+	}
+	else if (map == "123-6")
+	{	
+		FocusChapter(1)
+		ClickSubChapter(6)
+		1_6()
+		ExpeditionCheck(Home)
+		FocusChapter(2)
+		ClickSubChapter(6)
+		2_6()
+		ExpeditionCheck(Home)
 		FocusChapter(3)
 		ClickSubChapter(6)
 		3_6()
@@ -212,6 +233,26 @@ RunMap(map)
 		ClickSubChapter(6)
 		6_6()
 	}
+	else if (map == "456-6")
+	{
+		FocusChapter(4)
+		ClickSubChapter(6)
+		4_6()
+		ExpeditionCheck(Home)
+		FocusChapter(5)
+		ClickSubChapter(6)
+		5_6()
+		ExpeditionCheck(Home)
+		FocusChapter(6)
+		ClickSubChapter(6)
+		6_6()
+	}
+	else if (map == "6-4E")
+	{
+		FocusChapter(6,1)
+		ClickSubChapter(4)
+		6_4E()
+	}
 	else 
 	{
 		GuiControl,, StatA, RunMap invalid map
@@ -236,7 +277,7 @@ FocusChapter(x,e := 0, n := 0)
 
 ClickSubChapter(x)
 {
-	global NormalB, NormalBrx, NormalBry, AutoBB, RedSangvis
+	global NormalB, NormalBrx, NormalBry, NormalBChk, RedSangvis
 	WaitForPixelClick([283, 193, 0xFFFFFF], ecc) ;WaitFor the white Sangvis icons to appear
 	ty := 128 + (75*x)
 	while(!PixelIs(NormalB))
@@ -244,7 +285,7 @@ ClickSubChapter(x)
 		RCtrlClick([476, ty], 135, 24)
 		RandSleep(882,990)
 	}
-	ClickUntilPixelNot(AutoBB,, NormalB, NormalBrx, NormalBry)
+	ClickUntilPixelNot(NormalBChk,, NormalB, NormalBrx, NormalBry)
 	
 	if(!WaitForPixelClick(RedSangvis, 8)) ;Wait for active nodes screen (red sangvis icon)
 	{
@@ -252,10 +293,42 @@ ClickSubChapter(x)
 		CleanExit()
 	}
 }
+Map_Execute(LongWait := 10000)
+{
+	global
+	RandSleep(400,600)
+	ClickUntilPixelNot(PlanB,,ExecuteB,ExecuteBrx,ExecuteBry)
+
+	GuiControl,, StatA, Long Wait after Execute %ClickCount%
+	Sleep %LongWait%
+	WGImageSearch("PlanButton",-120)
+	return
+}
+Map_EndRound(Wmin := 3942, Wmax := 7529)
+{
+	global
+	RandSleep(Wmin,Wmax)
+	ClickUntilPixelNot(APTensDigit,,EndRoundB,EndRoundBrx,EndRoundBry)
+	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
+	RandSleep(2449,3664)
+	return
+}
+Map_EndRoundFinal()
+{
+	global
+	RandSleep(EndRoundWmin,EndRoundWmax)
+	ClickUntilPixelNot(APTensDigit,,EndRoundB,EndRoundBrx,EndRoundBry)
+	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
+	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
+	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
+	ExpeditionCheck(RetHome) ;WaitForPixelClick(RetHome,ecc)
+	ClickUntilPixelNot(RetHome,,RetHome,RetHomerx,RetHomery)
+	return
+}
 
 4_3E()
 {	;trying zoomed out 4-3e
-	local heli1 := [139, 346], heli2 := [676, 424], nme1 := [669, 328]
+	local heli1 := [139, 346], heli2 := [676, 424], nme1 := [669, 328], LongWait := 70000
 		, nme2 := [703, 229], nme3 := [646, 130], nme4 := [652, 178], tstr
 		, nme1chk, nme4chk := [677, 174, 0xFFBB00]
 
@@ -307,24 +380,16 @@ ClickSubChapter(x)
 	ControlSend,, a, %CSTitle%
 	LookForClickClose(0.7)
 
-	ClickUntilPixelColor(nme4chk,,nme4,18)
+	ClickUntilPixelColor(nme4chk,2,nme4,18)
+	while(PixelNot(nme4chk))
+		MsgBox LastChk failed
+	
+	if(MapDrag)
+		LongWait += 20000
+	Map_Execute(LongWait)
 
-	RandSleep(400,600)
-	ClickUntilPixelNot(PlanB,,ExecuteB,ExecuteBrx,ExecuteBry)
-
-	GuiControl,, StatA, Long Wait after Execute %ClickCount%
-	Sleep 70000
-	if(mapDrag)
-		Sleep 20000
-	WGImageSearch("PlanButton",-120)
-
-	RandSleep(5000,15000)	;testing large random wait
-	ClickUntilPixelNot(APTensDigit,,EndRoundB,EndRoundBrx,EndRoundBry)
-	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
-	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
-	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
-	WaitForPixelClick(RetHome,ecc)
-	ClickUntilPixelNot(RetHome,,RetHome,RetHomerx,RetHomery)
+	RandSleep(1000,7500)	;testing large random wait
+	Map_EndRoundFinal()
 		
 	return
 }
@@ -332,8 +397,9 @@ ClickSubChapter(x)
 0_2()
 {
 	local heli1 := [164, 324], heli2 := [412, 330], node1 := [314, 270], node2 := [336, 138]
-		, node3 := [420, 254], node4 := [328, 194], node5 := [508, 192]
-		, node6 := [624, 214], lastChk, helir := 27, noder := 12
+		, node3 := [420, 254], node4 := [328, 194], node5 := [508, 192], LongWait := 70000
+		, node6 := [624, 214], penumChk := [335, 166, 0xFFBB00]
+		, lastChk := [624, 241, 0xFFBB00], helir := 21, noder := 12 ;27
 
 	while (WGImageSearch("Maps\0_2\ChkZoomed",1,0,,,,,3))
 	{
@@ -372,22 +438,17 @@ ClickSubChapter(x)
 	RCtrlClick(node1,noder)
 	RandSleep(300,450)
 	RCtrlClick(node2,noder)
-	RandSleep(400,600)
-	ClickUntilPixelNot(PlanB,,ExecuteB,ExecuteBrx,ExecuteBry)
+	Sleep 200
+	while(PixelNot(penumChk))
+		MsgBox penumChk failed
 
-	GuiControl,, StatA, Long Wait after Execute %ClickCount%
-	Sleep 10000
-	WGImageSearch("PlanButton",-120)
+	Map_Execute(50000)
+	Map_EndRound(2942, 4529)
 
-	RandSleep(EndRoundWmin,EndRoundWmax)
-	ClickUntilPixelNot(APTensDigit,,EndRoundB,EndRoundBrx,EndRoundBry)
-	DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
-	Sleep 2000
-
-	RandSleep(400,600)
-	ControlSend,, a, %CSTitle%
-	LookForClickClose(0.7)
-
+	node2 := [337, 331], node3 := [421, 201], node4 := [329, 143], node5 := [509, 141] 
+		, node6 := [623, 163], lastChk := [625, 191, 0xFFBB00] 
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)	;Click Planning
+	RandSleep(500,750)
 	RCtrlClick(node2,noder)
 	RandSleep(300,450)
 	RCtrlClick(node3,noder)
@@ -395,25 +456,53 @@ ClickSubChapter(x)
 	RCtrlClick(node4,noder)
 	RandSleep(300,450)
 	RCtrlClick(node5,noder)
-	ClickUntilPixelColor(lastChk,,node6,helir)
+	ClickUntilPixelColor(lastChk,2,node6,helir)
+	while(PixelNot(lastChk))
+		MsgBox LastChk failed
 
+	if(MapDrag)
+		LongWait += 20000
+	Map_Execute(LongWait)
+
+/*
+	local Supp1 := [336, 382], Supp2 := [412, 574]
 	RandSleep(400,600)
-	ClickUntilPixelNot(PlanB,,ExecuteB,ExecuteBrx,ExecuteBry)
-
-	GuiControl,, StatA, Long Wait after Execute %ClickCount%
-	Sleep 70000
-	if(mapDrag)
-		Sleep 20000
-	WGImageSearch("PlanButton",-120)
-
-	RandSleep(5000,15000)	;testing large random wait
-	ClickUntilPixelNot(APTensDigit,,EndRoundB,EndRoundBrx,EndRoundBry)
-	WaitForPixelClick(FinMission,ecc)	;WaitFor Mission End Stats Image
-	RandSleep(FinMisPreWaitMin,FinMisPreWaitMax)
-	ClickUntilImage("LoadScreen",-10,Safe,Saferx,Safery)
-	WaitForPixelClick(RetHome,ecc)
-	ClickUntilPixelNot(RetHome,,RetHome,RetHomerx,RetHomery)
+	ClickUntilPixelColor(DepNightC,, Supp1, noder) ;Click Helipad until deploy screen
+	ClickUntilPixelNot(EchSup,,EchSup,EchNumrx,EchNumry)
+	WaitForPixelClick(EchSupClk, ecc)
+	ClickUntilPixelNot(EchSupClk,,EchSupClk,EchSupClkrx,EchSupClkry)
+	WaitForPixelClick(DepOk, ecc)
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	RandSleep(400,600)
+	ClickUntilPixelColor(DepNightC,, Supp2, helir) ;Click Helipad until deploy screen
+	ClickUntilPixelNot(EchSup,,EchSup,EchNumrx,EchNumry)
+	WaitForPixelClick(EchSupClk, ecc)
+	ClickUntilPixelNot(EchSupClk,,EchSupClk,EchSupClkrx,EchSupClkry)
+	WaitForPixelClick(DepOk, ecc)
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+*/
+	;RandSleep(1000,7500)	;testing large random wait
+	Map_EndRoundFinal()
 	
 	return
 }
 
+EV1_2()
+{
+	local B1_2
+	while(!PixelIs(NormalB))
+	{
+		RCtrlClick([476, ty], 135, 24)
+		RandSleep(882,990)
+	}
+	ClickUntilPixelNot(AutoBB,, NormalB, NormalBrx, NormalBry)
+	
+	if(!WaitForPixelClick(RedSangvis, 8)) ;Wait for active nodes screen (red sangvis icon)
+	{
+		MsgBox TDollList full, go enhance.  Exiting.
+		CleanExit()
+	}
+	local heli1, node1, node2, node3, node4, node5, noder := 15
+	Map_EndRoundFinal()
+	return
+}

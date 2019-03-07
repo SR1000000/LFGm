@@ -18,6 +18,12 @@
 #Include RandomFunctions.ahk
 #Include Search.ahk
 
+if not A_IsAdmin
+{
+	Run *RunAs "%A_ScriptFullPath%"  ; Requires v1.0.92.01+
+	ExitApp
+}
+
 IniRead, WINID, config.ini, Variables, WINID, 0
 
 IniRead, CSTitle, config.ini, Variables, CSTitle, 0
@@ -32,10 +38,11 @@ IniRead, CorpseDragV, config.ini, Variables, CorpseDragV, 0
 IniRead, Repeat, config.ini, Variables, Repeat, 1
 IniRead, Carry43e, config.ini, Variables, Carry43e, ""
 IniRead, Carry02, config.ini, Variables, Carry02, ""
+IniRead, Carry32n, config.ini, Variables, Carry32n, ""
 
 Menu, Tray, Icon, %A_ScriptDir%/favicon_ahkcsortie.ico,,1
 CoordMode, Pixel, Relative
-
+SendMode Input
 
 Initialize()
 
@@ -43,7 +50,7 @@ Initialize()
 Gui, 1: New
 Gui, 1: Default
 Gui, Add, Text, x10 y10 w50 h20 , Routine:
-Gui, Add, DropDownList, x60 y6 w60 h20 r5 Choose3 gWorldNotes vWorldV, 4-3E|0-2|3-2N Solo|3-2N|3-6F|4-6F|5-6F|1-6|2-6|3-6|4-6|5-6|6-6
+Gui, Add, DropDownList, x60 y6 w60 h20 r5 Choose3 gWorldNotes vWorldV, 4-3E|0-2|3-2N|123-6|456-6|1-6|2-6|3-6|4-6|5-6|6-6|6-4E ;3-6F|4-6F|5-6F|
 GuiControl, ChooseString, WorldV, %WorldV%
 Gui, Add, Text, x130 y10 w40 h20 , Repeat:
 Gui, Add, Edit, x170 y8 w50 h20 Number vRepeat -VScroll, 1
@@ -74,11 +81,6 @@ Menu, Main, Add, Pause, Pause2
 Gui, Menu, Main
 Gui, Show, X%TWinX% Y%TWinY% Autosize, Macros
 
-if not A_IsAdmin
-{
-	Run *RunAs "%A_ScriptFullPath%"  ; Requires v1.0.92.01+
-	ExitApp
-}
 
 if not WinExist(WINID)
 {
@@ -200,10 +202,10 @@ ExpeditionCheck(pc)	;pc is expected expedition-less pixel color
 	;GuiControl,, StatA, Waiting for Home %ClickCount%
 	WaitForPixelClick(pc,3)
 	
-	;two continuous seconds of pc pixel true
+	;two continuous counts of pc pixel true
 	while loopcount < 2
 	{	
-		Sleep 800
+		Sleep 500
 		GuiControl,, StatA, ExpeditionCheck running %ClickCount%
 		if (AeroGetPixel(pc[1],pc[2],2) = pc[3])
 		{
@@ -212,8 +214,8 @@ ExpeditionCheck(pc)	;pc is expected expedition-less pixel color
 		}
 		else
 		{
-			;Sleep 200
 			GuiControl,, StatA, Clicking away Expeditions
+			;Strike 1: Exped fails on combat page
 			WaitForPixelClick(Exped,2,Safe,Saferx,Safery)
 			GuiControl,, StatA, Clicking Expeditions OK Button
 			WaitForPixelClick(ExpedOK,2,ExpedOK,35,15)
@@ -225,11 +227,11 @@ ExpeditionCheck(pc)	;pc is expected expedition-less pixel color
 }
 
 
-RepairCheck()
+RepairCheck(force := 0)
 {
 	local ta
 	GuiControl,, StatA, RepairCheck running %ClickCount%
-	if (AeroGetPixel(RepairEx[1],RepairEx[2]) = RepairEx[3])
+	if ((AeroGetPixel(RepairEx[1],RepairEx[2]) = RepairEx[3]) || force)
 	{
 		if (NoRepair)
 		{
@@ -321,9 +323,9 @@ ExecuteF:
 		FileAppend, Start Troubleshooting Log`n, TroubleLog.txt
 		RepeatCount++
 		GuiControl,, Iter, % "Iter: " RepeatCount
-		ExpeditionCheck(Home)
 		RepairCheck()
 		RunMap(mapPick)
+		ExpeditionCheck(Home)
 		Swap(Doll1,Doll2)
 	}
 	Timed := (A_TickCount - Timed)/1000
@@ -349,7 +351,7 @@ Test:
 return
 
 Test2:
-	RepairCheck()
+	ExpeditionCheck(RetHome)
 return
 
 Pause::Pause
@@ -368,10 +370,10 @@ Initialize()
 	Doll1 := ""
 	Doll2 := ""
 	MapDrag = 0
-	5Star := "Type97,OTS14,HK416,G41,Type95,G11,FAL,WA2000"
+	5Star := "Type97,OTS14,HK416,G41,Type95,G11,FAL,WA2K"
 	4Star := "AR15,M4A1,SOP2,TAR21,SVD"
 	AssaultRifle := "Type97,OTS14,HK416,G41,Type95,G11,FAL,AR15,M4A1,SOP2,TAR21"
-	SingleRifle := "WA2000,SVD"
+	SingleRifle := "WA2K,SVD"
 	init_drag()
 }
 

@@ -25,6 +25,7 @@ CtrlClick(xy)
 
 
 	SoundPlay, %A_WinDir%\Media\ding.wav
+	FileAppend, % "Clicking x" xy[1] " y" xy[2] "`n", TroubleLog.txt
 	ClickCount++
 	return
 
@@ -48,10 +49,7 @@ RCtrlClick(xy, r, r2 := 0)
 		RandRect(x,y,r,r2)
 	else 
 		RandCircle(x,y,r)
-/*
-	x := x - Mod(x,3) + 1	;my Nox only clicks coordinates in intervals of three 
-	y := y - Mod(y,3) + 1
-*/
+
 	if (x<1 or x>WinWidth or y<30 or y>WinHeight)
 	{
 		GuiControl,, StatA, RCClick tried to click out of bounds! %x% %y% %ClickCount%
@@ -64,7 +62,7 @@ RCtrlClick(xy, r, r2 := 0)
 , ahk_id %uid%,,,,NA Pos
 	;else
 	;	ControlClick, %Class%,ahk_id %uid%,,,, x%x% y%y%
-	
+	FileAppend, Clicking x%x% y%y%`n, TroubleLog.txt
 	SoundPlay, %A_WinDir%\Media\ding.wav
 	ClickCount++
 	return
