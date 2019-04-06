@@ -351,19 +351,24 @@
 6_6()	;Need preZoomout
 {
 	local heli1 := [96, 163], heli2 := [712, 145], helir := 18, noder := 9
-		;, node1 := [237, 165], node2 := [349, 167], node3 := [431, 169]
-		, node1 := [301, 164], node2 := [192, 226], node3 := [282, 266]
-		, node4:= [389, 243],node5,node6,node7
+		, node1 := [237, 165], node2 := [349, 167], node3 := [431, 169]
+		;, node1 := [192, 226], node2 := [282, 266], node3:= [389, 243]
+		,node4,node5,node6,node7
 
 	while (WGImageSearch("Maps\6_6\ChkZoomed",1,0,,,,,3))
 	{
 		MsgBox 6-6 Map not zoomed out
 		
 	}
+/*	ClickUntilPixelColor(DepNightC,, heli2, helir) ;Click Helipad until deploy screen
+	WaitForPixelClick(DepOk, ecc)
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+*/
 	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
 	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
 	WaitForPixelClick(DepOk, ecc)
 	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+
 	WaitForPixelClick(RedSangvis, ecc)
 	ClickUntilPixelColor(PlanChk,, StartOp, StartOprx, StartOpry)	;click start operations
 	RandSleep(2000,2300)
@@ -371,17 +376,17 @@
 	ResupplyDPS(heli1, helir)
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
 
-	;RandSleep(300,450)
-	;RCtrlClick(node1,noder)
+	RandSleep(300,450)
+	RCtrlClick(node1,noder)
 	RandSleep(300,450)
 	RCtrlClick(node2,noder)
 	RandSleep(300,450)
 	RCtrlClick(node3,noder)
-	RandSleep(300,450)
-	RCtrlClick(node4,noder)
+	;RandSleep(300,450)
+	;RCtrlClick(node4,noder)
 	Map_Execute(10000)
 
-	RandSleep(400,600)
+/*	RandSleep(400,600)
 	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
 	ClickUntilPixelNot(EchSup,,EchSup,EchNumrx,EchNumry)
 	WaitForPixelClick(EchSupClk, ecc)
@@ -390,9 +395,10 @@
 	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 	RandSleep(987,1353)
 	FriendStandby(heli1,helir)
-
+*/
 	Map_EndRound(2000,4000)
 
+	ResupplyDPS(node3, noder)
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
 	node4:= [389, 243], node5 := [344, 365], node6 := [466, 387], node7 := [486, 287]
 	;RandSleep(300,450)

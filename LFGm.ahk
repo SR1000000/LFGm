@@ -351,7 +351,7 @@ Test:
 return
 
 Test2:
-	ExpeditionCheck(RetHome)
+	;ExpeditionCheck(RetHome)
 return
 
 Pause::Pause

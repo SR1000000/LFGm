@@ -1,3 +1,6 @@
+
+;SetControlDelay, 0
+
 CtrlClick(xy)
 
 {
@@ -7,8 +10,6 @@ CtrlClick(xy)
 
 	Sleep ClickDelay
 
-	SetControlDelay 0
-
 	;if Class = 0
 
 	if (xy[1]<0 or xy[1]>WinWidth or xy[2]<30 or xy[2]>WinHeight)
@@ -17,9 +18,10 @@ CtrlClick(xy)
 		MSgBox Error Exit
 		Exit
 	}
-
+	BlockInput On
 	ControlClick, % "x" xy[1] " y" xy[2]
 , ahk_id %uid%,,,,NA Pos
+	BlockInput Off
 	;else
 	;	ControlClick, %Class%,ahk_id %uid%,,,, % "x" xy[1] " y" xy[2]
 
@@ -40,8 +42,6 @@ RCtrlClick(xy, r, r2 := 0)
 
 	Sleep ClickDelay
 
-	SetControlDelay 0
-
 
 	x := xy[1], y := xy[2]	;need temp vars for Rand byrefs to work
 
@@ -56,10 +56,10 @@ RCtrlClick(xy, r, r2 := 0)
 		MSgBox Error Exit %WinWidth% %WinHeight%
 		Exit
 	}
-	;if Class = 0
-
+	BlockInput On
 	ControlClick, x%x% y%y%
 , ahk_id %uid%,,,,NA Pos
+	BlockInput Off
 	;else
 	;	ControlClick, %Class%,ahk_id %uid%,,,, x%x% y%y%
 	FileAppend, Clicking x%x% y%y%`n, TroubleLog.txt

@@ -137,15 +137,35 @@ FriendStandby(xy,r)
 	return
 }
 
+;apply Rescue fairy to node supplied node if Rescue equipped
+;return 1/0 on if Rescue is equipped
+;ASSUMES echelon on map selected so fairy activation is visible
+;leaves xy echelon selected on exit
+RescueFairy(xy := 0, r := 0)
+{
+	FairyActB := [761, 284, 0x4E6282], FairyActBx := 24, FairyActBy := 9
+	FairyVated := [762, 278, 0xDCDDDD], FairyCD := [759, 278, 0x9D9D9D]
+	;xy := xy ? xy : [-1,-1]	;parameters can't default to arrays - workaround
+	tf := WGImageSearch("RescueFairy",1,,700,180,800,260)
+
+	if (tf)
+	{
+		if (xy)
+		{
+			ClickUntilPixelNot(FairyActB,,FairyActB,FairyActBx,FairyActBy)
+			ClickUntilPixelNot(FairyVated,,xy,r)
+			;RandSleep(1000,1000) ;not needed?
+			ClickUntilPixelColor(FairyCD,,xy,r)
+		}
+		return 1
+	}
+	return 0
+}
+
 RunMap(map)
 {
 	global
-	ClickUntilPixelNot(Combat,,Combat,51,29)
-	GuiControl,, StatA, Waiting for CombatTab PC %ClickCount%
-	WaitForPixelClick(RetHome, ecc)
-	;WaitForPixelClick([283, 193, 0xFFFFFF], ecc) ;WaitFor the white Sangvis icons to appear
-	GuiControl,, StatA, Waiting for CombatTab PC to Correct Color %ClickCount%
-	ClickUntilPixelColor(CombatTab,, CombatTab, 43, 16)
+	CombatClick()
 	GuiControl,, StatA, RunMap %map% %ClickCount%
 	if (map == "4-3E")
 	{
@@ -189,10 +209,12 @@ RunMap(map)
 		ClickSubChapter(6)
 		1_6()
 		ExpeditionCheck(Home)
+		CombatClick()
 		FocusChapter(2)
 		ClickSubChapter(6)
 		2_6()
 		ExpeditionCheck(Home)
+		CombatClick()
 		FocusChapter(3)
 		ClickSubChapter(6)
 		3_6()
@@ -239,10 +261,12 @@ RunMap(map)
 		ClickSubChapter(6)
 		4_6()
 		ExpeditionCheck(Home)
+		CombatClick()
 		FocusChapter(5)
 		ClickSubChapter(6)
 		5_6()
 		ExpeditionCheck(Home)
+		CombatClick()
 		FocusChapter(6)
 		ClickSubChapter(6)
 		6_6()
@@ -259,6 +283,18 @@ RunMap(map)
 		Exit
 	}
 	return
+}
+
+CombatClick()
+{
+	global
+	ClickUntilPixelNot(Combat,,Combat,51,29)
+	GuiControl,, StatA, Waiting for CombatTab PC %ClickCount%
+	WaitForPixelClick(RetHome, ecc)
+	;WaitForPixelClick([283, 193, 0xFFFFFF], ecc) ;WaitFor the white Sangvis icons to appear
+	GuiControl,, StatA, Waiting for CombatTab PC to Correct Color %ClickCount%
+	ClickUntilPixelColor(CombatTab,, CombatTab, 43, 16)
+
 }
 
 FocusChapter(x,e := 0, n := 0)
@@ -432,6 +468,8 @@ Map_EndRoundFinal()
 	} else
 		ResupplyDPS(heli2, helir)
 
+	RescueFairy(heli2,helir)
+
 	RandSleep(400,600)
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)	;Click Planning
 
@@ -447,10 +485,12 @@ Map_EndRoundFinal()
 
 	node2 := [337, 331], node3 := [421, 201], node4 := [329, 143], node5 := [509, 141] 
 		, node6 := [623, 163], lastChk := [625, 191, 0xFFBB00] 
+	RandSleep(2500,4000)
+	RCtrlClick(node2,noder)
+	RescueFairy(node2,noder)
+
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)	;Click Planning
 	RandSleep(500,750)
-	RCtrlClick(node2,noder)
-	RandSleep(300,450)
 	RCtrlClick(node3,noder)
 	RandSleep(300,450)
 	RCtrlClick(node4,noder)
