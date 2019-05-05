@@ -4,7 +4,7 @@ TDListFilter(Doll := "")
 {
 	global ecc, FilterB,FilterBrx,FilterBry, 5Star, 4Star, AssaultRifle, SingleRifle
 		, YellowLock1
-	DoneB := [589, 457, 0xFFA300], ResetB := [415, 454, 0xDEDEDE]
+	DoneB := [588, 454, 0xFFA300], ResetB := [415, 454, 0xFFFFFF]
 	, 5StarB := [385,145,0xFFB400], 4StarB := [499,145,0xFFB400]
 
 	WaitForPixelClick(YellowLock1,ecc)
@@ -43,11 +43,11 @@ TDListFilter(Doll := "")
 FilterSwitch45()
 {
 	global ecc,FilterB,FilterBrx,FilterBry,DoneB,YellowLock1
-	DoneB := [589, 457, 0xFFA300], 5StarB := [385,145,0xFFB400], 4StarB := [499,145,0xFFB400]
+	DoneB := [588, 454, 0xFFA300], 5StarB := [385,145,0xFFB400], 4StarB := [499,145,0xFFB400]
 
 	WaitForPixelClick(YellowLock1,ecc)
 	ClickUntilPixelColor(DoneB,,FilterB,FilterBrx,FilterBry)	;Click Filter BUtton
-	Sleep 500
+	;Sleep 500
 	if(PixelIs(5StarB))
 	{
 		ClickUntilPixelNot(5StarB,,5StarB,36,18)
@@ -95,7 +95,7 @@ SwitchDPS()
 	ClickUntilPixelNot(EchF,,EchF,EchFrx,EchFry)	;Click Red Echelon Formation button
 
 	WaitForPixelClick(NightCEColor,ecc)		;WaitFor screen to load (teal nightCE)
-	ClickUntilPixelNot(FormMagnifier,,EchSlot1,EchSlotrx,EchSlotry)	;Click Slot 1 when screen loads
+	ClickUntilPixelNot(NightCEColor,,EchSlot1,EchSlotrx,EchSlotry)	;Click Slot 1 when screen loads
 										
 	TDListFilter(Doll2)
 	
@@ -132,14 +132,13 @@ SwitchDPS()
 
 ResupplyDPS(heliXY,heliR := 10)
 {
-	global ecc, EchF, DepNightC
-	ResupplyB := [739, 457, 0x343332]
+	global ecc, DepNightC
+	ResupplyB := [739, 457, 0x353431]
 	ResupplyBrx := 54
 	ResupplyBry := 12
-	ClickUntilPixelColor(EchF,, heliXY, heliR)	;Takes two clicks
+	ClickUntilPixelColor(DepNightC,, heliXY, heliR)	;Takes two clicks
 	WaitForPixelClick(ResupplyB,ecc)
 	ClickUntilPixelNot(DepNightC,,ResupplyB,ResupplyBrx,ResupplyBry)
-	LookForClickClose(0.7)
 	return
 }
 

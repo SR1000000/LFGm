@@ -6,6 +6,17 @@ Swap(Byref x, Byref y)
 	return
 }
 
+CSend(v := "a", a := 500, b := 1000) {
+	global CSTitle
+	RandSleep(a,b)
+
+	BlockInput On
+	ControlSend,, %v%, %CSTitle%
+	BlockInput Off
+
+	LookForClickClose(0.7)
+}
+
 DoThisUntilThat(thisF,thatF,thatParam1,thatParam2 := "", thisParam1 := "", thisParam2 := "")
 {
 	i := 0, t := ""

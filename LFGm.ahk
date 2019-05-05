@@ -50,7 +50,7 @@ Initialize()
 Gui, 1: New
 Gui, 1: Default
 Gui, Add, Text, x10 y10 w50 h20 , Routine:
-Gui, Add, DropDownList, x60 y6 w60 h20 r5 Choose3 gWorldNotes vWorldV, 4-3E|0-2|3-2N|123-6|456-6|1-6|2-6|3-6|4-6|5-6|6-6|6-4E ;3-6F|4-6F|5-6F|
+Gui, Add, DropDownList, x60 y6 w60 h20 r5 Choose3 gWorldNotes vWorldV, 4-3E|0-2|123-6|456-6|1-6|2-6|3-6|4-6|5-6|6-6|6-4E|EV1|EV2|EV3 ;3-6F|4-6F|5-6F|
 GuiControl, ChooseString, WorldV, %WorldV%
 Gui, Add, Text, x130 y10 w40 h20 , Repeat:
 Gui, Add, Edit, x170 y8 w50 h20 Number vRepeat -VScroll, 1
@@ -191,7 +191,7 @@ return
 
 ExpeditionCheck(pc)	;pc is expected expedition-less pixel color
 {
-	global Exped, ExpedOK, Safe, Saferx, Safery, Home
+	global ExpedChk, ExpedOK, Safe, Saferx, Safery, Home
 	loopcount := 0, Found := 0
 	if(!pc.length())
 	{
@@ -216,7 +216,7 @@ ExpeditionCheck(pc)	;pc is expected expedition-less pixel color
 		{
 			GuiControl,, StatA, Clicking away Expeditions
 			;Strike 1: Exped fails on combat page
-			WaitForPixelClick(Exped,2,Safe,Saferx,Safery)
+			WaitForPixelClick(ExpedChk,2,Safe,Saferx,Safery)
 			GuiControl,, StatA, Clicking Expeditions OK Button
 			WaitForPixelClick(ExpedOK,2,ExpedOK,35,15)
 			loopcount := 0

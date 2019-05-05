@@ -152,6 +152,7 @@ WGImageSearch(filepath,WaitFor:=-10,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,sea
 }
 
 ;Recursive to keep finding and clicking Close
+;<<Legacy>>
 LookForClickClose(t)
 {
 	Closerx := 36
