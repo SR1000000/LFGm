@@ -23,7 +23,8 @@ GImageSearch(filepath,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,searchdir:=1,inst
 
 	Gdip_ImageSearch(pHaystack, pNeedle,list_image,xmin,ymin,xmax,ymax,varia,,searchdir,inst)
 	
-	Gdip_DisposeImage(pBitmap)
+	Gdip_DisposeImage(pHaystack)
+	Gdip_DisposeImage(pNeedle)
 	Gdip_Shutdown(pToken)
 	return list_image	;returns string of coordinates (x,y`n)
 }
@@ -152,7 +153,6 @@ WGImageSearch(filepath,WaitFor:=-10,varia:=0,xmin:=0,ymin:=0,xmax:=0,ymax:=0,sea
 }
 
 ;Recursive to keep finding and clicking Close
-;<<Legacy>>
 LookForClickClose(t)
 {
 	Closerx := 36
@@ -160,7 +160,7 @@ LookForClickClose(t)
 	Sleep 200
 	if(t<=0)
 		MsgBox, Error: LFCC recieved param not > 0
-	ta := StrSplit(WGImageSearch("CloseButton",t),",")
+	ta := StrSplit(WGImageSearch("CloseButton2",t),",")
 	if(ta.Length())
 	{
 		ta[1] += 33

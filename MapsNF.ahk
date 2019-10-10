@@ -4,6 +4,9 @@
 	local helir := 40, noder:= 20, heli1 := [292, 335], node1, node2 := []
 		, node3, node4, node5, node6, node7, node8, nodeBoss, penumChk, lastChk
 	
+	if(PixelNot(FairyOffB))	;turn Fairy off
+		ClickUntilPixelColor(FairyOffB,,FairyOffB,7)
+
 	if(farm)
 	{
 		heli1 := [172, 241], node2 := [], nodeBoss := [], helir := 21, noder := 12
@@ -11,10 +14,7 @@
 			MsgBox 1-6 Map not zoomed out
 	}	
 	
-	ClickUntilPixelColor(DepNightC,, heli1, helir)	;Click heli1
-	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
-	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	DeployEch(heli1, helir, 3)	;Click heli1
 
 	Map_StartOp()
 
@@ -33,7 +33,7 @@
 	penumChk := PlanChk2nn
 	ClickUntilPixelNot(penumchk,,node2,noder)
 
-	Map_Execute(30000)
+	Map_Execute(50000,,1)
 	Map_EndRound()
 
 	node2 := [402, 337]
@@ -54,7 +54,7 @@
 	ClickUntilPixelNot(lastchk,,nodeBoss,helir)
 
 
-	Map_Execute(10000)
+	Map_Execute(20000)
 	Map_EndRoundFinal()
 	return
 }
@@ -64,10 +64,10 @@
 	local heli1 := [354, 336], node1 := [320, 147], node2 := [554, 323]
 	, node3, nodeBoss := [738, 110], penumChk, lastChk, helir := 40, noder := 20
 
-	ClickUntilPixelColor(DepNightC,, heli1, 36)	;Click heli1
-	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
-	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	if(PixelNot(FairyOffB))	;turn Fairy off
+		ClickUntilPixelColor(FairyOffB,,FairyOffB,7)
+
+	DeployEch(heli1, 36, 3)
 
 	Map_StartOp()
 
@@ -78,19 +78,18 @@
 	penumChk := PlanChk2t0
 	ClickUntilPixelColor(penumchk,,node2,helir)
 
-	Map_Execute(10000)
+	Map_Execute(20000,,1)
 	Map_EndRound()
 
 	node2 := [401, 337]
+	ResupplyDPS(node2,noder)
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
 
-	RandSleep(300,450)
-	RCtrlClick(node2,noder)
 
 	lastChk := PlanChk3t1
 	ClickUntilPixelColor(lastchk,,nodeBoss,noder)
 
-	Map_Execute(10000)
+	Map_Execute(15000,,1)
 	Map_EndRoundFinal()
 	return
 }
@@ -102,21 +101,20 @@
 
 	if(farm)
 	{
-		;heli1 := [663, 171], heli2 := [449, 247], helir := 18, noder := 9
-		while (WGImageSearch("Maps\3_6\ChkZoomed",1,5,,,,,3))
+		heli1 := [659, 173], heli2 := [449, 247], helir := 18, noder := 9
+		while (PixelNot([355, 257, 0xF9F9F9,0xFAFAFA,0xFBFBFB,0xFCFCFC,0xFDFDFD,0xFEFEFE0,xFFFFFF]))	;WGImageSearch("Maps\0_2\ChkZoomed",1,0,,,,,3))
+		{
 			MsgBox 3-6 Map not zoomed out
+			MouseMove, 355, 257
+		}
 	} 
+	
+	if(PixelNot(FairyOffB))	;turn Fairy off
+		ClickUntilPixelColor(FairyOffB,,FairyOffB,7)
 
-	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
-	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
-	Sleep 400
-	ClickUntilPixelColor(DepNightC,, heli2, noder) ;Click Helipad until deploy screen
-	ClickUntilPixelColor(EchDep3b,, EchDep3b, EchNumrx, EchNumry)
-	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
-
+	DeployEch(heli1, helir) 
+	DeployEch(heli2, noder, -3)
 	Map_StartOp()
 	
 	ResupplyDPS(heli2, noder)
@@ -131,23 +129,27 @@
 		nodeBoss[2] += 23
 	} else 
 	{
-	
+		nodeBoss := [326, 531]
 	}
 
 	lastChk := PlanChk5t1
 	ClickUntilPixelColor(lastChk,, nodeBoss, helir)
 	
-	Map_Execute(35000)
+	Map_Execute(30000,,1)
 	
 	Map_EndRoundFinal()
 
 	return
 }
 
+;farm ver not updated
 4_6(farm := 0)
 {	
 	local heli1 := [505, 335], heli2, node1, node2, node3, nodeBoss, lastChk
 		, helir := 30, noder := 12
+
+	if(PixelNot(FairyOffB))	;turn Fairy off
+		ClickUntilPixelColor(FairyOffB,,FairyOffB,7)
 
 	if(farm)
 	{
@@ -156,9 +158,7 @@
 			MsgBox 4-6 Map not zoomed out
 	}
 
-	ClickUntilPixelColor(DepNightC,, heli1, helir+noder) ;Click Helipad until deploy screen
-	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	DeployEch(heli1, helir+noder) ;Click Helipad until deploy screen
 
 	if(!farm)
 	{
@@ -173,10 +173,8 @@
 		;heli2 := [693, 129], node1 := [541, 129], node2 := [433, 131], node3 := [297, 139]
 		;	, node4 := [133, 135]
 	}
-	ClickUntilPixelColor(DepNightC,, heli2, helir) ;Click Helipad until deploy screen
-	ClickUntilPixelColor(EchDep3b,, EchDep3b, EchNumrx, EchNumry)
-	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+
+	DeployEch(heli2, helir, -3)
 
 	Map_StartOp()
 	
@@ -194,17 +192,21 @@
 	lastChk := PlanChk4n0
 	ClickUntilPixelNot(lastchk,,nodeBoss,helir)
 
-	Map_Execute(60000)
+	Map_Execute(70000,,1)
 	
 	Map_EndRoundFinal()
 
 	return
 }
 
+;farm ver NOT UPDATED
 5_6(farm := 0)
 {
 	local heli1 := [514, 409], heli2, node1, node2, node2chk, node3, nodeBoss, lastchk, node3chk
 		, helir := 45, noder := 21
+
+	if(PixelNot(FairyOffB))	;turn Fairy off
+		ClickUntilPixelColor(FairyOffB,,FairyOffB,7)
 
 	if(farm)
 	{
@@ -213,9 +215,7 @@
 			MsgBox 5-6 Map not zoomed out
 	}	
 
-	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
-	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	DeployEch(heli1, helir)
 
 	if(!farm)
 	{
@@ -232,10 +232,8 @@
 		;heli2 := [673, 142], node1 := [537, 128], node2 := [431, 164], node3 := [301, 144]
 		;	, node3chk := [300, 165, 0xFFBB00], nodeBoss := [163, 164]
 	}
-	ClickUntilPixelColor(DepNightC,, heli2, noder) ;Click Helipad2 until deploy screen
-	ClickUntilPixelColor(EchDep3b,, EchDep3b, EchNumrx, EchNumry)	;Click Ech3b
-	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+
+	DeployEch(heli2, noder, -3)
 
 	Map_StartOp()
 	
@@ -257,25 +255,25 @@
 		;RCtrlClick(node2,noder)
 	}
 	
-	;RandSleep(100,250)
-	;RCtrlClick(node3,noder) ;ClickUntilPixelColor(node3chk,2,node3,noder)	;Click node
-	;RandSleep(100,250)
 	lastChk := PlanChk4n0
 	ClickUntilPixelNot(lastchk,,nodeBoss,helir)
 
-	Map_Execute(30000)
+	Map_Execute(40000,,1)
 
 	Map_EndRoundFinal()
 
 	return
 }
 
-;need penumchk, lastchk
+;farm ver not updated
 6_6(farm := 0)
 {
 	local heli1 := [212, 328], heli2, helir := 40, noder := 20
 		, node1, node2, node3
 		,node4,node5,node6,nodeBoss, penumChk, lastChk
+
+	if(PixelNot(FairyOffB))	;turn Fairy off
+		ClickUntilPixelColor(FairyOffB,,FairyOffB,7)
 
 	if(farm)
 	{
@@ -285,10 +283,7 @@
 			MsgBox 6-6 Map not zoomed out
 	}
 
-	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
-	ClickUntilPixelColor(EchDep3,, EchDep3, EchNumrx, EchNumry)
-	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	DeployEch(heli1, helir, 3)
 
 	Map_StartOp()
 	
@@ -313,40 +308,86 @@
 	lastChk := penumChk
 	ClickUntilPixelNot(lastChk,,nodeBoss,helir)
 
-	Map_Execute(50000)
+	Map_Execute(90000,,1)
 	
 	Map_EndRoundFinal()
 }
 
+;Need Para on 1 (kills 4 boss, 5 nme)
+;original (kills 6 boss, 9 nme)
 6_4E()
 {
-	local heli1 := [132, 493], helir := 18, noder := 9, safe := [228, 491]
+	local heli1 := [132, 493], heli2 := [646, 445], helir := 18, noder := 9, safe := [228, 491]
 		, node1 := [148, 429], node2 := [192, 357], node3 := [259, 303], node4 := [261, 237]
-	while (WGImageSearch("Maps\6_4e\ChkZoomed",1,0,,,,,3))
+		, node1b := [600, 399], node2b := [587, 237], node3b, node4b
+	Sleep 1000
+	while (PixelNot([423, 530, 0xF9F9F9,0xFAFAFA,0xFBFBFB,0xFCFCFC,0xFDFDFD,0xFEFEFE0,xFFFFFF]))	;WGImageSearch("Maps\0_2\ChkZoomed",1,0,,,,,3))
 	{
-		MsgBox 6-4E Map not zoomed out
-		
+		MsgBox 6-4e Map not zoomed out
+		MouseMove, 423, 530
 	}
-	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
-	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelColor(EchDep2,, EchDep2, EchNumrx, EchNumry)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+
+	if(PixelNot(FairyOffB))	;turn Fairy off
+		ClickUntilPixelColor(FairyOffB,,FairyOffB,7)
+
+	DeployEch(heli1, helir)
 	Map_StartOp()
+	ResupplyDPS(heli1,helir)
+	ActivateFairy(heli2, noder, 1)
+
+	DeployEch(heli1, helir)
+	ResupplyDPS(heli1, helir)
+	ClickUntilPixelColor(AP1t0,,node1, noder)
+	RandSleep(1000,1550)
+	Map_EndRound()
+
+	SelectEch(heli2, noder) ;ResupplyDps(heli2, noder)
+	RCtrlClick(node1b, noder)
+	RandSleep(1500,2550)
+	RCtrlClick(safe,helir)
+	RandSleep(200,500)
+	RCtrlClick(safe,helir)
+
+	DeployEch(heli2, noder)
+	Map_EndRound()
+
+	ResupplyDPS(heli2, noder)
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
+	ClickUntilPixelColor(PlanChk5t1,,node2b,noder)
+	Map_Execute(20000,,1)
+	Map_EndRound()
+
+	node2b := [587, 332], node3b := [514, 94], node4b := [234, 108], node5b := [93, 93]
+	ResupplyDPS(node2b, noder)
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
+	ClickUntilPixelColor(PlanChk6t3,,node3b,noder)
+	ClickUntilPixelNot(PlanChk3nn,,node5b,4)
+	Map_Execute(90000)
+
+	CSend("b",1100,1500)
+
+	nodeEnd := [333, 493]
+	SelectEch(heli2, noder)
+	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
+	ClickUntilPixelColor(PlanChk5t1,,nodeEnd,helir)
+	Map_Execute(3000,,1)
+	
+	Map_EndRoundFinal()
+/*
+	DeployEch(heli1, helir, 2)
+
 	
 	ResupplyDPS(heli1, helir)
+
 	RandSleep(300,450)
 	RCtrlClick(node1,noder)
 	RandSleep(2300,2450)
 	RCtrlClick(safe,noder)
-	
 	RandSleep(300,450)
-	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
-	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelColor(EchDep3b,, EchDep3b, EchNumrx, EchNumry)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
-	WaitForPixelClick(RedSangvis, ecc)
+
+	DeployEch(heli1, helir, -3)
+
 	Map_EndRound(2000,2500)
-	RandSleep(2000,2100)
 
 	RCtrlClick(node1,noder)
 	RandSleep(300,450)
@@ -359,12 +400,10 @@
 	RCtrlClick(node1,noder)
 	RandSleep(2300,2450)
 	RCtrlClick(safe,noder)
-
 	RandSleep(300,450)
-	ClickUntilPixelColor(DepNightC,, heli1, helir) ;Click Helipad until deploy screen
-	WaitForPixelClick(DepOk, ecc)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
-	WaitForPixelClick(RedSangvis, ecc)
+
+	DeployEch(heli1, helir) 
+
 	Map_EndRound(2000,2500)
 
 	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)
@@ -411,5 +450,6 @@
 	ClickUntilPixelNot(APTensDigit,,EndRoundB,EndRoundBrx,EndRoundBry)
 	Sleep 30000
 	MsgBox 6-4e first half done
+*/
 	
 }

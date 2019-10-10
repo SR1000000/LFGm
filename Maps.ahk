@@ -30,22 +30,8 @@ MapNotes(map)
 		else
 			return "1=Dummy HG`n2=Real Echelon`n"
 	}
-	else if (map == "3-2N Solo")
-		return "1=Solo AR"
-	else if (map == "3-2N")
-	{
-		if (CorpseDragV)
-		{
-			ta := StrSplit(Carry32n,",")
-			tb := ta[1]
-			tc := ta[2]
-			if (SwapC)
-				Swap(tb,tc)
-			return % "1=" tb "`n2=RealEchelon (" tc " pos2)`n389 Empty`n1." tc " needs full supply"
-		}
-		else
-			return "1=Dummy HG`n2=Real Echelon`n"
-	}
+	else if (map == "6-3N")
+		return "4=5 dummy Artillery Fairy`nAll dolls must be corpse, no HG"
 	else if (map == "3-6F")
 		return "1=Dummy HG`n2=Ignored`n3=3HG`n55Max`n"
 	else if (map == "4-6F")
@@ -57,7 +43,7 @@ MapNotes(map)
 	else if (map == "2-6")
 		return "1=Ignored`n2=Ignored`n3=GrizzlyWelrod`n35Max`n"
 	else if (map == "3-6")
-		return "1=Dummy HG`n2=Ignored`n3=3HG`n55Max`n"
+		return "1=Dummy HG`n3=4HG`n55Max`n"
 	else if (map == "123-6")
 		return "1=Dummy HG`n2=Ignored`n3=3HG`n55Max`n"
 	else if (map == "4-6")
@@ -69,13 +55,15 @@ MapNotes(map)
 	else if (map == "456-6")
 		return "1=Dummy HG`n2=Ignored`n3=G11Exodia`n85Max`n"
 	else if (map == "6-4E")
-		return "1=Dummy HG`n2=ARSMG`n3=BossKillers`nHalfway only, not Full Auto`nDO NOT REPEAT"
+		return "1=Dummy HG w Para`n2=ARSMG`n3=BossKillers`n"
 	else if (map == "EV1")
-		return "1=GrizzlyWelrod`nCrate farm EV1-3"
+		return "1=AR15`nCrate farm EV1-3"
 	else if (map == "EV2")
 		return "1=Grizzly`nCZ farm EV1-1, 2 crates, Rescue"
 	else if (map == "EV3")
-		return "1=GrizzlyWelrod`n"
+		return "1=G11`nGroza farm EV1-2, Rescue"
+	else if (map == "EV4")
+		return "1=Dummy`n2=AntiGolyat`n3=G11VectorGrizzTendie`nUmpExo farm EV`nNeedPreZoomOut"
 	else
 		return %vWorld% . "`nMap Not Found"
 }
@@ -87,14 +75,8 @@ MapInit(map)
 	
 	if (map == "4-3E")
 		Carry := Carry43e
-	else if (map == "5-2E")
-		return "52e`n52"
 	else if (map == "0-2")
 		Carry := Carry02
-	else if (map == "3-2N Solo")
-		return "32n`n32s"
-	else if (map == "3-2N")
-		Carry := Carry32n
 	else 
 		return "vWorld`nMap Not Found"
 	
@@ -147,8 +129,7 @@ FriendStandby(xy,r)
 ;leaves xy echelon selected on exit
 RescueFairy(xy := 0, r := 0)
 {
-	FairyActB := [761, 284, 0x4E6282], FairyActBx := 24, FairyActBy := 9
-	FairyVated := [762, 278, 0xDCDDDD], FairyCD := [759, 278, 0x9D9D9D]
+	global FairyActB,FairyActBb, FairyActBx, FairyActBy, FairyVated, FairyCD
 	;xy := xy ? xy : [-1,-1]	;parameters can't default to arrays - workaround
 	tf := WGImageSearch("RescueFairy",1,,700,180,800,260)
 
@@ -166,6 +147,25 @@ RescueFairy(xy := 0, r := 0)
 	return 0
 }
 
+;ASSUMES echelon on map selected so fairy activation is visible
+;rb = 0 for red, 1 for blue
+ActivateFairy(xy := 0, r := 0, rb := 0)
+{
+	global FairyActB,FairyActBb, FairyActBx, FairyActBy, FairyVated, FairyCD
+	xy := xy ? xy : [-1,-1]	;parameters can't default to arrays - workaround
+	color := rb ? FairyActBb : FairyActB
+
+	ClickUntilPixelNot(color,,color,FairyActBx,FairyActBy)
+	ClickUntilPixelNot(FairyVated,,xy,r)
+	;RandSleep(1000,1000) ;not needed?
+	if(rb)
+	{
+		ClickUntilPixelColor(FairyCD,,xy,r)
+		RandSleep(1500,2500)
+	}
+	return
+}
+
 RunMap(map)
 {
 	global
@@ -177,13 +177,17 @@ RunMap(map)
 		ClickSubChapter(3)
 		4_3E()
 	}
-	else if (map == "5-2E")
-		Sleep 100
 	else if (map == "0-2")
 	{
 		FocusChapter(0)
 		ClickSubChapter(2)
 		0_2()
+	}
+	else if (map == "6-3N")
+	{
+		FocusChapter(6,,1)
+		ClickSubChapter(3)
+		6_3N()
 	}
 	else if (map == "EV1")
 		EV1()
@@ -191,8 +195,8 @@ RunMap(map)
 		EV2()
 	else if (map == "EV3")
 		EV3()
-	else if (map == "3-2N")
-		Sleep 100
+	else if (map == "EV4")
+		EV4()
 	else if (map == "1-6")
 	{	
 		FocusChapter(1)
@@ -346,6 +350,54 @@ ClickSubChapter(x)
 		CleanExit()
 	}
 }
+
+;n is which number echelon, negative if one already deployed
+DeployEch(heliXY,heliR := 10,n := 1)
+{
+	global RedSangvis, ecc, DepNightC
+		, EchNum2, EchDep2, EchDep3, EchDep3b, EchDep4, EchDep5, EchNumrx, EchNumry, EchSup, EchSupClk
+		, EchSupClkrx, EchSupClkry, DepOk, DepOkrx, DepOkry
+	
+	if(n == 1)
+		EchDep := []
+	else if (n == 2)
+		EchDep := EchDep2
+	else if (n == 3)
+		EchDep := EchDep3
+	else if (n == 4)
+		EchDep := EchDep4
+	else if (n == 5)
+		EchDep := EchDep5
+	else if (n == -3)
+		EchDep := EchDep3b
+	else
+		MsgBox, Error in DeployEch, invalid n
+
+	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
+	ClickUntilPixelColor(DepNightC,-3, heliXY, heliR)	;Deploy Helipad
+	if(EchDep.length())
+		ClickUntilPixelColor(EchDep,, EchDep, EchNumrx, EchNumry)
+	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	return
+}
+
+SelectEch(xy, r)
+{
+	global RedSangvis, ecc, SelectChk
+	i := 0
+
+	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
+	While(!PixelIs(SelectChk))
+	{
+		RCtrlClick(xy,r)
+		RandSleep(1100,1300)
+		i++
+		if(i>5)
+			MsgBox, Error in SelectEch
+	}
+	return
+}
+
 Map_StartOp(s := 2000)
 {	
 	global 
@@ -354,8 +406,10 @@ Map_StartOp(s := 2000)
 	RandSleep(s,Floor(s*1.5))
 	return
 }
+
 ;end = 1 when multiturn planning ends mission by itself
-Map_Execute(LongWait := 15000, end := 0)
+;NoMid = 1 when no chance of midbattle requiring clicks
+Map_Execute(LongWait := 15000, end := 0, NoMid := 0)
 {
 	local temp, i := 0
 	RandSleep(400,600)
@@ -380,7 +434,7 @@ Map_Execute(LongWait := 15000, end := 0)
 		i := 0
 		while(i<4)
 		{
-			while(!PixelIs(APTensDigit))
+			while((!NoMid) && (!PixelIs(APTensDigit)))
 			{
 				i := 0
 				DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
@@ -388,25 +442,14 @@ Map_Execute(LongWait := 15000, end := 0)
 			temp := WGImageSearch("PlanButton",1)
 			if(temp)
 			{
-				i++
+				NoMid ? (i += 2) : i++
 				Sleep 1000
 			} else
-				i := 0
-		}
-/*		Loop
-		{
-			if(PixelIs(APTensDigit))
 			{
-				WGImageSearch("PlanButton",-120)
-				Sleep 4000
-				temp := WGImageSearch("PlanButton",1)
+				i := 0
+				Sleep 5000
 			}
-;Strike 1: PlanButton flashes too quickly, gets stuck on WGIS(PB) when it should be in DTUT
-;Attempted Fix: planbsearch only if aptensdigit
-			if(!temp)
-				DoThisUntilThat("MidBattleCheck","PixelIs",APTensDigit)
-		} Until temp	
-*/
+		}
 	} 
 	return
 }
@@ -439,7 +482,35 @@ Map_Restart()
 		, RestartBrx := 43, RestartBry := 16
 	ClickUntilPixelColor(RestartB,,TerminateB,TerminateBr)
 	ClickUntilPixelNot(RestartB,,RestartB,Restartbrx,RestartBry)
-	WaitForPixelClick(RedSangvis,ecc)
+	return
+}
+Map_Terminate()
+{
+	global RedSangvis, ecc, RetHome, RetHomerx, RetHomery
+	TerminateB := [199, 56], TerminateBr := 23, PushB := [495, 413, 0xF58237]
+		, RestartBrx := 43, RestartBry := 16
+	ClickUntilPixelColor(PushB,,TerminateB,TerminateBr)
+	ClickUntilPixelNot(PushB,,PushB,Restartbrx,RestartBry)
+
+	WaitForPixelClick(RetHome,ecc)
+	ExpeditionCheck(RetHome)
+	ClickUntilPixelNot(RetHome,,RetHome,RetHomerx,RetHomery)
+	return
+}
+
+RetreatEch(heliXY,heliR := 10)
+{
+	global ecc, DepNightC
+	RetreatB := [628, 510, 0xE6E6E6]
+	RetreatBrx := 41
+	RetreatBry := 14
+	RetreatOK := [474, 417, 0xFDB300]
+
+	ClickUntilPixelColor(DepNightC,, heliXY, heliR)	;Takes two clicks
+	WaitForPixelClick(RetreatB,ecc)
+	ClickUntilPixelNot(DepNightC,,RetreatB,RetreatBrx,RetreatBry)
+	WaitForPixelClick(RetreatOK,ecc)
+	ClickUntilPixelNot(RetreatOK,,RetreatOK,38,17)
 	return
 }
 
@@ -465,12 +536,9 @@ Map_Restart()
 	}
 
 	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
-	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
-	;RandSleep(200,300)
-	ClickUntilPixelColor(EchF,, heli2, 18)	;Deploy Second Helipad
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
 
-	;WaitForPixelClick(RedSangvis, ecc)
+	DeployEch(heli2, 18)	;Deploy Second Helipad
+
 	ClickUntilPixelColor(PlanChk,, StartOp, StartOprx, StartOpry)	;click start operations
 	Sleep 2000
 
@@ -520,7 +588,6 @@ Map_Restart()
 	{
 		MsgBox 0-2 Map not zoomed out
 		MouseMove, 508, 237
-		
 	}
 
 	ClickUntilPixelColor(DepNightC,, heli2, noder) ;Click Helipad until deploy screen
@@ -536,15 +603,25 @@ Map_Restart()
 
 	Map_StartOp()
 
-	WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
-	ClickUntilPixelColor(DepNightC,, heli1, helir)	;Deploy Second Helipad
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+	DeployEch(heli1, helir)	;Deploy Second Helipad
 
+/*
+	if(RescueFairy())
+	{
+		if(!PixelNot(FairyOffB))
+			ClickUntilPixelNot(FairyOffB,,FairyOffB,7)
+	}
+	else if(PixelNot(FairyOffB))	;turn Fairy off
+		ClickUntilPixelColor(FairyOffB,,FairyOffB,7)
+*/
 	if (mapDrag)
 	{
+		Safexy := [450, 500], Safexyr := 50
 		ResupplyDPS(heli1, noder)
 		RandSleep(300,450)
-		RCtrlClick(heli2, helir)	;should replace with cupc with refnode
+		RCtrlClick(Safexy, Safexyr)
+		RandSleep(300,450)
+		SelectEch(heli2, helir)	
 	} else
 		ResupplyDPS(heli2, helir)
 
@@ -564,7 +641,7 @@ Map_Restart()
 
 	if(MapDrag)
 		LongWait += 20000
-	Map_Execute(LongWait,1)
+	Map_Execute(LongWait,1,1)
 /*
 	local Supp1 := [336, 382], Supp2 := [412, 574]
 	RandSleep(400,600)
@@ -587,104 +664,37 @@ Map_Restart()
 	return
 }
 
-EV1()
+;only airstrike version for now
+6_3N()
 {
-	local EventB := [56, 301, 0xC9D34F], EventPageChk := [90, 477, 0x473A1D], FirstChk := [117, 323, 0xDCE94D]
-		, FirstB := [96, 322], FirstBr := 11
-	local One := [322, 284], Onerx := 80, Onery := 40
-	local Three := [320, 442]
-	local NormalB := [403, 469, 0xFDB300], NormalBChk := [403, 188, 0xFDB300]
+	local heli1 := [292, 215], node1 := [624, 228], LongWait := 25000, helir := 30, noder := 20
+		, lastChkN := PlanChk2t0, i :=0
 
-	WaitForPixelClick(EventB, ecc)
-	ClickUntilPixelNot(EventB,,EventB,CombatTabrx,CombatTabry)
-
-	WaitForPixelClick(EventPageChk,ecc)
-	ClickUntilPixelColor(FirstChk,,FirstB,FirstBr)
-
-	while(!PixelIs(NormalB))
-	{
-		RCtrlClick(Three, Onerx, Onery)
-		RandSleep(882,990)
-	}
-	ClickUntilPixelNot(NormalBChk,, NormalB, NormalBrx, NormalBry)
-	
-	if(!WaitForPixelClick(RedSangvis, 8)) ;Wait for active nodes screen (red sangvis icon)
-	{
-		MsgBox TDollList full, go enhance.  Exiting.
-		CleanExit()
-	}
-	
-	local heli1 := [402, 270], node1 := [558, 580], helir:= 45, noder := 25, i := 0
-
+	if(!PixelNot(FairyOffB))
+		ClickUntilPixelNot(FairyOffB,,FairyOffB,7)
+	MsgBox, Zoomout Pls
 	Loop
 	{
 		if(i>0)
 			Map_Restart()
-		ClickUntilPixelColor(DepNightC,, heli1, helir)
-		ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
+		GuiControl,, Iter, % "Iter: " (i+1)
+
+		DeployEch(heli1,helir,4)
 		Map_StartOp()
-		ResupplyDPS(heli1, helir)
+
+		WaitForPixelClick(RedSangvis, ecc) ;Wait for active nodes screen (red sangvis icon)
+		SelectEch(heli1, helir)
 		ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)	;Click Planning
-		ClickUntilPixelNot(PlanChk2nn,,node1,noder)
 
-		Map_Execute()
+		ClickUntilPixelColor(lastChkN,,node1,noder)
+
+		Map_Execute(LongWait,,1)
+		RandSleep(0,7000)
 		i++
-	} Until i>25
-	;Map_EndRoundFinal()
-	return
-}
-
-EV2()
-{
-	local EventB := [56, 301, 0xC9D34F], EventPageChk := [90, 477, 0x473A1D], FirstChk := [117, 323, 0xDCE94D, 0xD3E04A]
-		, FirstB := [96, 322], FirstBr := 11
-	local One := [322, 284], Onerx := 80, Onery := 40
-	local Three := [320, 442]
-	local NormalB := [403, 469, 0xFDB300], NormalBChk := [403, 188, 0xFDB300]
-
-	WaitForPixelClick(EventB, ecc)
-	ClickUntilPixelNot(EventB,,EventB,CombatTabrx,CombatTabry)
-
-	WaitForPixelClick(EventPageChk,ecc)
-	ClickUntilPixelColor(FirstChk,,FirstB,FirstBr)
-
-	while(!PixelIs(NormalB))
-	{
-		RCtrlClick(One, Onerx, Onery)
-		RandSleep(882,990)
-	}
-	ClickUntilPixelNot(NormalBChk,, NormalB, NormalBrx, NormalBry)
+	} Until i>9
 	
-	if(!WaitForPixelClick(RedSangvis, 8)) ;Wait for active nodes screen (red sangvis icon)
-	{
-		MsgBox TDollList full, go enhance.  Exiting.
-		CleanExit()
-	}
+	Map_Terminate()
 	
-	local heli1 := [195, 229], node1 := [197, 582], node2 := [444, 419], helir:= 37, noder := 19, i := 0
-
-	while (PixelNot([392, 228, 0xF9F9F9,0xFAFAFA,0xFBFBFB,0xFCFCFC,0xFDFDFD,0xFEFEFE0,xFFFFFF]))	;WGImageSearch("Maps\0_2\ChkZoomed",1,0,,,,,3))
-	{
-		MsgBox EV2 Map not zoomed out
-		MouseMove, 392, 228
-		
-	}
-
-	ClickUntilPixelColor(DepNightC,, heli1, helir)
-	ClickUntilPixelNot(DepNightC,, DepOk, DepOkrx, DepOkry)	;Deploy Ok
-	Map_StartOp()
-	ResupplyDPS(heli1, helir)
-	ClickUntilPixelColor(PlanB,, PlanB, PlanBrx, PlanBry)	;Click Planning
-	ClickUntilPixelColor(PlanChk2t0,,node1,noder)
-	ClickUntilPixelNot(PlanChk2t0,,node2,helir)
-
-	Map_Execute()
-	Map_EndRoundFinal()
 	return
 }
 
-EV3()
-{
-
-	return
-}

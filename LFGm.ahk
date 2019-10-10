@@ -13,6 +13,7 @@
 #Include Gdip_ImageSearch.ahk
 #Include Maps.ahk
 #Include MapsNF.ahk
+#Include MapsEV.ahk
 #Include PixelCheck.ahk
 #Include PixelConstants.ahk
 #Include RandomFunctions.ahk
@@ -50,7 +51,7 @@ Initialize()
 Gui, 1: New
 Gui, 1: Default
 Gui, Add, Text, x10 y10 w50 h20 , Routine:
-Gui, Add, DropDownList, x60 y6 w60 h20 r5 Choose3 gWorldNotes vWorldV, 4-3E|0-2|123-6|456-6|1-6|2-6|3-6|4-6|5-6|6-6|6-4E|EV1|EV2|EV3 ;3-6F|4-6F|5-6F|
+Gui, Add, DropDownList, x60 y6 w60 h20 r5 Choose3 gWorldNotes vWorldV, 4-3E|0-2|6-3N|123-6|456-6|1-6|2-6|3-6|4-6|5-6|6-6|6-4E|EV1|EV2|EV3|EV4 ;3-6F|4-6F|5-6F|
 GuiControl, ChooseString, WorldV, %WorldV%
 Gui, Add, Text, x130 y10 w40 h20 , Repeat:
 Gui, Add, Edit, x170 y8 w50 h20 Number vRepeat -VScroll, 1
@@ -68,13 +69,13 @@ Gui, Add, Checkbox, x110 y30 vSwapC gSwapCF, Swap Carry
 Gui, Add, Text, x190 y30 w50 h20 vIter, Iter: 0
 Gui, Add, Text, x140 y50 w180 h90 vNotes, % MapNotes(WorldV)
 Gui, Add, Edit, x10 y140 w320 h20 vStatA ReadOnly, Inactive
-Gui, Add, Text, x10 y170 w100 h20 , Tales of Erin
-Gui, Add, Button, x10 y190 w100 h30 gDivin, Repeat Divinity
+Gui, Add, Text, x10 y170 w100 h20 , TroubleShooting
+Gui, Add, Button, x10 y190 w100 h30 gTSS, TakeScreenShot
 Gui, Add, Progress, x110 y190 w40 h30 cGreen vProgB, 0
 Gui, Add, Button, x150 y190 w100 h30 gMBJoin, MB Join
 Gui, Add, Progress, x250 y190 w40 h30 cGreen vProgC, 0
-Gui, Add, Button, x290 y160 w40 h30 gTest, Test
-Gui, Add, Button, x290 y190 w40 h30 gTest2, Test2
+Gui, Add, Button, x290 y160 w40 h30 gTest, DTUT
+Gui, Add, Button, x290 y190 w40 h30 gTest2, RC()
 Gui, Add, Edit, x10 y230 w320 h20 vStatB ReadOnly, Inactive
 ; Generated using SmartGUI Creator 4.0
 Menu, Main, Add, Pause, Pause2
@@ -249,7 +250,7 @@ RepairCheck(force := 0)
 		ClickUntilPixelNot(ta,,ta,48)
 
 		GuiControl,, StatA, Clicking Slot1 %ClickCount%
-		WaitForPixelClick([31,229,0xFFBB00],ecc)
+		WaitForPixelClick([31,229,0xFDB300],ecc)
 		ClickUntilPixelColor(Slot0Chk,,Slot0,38)
 
 		Sleep 200
@@ -261,7 +262,7 @@ RepairCheck(force := 0)
 		Sleep 200
 		ClickUntilPixelNot(RepairOKOK,,RepairOKOK,36,14)
 
-		Sleep 300
+		Sleep 1000
 		;RCtrlClick(RepairCp,36,14)
 		LookForClickClose(1)
 
@@ -336,6 +337,20 @@ ExecuteF:
 	CleanExit()
 return	
 
+TSS:
+	If !pToken := Gdip_Startup()
+	{
+	   MsgBox, 48, gdiplus error!, Gdiplus failed to start. Please ensure you have gdiplus on your system
+	   Exit
+	}
+	pHaystack := Gdip_BitmapFromHWND(uid)
+	temp := Gdip_SaveBitmapToFile(pHaystack, "F:\TSS" . tssi . ".png")
+	MsgBox, SS Taken %tssi%
+	tssi++
+	Gdip_DisposeImage(pHaystack)
+	Gdip_Shutdown(pToken)
+return
+
 CleanExit()
 {
 	GuiControl, Show, Execute
@@ -351,7 +366,7 @@ Test:
 return
 
 Test2:
-	;ExpeditionCheck(RetHome)
+	RepairCheck()
 return
 
 Pause::Pause
@@ -375,6 +390,7 @@ Initialize()
 	AssaultRifle := "Type97,OTS14,HK416,G41,Type95,G11,FAL,AR15,M4A1,SOP2,TAR21"
 	SingleRifle := "WA2K,SVD"
 	init_drag()
+	tssi := 1
 }
 
 GuiClose:
