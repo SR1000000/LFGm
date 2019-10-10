@@ -62,7 +62,7 @@ AeroGetPixel(x, y, z := 0)	;returns converted bgr -> rgb
 
 ;two functions repackaging AeroGetPixel to work with DoThisUntilThat
 ;PixelIs returns true if ANY color in the list is matched
-;PixelNot returns false if ANY color in the list is matched, false if all unmatched
+;PixelNot returns false if ANY color in the list is matched, true if all unmatched
 PixelIs(xyc)
 {
 	tpc := AeroGetPixel(xyc[1],xyc[2],2)
@@ -86,6 +86,17 @@ PixelNot(xyc)
 		}
 	}
 	return true
+}
+
+FileGDIP(uid)
+{
+	pToken  := Gdip_Startup()
+	pBitmap := Gdip_BitmapFromHWND(uid)
+
+	MsgBox, % Gdip_SaveBitmapToFile(pBitmap,"GDIPbitmap.png")
+
+	Gdip_DisposeImage(pBitmap)
+	Gdip_Shutdown(pToken)
 }
 
 /* unused

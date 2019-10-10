@@ -133,11 +133,20 @@ SwitchDPS()
 ResupplyDPS(heliXY,heliR := 10)
 {
 	global ecc, DepNightC
-	ResupplyB := [739, 457, 0x353431]
-	ResupplyBrx := 54
-	ResupplyBry := 12
+	ResupplyB := [739, 457, 0x353431], ResupplyBrx := 54, ResupplyBry := 12
+	RepairOk := [584, 424, 0xFDB300], RepairOKrx := 37, RepairOKry := 12
 	ClickUntilPixelColor(DepNightC,, heliXY, heliR)	;Takes two clicks
 	WaitForPixelClick(ResupplyB,ecc)
+
+/*	;occasionally sees blank ech spots as requiring repair
+	n := 146, color1 := 0x3A6C3C, color2 := 0x232323
+	while(n<612)
+	{
+		if(PixelNot([n,426,color1,color2]))
+			MsgBox, repair needed
+		n := n + 116
+	}
+*/
 	ClickUntilPixelNot(DepNightC,,ResupplyB,ResupplyBrx,ResupplyBry)
 	return
 }
