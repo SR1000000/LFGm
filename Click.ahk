@@ -56,10 +56,10 @@ RCtrlClick(xy, r, r2 := 0)
 		MSgBox Error Exit %WinWidth% %WinHeight%
 		Exit
 	}
-	BlockInput On
+	;BlockInput On
 	ControlClick, x%x% y%y%
 , ahk_id %uid%,,,,NA Pos
-	BlockInput Off
+	;BlockInput Off
 	;else
 	;	ControlClick, %Class%,ahk_id %uid%,,,, x%x% y%y%
 	FileAppend, Clicking x%x% y%y%`n, TroubleLog.txt

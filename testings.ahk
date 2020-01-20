@@ -1,15 +1,15 @@
 ﻿
 F6::
 	MouseGetPos, tx, ty
-	txx := tx + NormalRand(-7,7)
-	tyy := ty + NormalRand(-7,7)
-	Click, %txx% , %tyy%
-	MouseMove, tx, ty
-	RandSleep(95,125)
+	txx := tx + NormalRand(-25,25)
+	tyy := ty + NormalRand(-25,25)
+	MouseMove, txx, tyy
+	Click 
+	RandSleep(205,425)
 return
 
 #If WinExist("ahk_exe Nox.exe")
-F1::
+^F1::
 	FindClick()
 	;IGImageSearch("DollList\" Doll2,40)
 	;MsgBox %  ti.length() "," ts.length() "," ta.length()
@@ -17,22 +17,16 @@ F1::
 	
 return
 
-F2::
+^F2::
 	;Map_Execute()
 	;IGImageSearch("Maps\0_2\ChkZoomed")
 	;MsgBox % GImageSearch("LoadScreen")
 	;MsgBox, % RescueFairy()
 	;LookForClickClose(2)
-	i := 0
-	while(i<3)
-	{
-		vi := "TSS" . i . ".png"
-		MsgBox % vi
-		i++
-	}
+	MsgBox, % GImageSearch("CastOut",10)
 return
 
-F3::
+^F3::
 	;MsgBox % !WGImageSearch("Maps\4_3e\ChkZoomed",,0,,,,,3)
 	;ta := StrSplit(WGImageSearch("Maps\3_6\Boss",,5,,,,,1),",")
 	;MouseMove, ta[1], ta[2]
