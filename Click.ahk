@@ -2,11 +2,10 @@
 ;SetControlDelay, 0
 
 CtrlClick(xy)
-
 {
 
-	global uid
-, WinWidth, WinHeight, ClickDelay, ClickCount
+	global uid, WINID, ClickDelay, ClickCount
+	WinGetPos,,,WinWidth,WinHeight,%WINID%
 
 	Sleep ClickDelay
 
@@ -19,8 +18,7 @@ CtrlClick(xy)
 		Exit
 	}
 	BlockInput On
-	ControlClick, % "x" xy[1] " y" xy[2]
-, ahk_id %uid%,,,,NA Pos
+	ControlClick, % "x" xy[1] " y" xy[2], ahk_id %uid%,,,,NA Pos
 	BlockInput Off
 	;else
 	;	ControlClick, %Class%,ahk_id %uid%,,,, % "x" xy[1] " y" xy[2]
@@ -34,12 +32,10 @@ CtrlClick(xy)
 }
 
 RCtrlClick(xy, r, r2 := 0)
-
 {
 
-	global uid
-, WinWidth, WinHeight, ClickDelay, ClickCount
-
+	global uid, WINID, ClickDelay, ClickCount
+	WinGetPos,,,WinWidth,WinHeight,%WINID%
 	Sleep ClickDelay
 
 
@@ -57,12 +53,45 @@ RCtrlClick(xy, r, r2 := 0)
 		Exit
 	}
 	;BlockInput On
-	ControlClick, x%x% y%y%
-, ahk_id %uid%,,,,NA Pos
+	ControlClick, x%x% y%y%, ahk_id %uid%,,,,NA Pos
 	;BlockInput Off
 	;else
 	;	ControlClick, %Class%,ahk_id %uid%,,,, x%x% y%y%
 	FileAppend, Clicking x%x% y%y%`n, TroubleLog.txt
+	SoundPlay, %A_WinDir%\Media\ding.wav
+	ClickCount++
+	return
+
+}
+
+RCtrlClickCS(xy, r, r2 := 0)
+{
+
+	global uid, WINID, ClickDelay, ClickCount
+	WinGetPos,,,WinWidth,WinHeight,%WINID%
+	Sleep ClickDelay
+
+
+	X := xy[1], Y := xy[2]	;need temp vars for Rand byrefs to work
+
+	if (r2) 
+		RandRect(X,Y,r,r2)
+	else 
+		RandCircle(X,Y,r)
+
+	if (X<1 or X>WinWidth or Y<1 or Y>WinHeight)
+	{
+		GuiControl,, StatA, RCClick tried to click out of bounds! %X% %Y% %ClickCount%
+		MSgBox Error Exit %WinWidth% %WinHeight%
+		Exit
+	}
+
+  	hwnd:= uid ;ControlFromPoint(X, Y, WinTitle, WinText, cX, cY, ExcludeTitle, ExcludeText)  
+  	PostMessage, 0x200, 0, cX&0xFFFF | cY<<16,, ahk_id %hwnd% ; WM_MOUSEMOVE
+  	PostMessage, 0x201, 0, cX&0xFFFF | cY<<16,, ahk_id %hwnd% ; WM_LBUTTONDOWN  
+ 	PostMessage, 0x202, 0, cX&0xFFFF | cY<<16,, ahk_id %hwnd% ; WM_LBUTTONUP  
+
+	FileAppend, Clicking x%X% y%Y%`n, TroubleLog.txt
 	SoundPlay, %A_WinDir%\Media\ding.wav
 	ClickCount++
 	return

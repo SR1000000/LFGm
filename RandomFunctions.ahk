@@ -1,3 +1,4 @@
+
 Swap(Byref x, Byref y)
 {
 	t := x
@@ -6,7 +7,7 @@ Swap(Byref x, Byref y)
 	return
 }
 
-CSend(v := "a", a := 500, b := 1000) {
+CSend(v := "a", a := 0, b := 100) {
 	global CSTitle
 	RandSleep(a,b)
 
@@ -14,10 +15,9 @@ CSend(v := "a", a := 500, b := 1000) {
 	ControlSend,, %v%, %CSTitle%
 	BlockInput Off
 
-	LookForClickClose(0.7)
 }
 
-DoThisUntilThat(thisF,thatF,thatParam1,thatParam2 := "", thisParam1 := "", thisParam2 := "")
+DoThisUntilThat(thisF,thatF,Delay := 100,thatParam1 := "",thatParam2 := "", thisParam1 := "", thisParam2 := "")
 {
 	i := 0, t := ""
 	
@@ -28,7 +28,24 @@ DoThisUntilThat(thisF,thatF,thatParam1,thatParam2 := "", thisParam1 := "", thisP
 	}
 	loop
 	{
-		GuiControl,, StatA, Doing %thisF% %thisParam1% %thisParam2% until %thatF% %thatParam1% %thatParam2%
+		if(thisParam1.length() > 1)
+			TTi1 := StrSplit(thisParam1, ",")
+		else
+			TTi1 := thisParam1
+		if(thisParam2.length() > 1)
+			TTi2 := StrSplit(thisParam2, ",")
+		else
+			TTi2 := thisParam2
+		if(thatParam1.length() > 1)
+			TTa1 := StrSplit(thatParam1, ",")
+		else
+			TTa1 := thatParam1
+		if(thatParam2.length() > 1)
+			TTa2 := StrSplit(thatParam2, ",")
+		else
+			TTa2 := thatParam2
+		
+		GuiControl,, StatA, %i% Doing %thisF% %TTi1% %TTi2% until %thatF% %TTa1% %TTa2%
 		if(thisParam1)
 			if(thisParam2)
 				%thisF%(thisParam1,thisParam2)	
@@ -36,7 +53,9 @@ DoThisUntilThat(thisF,thatF,thatParam1,thatParam2 := "", thisParam1 := "", thisP
 				%thisF%(thisParam1)
 		else
 			%thisF%()
-		
+
+		Sleep %Delay%
+
 		if(thatParam2)
 			t := %thatF%(thatParam1,thatParam2)
 		else
@@ -68,10 +87,8 @@ NormalRand(x,y,int=1)
 	Return norm < x ? x : norm > y ? y : norm
 }
 
-RandSleep(a,b := 0) 
+RandSleep(a,b) 
 {
-	if(!b)
-		b := a
 	Random, var, a, b
 	Sleep %var%
 	return

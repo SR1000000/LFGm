@@ -65,7 +65,7 @@ AeroGetPixel(x, y, z := 0)	;returns converted bgr -> rgb
 ;PixelNot returns false if ANY color in the list is matched, true if all unmatched
 PixelIs(xyc)
 {
-	tpc := AeroGetPixel(xyc[1],xyc[2],2)
+	tpc := AeroGetPixel(xyc[1],xyc[2],1)
 	For k,v in xyc
 	{
 		if (k>2 and tpc = v)
@@ -271,48 +271,3 @@ WaitForPixelClick(xyc, WaitFor := -30, clxy := 0, rx := 5, ry := 0)
 	}
 	return ""
 }
-
-/*
-;Check until pixel is not color, then click(optional)
-;Negative WaitFor hard stops if pixel not found, positive WaitFor ignores
-;exactly one check per 300ms
-UntilPixelNotClick(xyc, WaitFor := -30, clxy := 0, rx := 5, ry := 0)
-{
-	global ClickCount
-	i := 0,	tpc := 0, timeout := 60	;30 seconds
-	clxy := clxy ? clxy : [-1,-1]
-	timeout := Round(Abs(WaitFor) * 2)
-
-	Loop
-	{
-		tpc := AeroGetPixel(xyc[1],xyc[2],2)
-		if (tpc = xyc[3])
-		{
-			i++
-			GuiControl,, StatA, % "Pixel " xyc[1] " " xyc[2] " still " xyc[3] " " ClickCount " " i
-		}
-		else
-		{
-			if (clxy[1] != -1 and clxy[2] != -1)
-			{
-				RandSleep(1,200)
-				if (ry)
-					RCtrlClick(clxy,rx,ry)
-				else
-					RCtrlClick(clxy,rx)
-			}
-			GuiControl,, StatA, % "PixelChanged " xyc[1] " " xyc[2] " " ClickCount
-			return 1
-		}
-		Sleep 100
-	} until i > timeout
-	if (WaitFor<0)
-	{
-		tpc := DEC2HEX2(xyc[3])
-		GuiControl,, StatA, % "ErrorCat UPNC " xyc[1] " " xyc[2] " " tohex(xyc[3])
-		MsgBox Error Exit
-		Exit
-	}
-	return 0
-}
-*/
