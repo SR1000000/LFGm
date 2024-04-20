@@ -2,6 +2,8 @@
 
 ## Description
 An automated script including GUI to assist in automating dailies in mobile gacha games.  
+Uses public-library optical recognition functions to recognize states of an Android virtual machine running in the background, then uses control injection to manipulate the virtual machine still in the background in order to complete automation without requiring user interruption or losing window focus of user's foreground window.
+Typically one to two gacha games focused on at a time, with the particular gacha games shifting over the years.
 LFGmAK for Arknights, LFGmCS for Counter:Side, LFGmMagicami for Magicami.
 ## ScreenShots
 (BDSM refers to the mobile gacha game Battle Divas: Slay Mecha)  
