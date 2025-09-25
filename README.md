@@ -5,13 +5,16 @@ An automated script including GUI to assist in automating dailies in mobile gach
 Uses public-library optical recognition functions to recognize states of an Android virtual machine running in the background, then uses control injection to manipulate the virtual machine still in the background in order to complete automation without requiring user interruption or losing window focus of user's foreground window.
 Typically one to two gacha games focused on at a time, with the particular gacha games shifting over the years.
 LFGmAK for Arknights, LFGmCS for Counter:Side, LFGmMagicami for Magicami.  Some functions for BDSM (Battle Divas Slay Mechas) and AE (Another Eden).
+
+The above are old and works only with Windows 7 Aero that allows background windows to render even if not visible.  The more recent Limbus and Umamusume scripts running on Windows 10/11 don't work without visible windows (typically on another monitor), so for full automation would need to be run in a Virtual Machine (like VirtualBox).
+
 ## ScreenShots
 (BDSM refers to the mobile gacha game Battle Divas: Slay Mecha)  
-![Arknights and BDSM macros](pics/GUI.png)  
-![Counter:Side macros](<pics/GUI CS.png>)  
+![Arknights and BDSM macros](Old (Win 7)/pics/GUI.png)  
+![Counter:Side macros](<Old (Win 7)/pics/GUI CS.png>)  
   
 Logic Flow Sketch for Arknights Main Repeat loop:  
-![Logic Flow Sketch](LogicFlow.png)
+![Logic Flow Sketch](Old (Win 7)/LogicFlow.png)
 
 ## Links(Optional)
 

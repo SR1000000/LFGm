@@ -1,0 +1,5 @@
+CheckMain()
+{
+	
+	return 0
+}

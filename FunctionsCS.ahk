@@ -1,5 +1,0 @@
-CheckMain()
-{
-	
-	return 0
-}
