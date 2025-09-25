@@ -1,4 +1,4 @@
-# LFGm
+# AutoHotKey Scripts
 
 ## Description
 An automated script including GUI to assist in automating dailies in mobile gacha games.  
