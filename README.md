@@ -10,11 +10,11 @@ The above are old and works only with Windows 7 Aero that allows background wind
 
 ## ScreenShots
 (BDSM refers to the mobile gacha game Battle Divas: Slay Mecha)  
-![Arknights and BDSM macros](Old (Win 7)/pics/GUI.png)  
+![Arknights and BDSM macros](<Old (Win 7)/pics/GUI.png>)  
 ![Counter:Side macros](<Old (Win 7)/pics/GUI CS.png>)  
   
 Logic Flow Sketch for Arknights Main Repeat loop:  
-![Logic Flow Sketch](Old (Win 7)/LogicFlow.png)
+![Logic Flow Sketch](<Old (Win 7)/LogicFlow.png>)
 
 ## Links(Optional)
 
